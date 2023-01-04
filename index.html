@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head> 
+        <title>Escape from Omsk</title>
+        <link rel="stylesheet" href="style.css">
+				<link rel="preconnect" href="https://fonts.googleapis.com">
+				<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+				<link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
+        <meta charset="utf-8">
+				<link rel="apple-touch-icon" sizes="180x180" href="fav/apple-touch-icon.png">
+				<link rel="icon" type="image/png" sizes="32x32" href="fav/favicon-32x32.png">
+				<link rel="icon" type="image/png" sizes="16x16" href="fav/favicon-16x16.png">
+				<link rel="manifest" href="fav/site.webmanifest">
+    </head>
+    <body id="mobile">
+        <div class="wrapper">
+            <canvas width="0" height="0" class="canvas" id="canvas">Ваш браузер не поддерживает JavaScript и HTML5!
+							
+						</canvas>
+				<img class="pauseButton button hide" src="assets/gui/Pause.png" alt="" onclick="PauseToggle()">
+				<div class="score hide"></div>
+        </div>
+				<div class="pause hide">
+					PAUSED
+					<div class="buttonHolder">
+						<img class = 'replayButton button' src="assets/gui/Redo.png" alt=""  onclick="Replay()">
+						<img class = 'homeButton button' src="assets/gui/Home.png" alt=""  onclick="GoToHome()">
+					</div>
+				</div>
+				<div class="gameOver hide">
+					GAME OVER
+					<div class="score gameOverScore"></div>
+					<div class="buttonHolder">
+						<img class = 'replayButton button' src="assets/gui/Redo.png" alt=""  onclick="Replay()">
+						<img class = 'homeButton button' src="assets/gui/Home.png" alt=""  onclick="GoToHome()">
+					</div>
+				</div>
+				<div class="mainMenu visible">
+					Escape From<br>Omsk
+					<div class='playButton menuButton' onclick="PlayButtonActivate()"> PLAY</div>
+					<div class="creditsButton menuButton" onclick="ShowCredits()">credits</div>
+				</div>
+				<div class="credits hide">
+					<div>created by: <a href = 'https://github.com/moxa-rumin' target = "_blank">moxa-rumin</a><br></div>
+					<div>Backgrounds: <a href = 'https://itch.io/profile/drxwat' target = "_blank">frontend pashtet</a><br></div>
+					<div class="returnButton menuButton"  onclick="ShowCredits()">return</div>
+				</div>
+				
+        <script src="game.js"></script>
+				<script src="https://raw.githubusercontent.com/themadcreator/gifler/master/gifler.min.js"></script>
+
+    </body>
+</html>
