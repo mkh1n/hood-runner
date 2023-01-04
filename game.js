@@ -11,7 +11,7 @@ var GameOverScoreBlock = document.getElementsByClassName("score")[1];
 
 window.addEventListener("resize", Resize);
 
-var speed = 9;
+var speed = canvas.width / 130 ;
 var leftPressed = false;
 var rightPressed = false;
 var jumpPressed = false;
@@ -25,6 +25,7 @@ var stopGame = false;
 var score = 0;
 var pause = false
 var gameOver = false
+
 
 Resize();
 
@@ -42,7 +43,7 @@ class Bg {
 	}
 
 	Update(bg) {
-		this.x -= speed * this.layer; ;
+		this.x -= speed * this.layer ;
 
 		if (this.x < -(canvas.height * 2.82421875))
 		{
@@ -65,20 +66,23 @@ class GameObject {
 		this.image.addEventListener("load", function () { obj.loaded = true; });
 	}
 	Update() {
+		var barrierWidth = (canvas.height / 4.5) * (this.image.width / this.image.height)
 		if (!this.isPlayer) {
 			this.x -= speed;
-			if (this.x < 0 - this.image.width) {
+			if (this.x < 0 - barrierWidth) {
 				this.dead = true;
 			}
 		}
 	}
-	Collide(object)
-	{
-		var hit = false;
+	Collide(object){	
+		var playerWidth = (canvas.height / 1.6) * (this.image.width / this.image.height);
+		var playerHeight = (canvas.height / 1.6) * (this.image.width / this.image.height);
+		var barrierHight = (canvas.height / 4.5);
 
-		if(this.x + this.image.width - 240 > object.x && this.x < object.x + object.image.width - 240)
+		var hit = false;
+		if(this.x + playerWidth / 2 > object.x && this.x < object.x )
 		{
-			if(object.y - jumpHeight + this.image.height > object.y + 330)
+			if(object.y - jumpHeight + playerHeight > object.y + barrierHight * 2)
 			{
 				hit = true;
 			}
@@ -90,7 +94,7 @@ class GameObject {
 
 
 
-var player = new GameObject('assets/sprites/run/0.png', 50,  canvas.height - 500, true)
+var player = new GameObject('assets/sprites/run/0.png', 50,  canvas.height - (wrapperBlock.offsetHeight / 2), true)
 
 var objects = []
 
@@ -110,22 +114,23 @@ var runAnimate = setInterval(() => {
 }, 50)
 
 function Move() {
-	if (rightPressed && player.x + player.image.width  < canvas.width + 120) //вправо
+	if (rightPressed && player.x + player.x / 5 < canvas.width) //вправо
 	{
 		player.x += speed;
 	}
-	else if (leftPressed &&  player.x + player.image.width / 3 > 0) //влево
+	else if (leftPressed &&  player.x + canvas.width / 10 > 0) //влево
 	{
 		player.x -= speed;
 	}
 	if (jumpPressed) { 
-		jumpCount += Math.sqrt(speed) / 2.3;
-		jumpHeight = 6 * jumpLength * Math.sin(Math.PI * jumpCount / jumpLength);
+		jumpCount += 1.2 + (score / 1800) ;
+		jumpHeight = (canvas.height / 100)* jumpLength * Math.sin(Math.PI * jumpCount / jumpLength);
 	}
 	if (jumpCount > jumpLength) {
 		jumpCount = 0;
 		jumpPressed = false;
 		jumpHeight = 0;
+
 		clearInterval(runAnimate)
 		runAnimate = setInterval(() => {
 			animate(player, run, 12)
@@ -230,8 +235,9 @@ function ResetGlobalVariables(){
 	gameOver = false;
 	pause = false;
 	player.dead = false;
-	speed = 9;
-	player.y = canvas.height - 350
+	ratio = innerHeight / innerWidth
+	speed = canvas.width / 130
+	player.y = canvas.height - (wrapperBlock.offsetHeight / 2)
 	score = 0;
 	document.removeEventListener("keydown", keyRightHandler, false);
 	document.removeEventListener("keyup", keyLeftHandler, false);
@@ -296,15 +302,15 @@ function Update() {
 				switch(randomBarrier){
 					case 1:
 						objects.at(-1).image.src =  'assets/sprites/barriers/barrier1.png'
-						objects.at(-1).y = canvas.height - 140
+						objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 4.5)
 						break;
 					case 2:
 						objects.at(-1).image.src ='assets/sprites/barriers/barrier2.png'
-						objects.at(-1).y = canvas.height - 190
+						objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 4.5)
 						break;
 					case 3:
 						objects.at(-1).image.src ='assets/sprites/barriers/barrier3.png'
-						objects.at(-1).y = canvas.height - 140
+						objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 4.5)
 						break;
 				}
 		}
@@ -355,8 +361,7 @@ function Draw() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height); 
 
 	for (var i = 0; i < bg.length; i += 1) {
-		ctx.drawImage
-			(
+		ctx.drawImage(
 				bg[i].image, 
 				0,
 				0,
@@ -378,17 +383,21 @@ function Draw() {
 }
 function DrawObject(object)
 {
+	var barrierWidth = (canvas.height / 4.5) * (object.image.width / object.image.height)
+	var barrierHight = (canvas.height / 4.5);
+
+	var playerWidth = (canvas.height / 1.6) * (player.image.width / player.image.height);
+	var playerHeight = (canvas.height / 1.6) * (player.image.width / player.image.height);
+
 	ctx.drawImage
 	(
 		object.image, 
-		0, 
-		0, 
-		object.image.width, 
-		object.image.height, 
 		object.x, 
 		object.isPlayer ? object.y - jumpHeight : object.y,
-		object.image.width , 
-		object.image.height 
+
+		object.isPlayer ? playerWidth : barrierWidth,
+
+		object.isPlayer ? playerHeight : barrierHight,
 	);
 }
 
