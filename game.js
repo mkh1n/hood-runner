@@ -11,32 +11,36 @@ var GameOverScoreBlock = document.getElementsByClassName("score")[1];
 
 window.addEventListener("resize", Resize);
 
-var speed = canvas.width / 130 ;
+var speed = 8 ;
+
 var leftPressed = false;
 var rightPressed = false;
 var jumpPressed = false;
 var jumpCount = 0;
 var jumpLength = 50;
 var jumpHeight = 0;
-var frameNumber = 0;
+
+var frameNumber = 1;
 const run = 'assets/sprites/run/'
 const jump = 'assets/sprites/jump/'
+const idle = 'assets/sprites/idle/'
+
 var stopGame = false;
 var score = 0;
 var pause = false
 var gameOver = false
 
-
 Resize();
 
 class Bg {
-	constructor(image, x, y, layer) {
+	constructor(image, x, layer) {
 		this.x = x;
-		this.y = y;
+		this.y = 0;
 		this.layer = layer;
 		this.image = new Image();
 
 		this.image.src = image;
+
 		var obj = this;
 
 		this.image.addEventListener("load", function () { obj.loaded = true; });
@@ -45,24 +49,24 @@ class Bg {
 	Update(bg) {
 		this.x -= speed * this.layer ;
 
-		if (this.x < -(canvas.height * 2.82421875))
+		if (this.x < - (canvas.height * 3.7643207856))
 		{
-			this.x = bg.x + (canvas.height * 2.82421875) - speed
+			this.x = bg.x + (canvas.height * 3.7643207856) - speed
 		}
 	}
 }
+
 class GameObject {
 	constructor(image, x, y, isPlayer) {
 		this.x = x;
 		this.y = y;
 		this.image = new Image();
 		this.image.src = image
-
+		this.heighCoeff = 0.96;
 		this.dead = false;
 		this.isPlayer = isPlayer
 
 		var obj = this;
-
 		this.image.addEventListener("load", function () { obj.loaded = true; });
 	}
 	Update() {
@@ -75,14 +79,16 @@ class GameObject {
 		}
 	}
 	Collide(object){	
-		var playerWidth = (canvas.height / 1.6) * (this.image.width / this.image.height);
-		var playerHeight = (canvas.height / 1.6) * (this.image.width / this.image.height);
-		var barrierHight = (canvas.height / 4.5);
+		var barrierWidth = (canvas.width / 6.5)  * object.heighCoeff
+		var barrierHight = (canvas.width / 6.5) / (object.image.width / object.image.height)* object.heighCoeff
+		var playerWidth = (canvas.height / 4) * (player.image.width / player.image.height);
+		var playerHeight = (canvas.height / 4) * (player.image.width / player.image.height);
 
 		var hit = false;
-		if(this.x + playerWidth / 2 > object.x && this.x < object.x )
+			
+		if(this.x + playerWidth / 1.5 > object.x && this.x < object.x + barrierWidth / 1.5 )
 		{
-			if(object.y - jumpHeight + playerHeight > object.y + barrierHight * 2)
+			if(object.y - jumpHeight + playerHeight > object.y + barrierHight  )
 			{
 				hit = true;
 			}
@@ -94,7 +100,7 @@ class GameObject {
 
 
 
-var player = new GameObject('assets/sprites/run/0.png', 50,  canvas.height - (wrapperBlock.offsetHeight / 2), true)
+var player = new GameObject('assets/sprites/run/1.png', 50,  canvas.height , true)
 
 var objects = []
 
@@ -103,22 +109,22 @@ function animate(object, path, length) {
 	
 	frameNumber += 1
 	if (frameNumber > length - 1) {
-		frameNumber = 0
+		frameNumber = 1
 	}
 	object.image.src = path + frameNumber + '.png'
 	
 }
 
 var runAnimate = setInterval(() => {
-	animate(player, run, 12)
-}, 50)
+	animate(player, run, 8)
+}, 75)
 
 function Move() {
-	if (rightPressed && player.x + player.x / 5 < canvas.width) //вправо
+	if (rightPressed && player.x + canvas.width/ 10 < canvas.width) //вправо
 	{
 		player.x += speed;
 	}
-	else if (leftPressed &&  player.x + canvas.width / 10 > 0) //влево
+	else if (leftPressed &&  player.x> 0) //влево
 	{
 		player.x -= speed;
 	}
@@ -133,39 +139,26 @@ function Move() {
 
 		clearInterval(runAnimate)
 		runAnimate = setInterval(() => {
-			animate(player, run, 12)
-		}, 50)
+			animate(player, run, 8)
+		}, 75)
 		
 	}
 
 }
 
 var bg = [
-	new Bg("assets/bg/ground.png", 0,0, 1),
-	new Bg("assets/bg/ground.png", canvas.width,0, 1),
+	new Bg("assets/bg/1.png", 0, 0.1),
+	new Bg("assets/bg/1.png", canvas.height * 3.7643207856, 0.1),
+	
+	new Bg("assets/bg/2.png", 0, 0.4),
+	new Bg("assets/bg/2.png", canvas.height * 3.7643207856, 0.4),
 
-	new Bg("assets/bg/stars.png", 0, 0, 0.3),
-	new Bg("assets/bg/stars.png", canvas.width, 0, 0.3),
+	new Bg("assets/bg/3.png", 0, 0.8),
+	new Bg("assets/bg/3.png", canvas.height * 3.7643207856, 0.8),
 
-	new Bg("assets/bg/clouds1.png", 0,0, 0.4),
-	new Bg("assets/bg/clouds1.png", canvas.width ,0, 0.4),
-
-	new Bg("assets/bg/clouds2.png", 0, 100, 0.2),
-	new Bg("assets/bg/clouds2.png", canvas.width , 100, 0.2),
-
-	new Bg("assets/bg/bgBuildings.png", 0,0, 0.2),
-	new Bg("assets/bg/bgBuildings.png", canvas.width ,0, 0.2),
-
-	new Bg("assets/bg/farBuildings.png", 0,0, 0.5),
-	new Bg("assets/bg/farBuildings.png", canvas.width ,0, 0.5),
-
-	new Bg("assets/bg/fgBuildings.png", 0,0, 0.9),
-	new Bg("assets/bg/fgBuildings.png", canvas.width ,0, 0.9),
-
-	new Bg("assets/bg/wall.png", 0,0, 1),
-	new Bg("assets/bg/wall.png", canvas.width,0,1),
-];
-
+	new Bg("assets/bg/4.png", 0, 1),
+	new Bg("assets/bg/4.png", canvas.height * 3.7643207856, 1),
+]
 
 
 function keyRightHandler(e) {
@@ -178,8 +171,8 @@ function keyRightHandler(e) {
 	if (e.keyCode == 32 || e.keyCode == 87 || e.keyCode == 38) {
 		clearInterval(runAnimate)
 		runAnimate = setInterval(() => {
-			animate(player, jump, 6)
-		}, 75)
+			animate(player, jump, 4)
+		}, 65)
 		
 		jumpPressed = true;
 	}
@@ -236,8 +229,8 @@ function ResetGlobalVariables(){
 	pause = false;
 	player.dead = false;
 	ratio = innerHeight / innerWidth
-	speed = canvas.width / 130
-	player.y = canvas.height - (wrapperBlock.offsetHeight / 2)
+	speed = 8
+	player.y = canvas.height - (wrapperBlock.offsetHeight / 3.2)
 	score = 0;
 	document.removeEventListener("keydown", keyRightHandler, false);
 	document.removeEventListener("keyup", keyLeftHandler, false);
@@ -297,8 +290,10 @@ function Update() {
 
 	if (RandomInteger(0, 10000) > 9800) {
 		if (objects.length == 0 || objects.at(-1).x < canvas.width - 100 ){
-			objects.push(new GameObject('assets/sprites/barriers/barrier1.png', canvas.width + 500, 0, false));
-				var randomBarrier = RandomInteger(1, 3)
+
+			objects.push(new GameObject('assets/sprites/barriers/barrier1.png', 4 * canvas.width / 3 , 0, false));
+			
+				var randomBarrier = RandomInteger(1, 4)
 				switch(randomBarrier){
 					case 1:
 						objects.at(-1).image.src =  'assets/sprites/barriers/barrier1.png'
@@ -312,6 +307,10 @@ function Update() {
 						objects.at(-1).image.src ='assets/sprites/barriers/barrier3.png'
 						objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 4.5)
 						break;
+					case 4:
+					objects.at(-1).image.src ='assets/sprites/barriers/barrier4.png'
+					objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 5)
+					break;
 				}
 		}
 	}
@@ -345,11 +344,9 @@ function Update() {
 
 	player.Update();
 
-	if(player.dead)
-	{
-		gameOver = true
+	if(player.dead){
+		gameOver = true		
 		GameOver()
-
 	}
 	speed += 0.001
 	Draw();
@@ -369,9 +366,8 @@ function Draw() {
 				bg[i].image.height, 
 				bg[i].x,
 				bg[i].y, 
-				wrapperBlock.offsetHeight * (bg[i].image.width / bg[i].image.height),
-				wrapperBlock.offsetHeight,
-				
+				canvas.height * (bg[i].image.width / bg[i].image.height),
+				canvas.height
 			);
 	}
 	for (var i = 0; i < objects.length; i++) {
@@ -383,11 +379,11 @@ function Draw() {
 }
 function DrawObject(object)
 {
-	var barrierWidth = (canvas.height / 4.5) * (object.image.width / object.image.height)
-	var barrierHight = (canvas.height / 4.5);
+	var barrierWidth = (canvas.width / 6.5)  * object.heighCoeff
+	var barrierHight = (canvas.width / 6.5) / (object.image.width / object.image.height)* object.heighCoeff
 
-	var playerWidth = (canvas.height / 1.6) * (player.image.width / player.image.height);
-	var playerHeight = (canvas.height / 1.6) * (player.image.width / player.image.height);
+	var playerWidth = (canvas.height / 4) * (player.image.width / player.image.height);
+	var playerHeight = (canvas.height / 4) * (player.image.width / player.image.height);
 
 	ctx.drawImage
 	(

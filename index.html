@@ -39,15 +39,28 @@
 				<div class="mainMenu screenRatio visible">
 					Escape From<br>Omsk
 					<div class="mainMenuButtons">
-						<div class='playButton menuButton' onclick="PlayButtonActivate()"> PLAY</div>
-						<div class="creditsButton menuButton" onclick="ShowCredits()">credits</div>
+						
+						<button class='playButton menuButton creditsButton btn btn--secondary ' onclick="PlayButtonActivate()">
+							<span class="btn__content">//:play</span>
+							<span class="btn__glitch"></span>
+						</button>
+
+						<button class='playButton menuButton btn btn--secondary ' onclick="ShowCredits()">
+							<span class="btn__content">//:credits</span>
+							<span class="btn__glitch"></span>
+						</button>
 					</div>
+
 				</div>
 				<div class="tutorial insideScreenRatio hide"></div>
 				<div class="credits screenRatio hide">
 					<div>created by: <a href = 'https://github.com/moxa-rumin' target = "_blank">moxa-rumin</a><br></div>
-					<div>Backgrounds: <a href = 'https://itch.io/profile/drxwat' target = "_blank">frontend pashtet</a><br></div>
-					<div class="returnButton menuButton"  onclick="ShowCredits()">return</div>
+					<div>Bg & Sprites: <a href ='https://itch.io/profile/ansimuz' target = "_blank">fansimuz</a>, 
+						<a href ='https://itch.io/profile/anokolisa' target = "_blank">anokolisa</a><br></div>
+						<button class='playButton menuButton creditsButton btn btn--secondary ' onclick="ShowCredits()">
+							<span class="btn__content">//:return</span>
+							<span class="btn__glitch"></span>
+						</button>
 				</div>
 				
         <script src="game.js"></script>
