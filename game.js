@@ -12,7 +12,7 @@ var GameOverScoreBlock = document.getElementsByClassName("score")[1];
 window.onload	
 window.addEventListener("resize", Resize);
 
-var speed = 8 ;
+var speed = innerWidth / 130 ;
 
 var leftPressed = false;
 var rightPressed = false;
@@ -229,7 +229,7 @@ function ResetGlobalVariables(){
 	pause = false;
 	player.dead = false;
 	ratio = innerHeight / innerWidth
-	speed = 8
+	speed =  innerWidth / 130
 	player.y = canvas.height - (wrapperBlock.offsetHeight / 3.2)
 	score = 0;
 	document.removeEventListener("keydown", keyRightHandler, false);
