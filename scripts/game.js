@@ -25,6 +25,7 @@ var frameNumber = 1;
 const run = 'assets/sprites/run/'
 const jump = 'assets/sprites/jump/'
 const idle = 'assets/sprites/idle/'
+
 var stopGame = false;
 var score = 0;
 var pause = false
