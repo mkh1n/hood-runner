@@ -1,0 +1,23 @@
+{
+  "name": "escape-from-omsk",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "game.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moxa-rumin/escape-from-omsk.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/moxa-rumin/escape-from-omsk/issues"
+  },
+  "homepage": "https://github.com/moxa-rumin/escape-from-omsk#readme",
+  "dependencies": {
+    "requirejs": "^2.3.6"
+  }
+}

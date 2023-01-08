@@ -9,6 +9,7 @@ var mainMenuBlock = document.getElementsByClassName("mainMenu")[0];
 var scoreBlock = document.getElementsByClassName("score")[0];
 var GameOverScoreBlock = document.getElementsByClassName("score")[1];
 
+window.onload	
 window.addEventListener("resize", Resize);
 
 var speed = 8 ;
@@ -106,7 +107,6 @@ var objects = []
 
 
 function animate(object, path, length) {
-	
 	frameNumber += 1
 	if (frameNumber > length - 1) {
 		frameNumber = 1
