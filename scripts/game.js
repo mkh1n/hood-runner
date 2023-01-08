@@ -1,3 +1,4 @@
+
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 var wrapperBlock = document.getElementsByClassName("wrapper")[0];
@@ -9,7 +10,6 @@ var mainMenuBlock = document.getElementsByClassName("mainMenu")[0];
 var scoreBlock = document.getElementsByClassName("score")[0];
 var GameOverScoreBlock = document.getElementsByClassName("score")[1];
 
-window.onload	
 window.addEventListener("resize", Resize);
 
 var speed = innerWidth / 130 ;
@@ -25,6 +25,16 @@ var frameNumber = 1;
 const run = 'assets/sprites/run/'
 const jump = 'assets/sprites/jump/'
 const idle = 'assets/sprites/idle/'
+
+loader = new PxLoader(); 
+function downloadImages(path, length){
+	for (let i = 1; i < length + 1; i += 1){
+		loader.addImage(path + i);
+	}
+}
+
+downloadImages(run, 12)
+downloadImages(jump, 4)
 
 var stopGame = false;
 var score = 0;
