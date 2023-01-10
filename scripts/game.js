@@ -150,7 +150,7 @@ function Move() {
 		player.x -= speed;
 	}
 	if (jumpPressed) { 
-		jumpCount += 0.9 + (score / 1800) ;
+		jumpCount += 	1.2 + (score / 1800) ;
 		jumpHeight = (canvas.height / 100)* jumpLength * Math.sin(Math.PI * jumpCount / jumpLength);
 
 	}
@@ -281,7 +281,7 @@ function ResetGlobalVariables(){
 	player.dead = false;
 	speed =  canvas.width / 130
 	player.y = canvas.height - (wrapperBlock.offsetHeight / 3.2)
-	score = 1000;
+	score = 0;
 	document.removeEventListener("keydown", keyRightHandler, false);
 	document.removeEventListener("keyup", keyLeftHandler, false);
 	ctx.webkitImageSmoothingEnabled = false;
