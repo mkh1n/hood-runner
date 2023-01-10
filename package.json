@@ -1,7 +1,6 @@
 {
   "name": "escape-from-omsk",
   "version": "1.0.0",
-  "type": "module",
   "description": "",
   "main": "game.js",
   "scripts": {

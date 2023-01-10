@@ -25,6 +25,7 @@
 					PAUSED
 					<div class="buttonHolder">
 						<img class = 'replayButton button' src="assets/gui/Redo.png" alt=""  onclick="Replay()">
+						<img class="playOnPauseButton button" src="assets/gui/Play.png" alt="" onclick="PauseToggle()">
 						<img class = 'homeButton button' src="assets/gui/Home.png" alt=""  onclick="GoToHome()">
 					</div>
 				</div>
@@ -36,7 +37,7 @@
 						<img class = 'homeButton button' src="assets/gui/Home.png" alt=""  onclick="GoToHome()">
 					</div>
 				</div>
-				<div class="mainMenu screenRatio visible">
+				<div class="mainMenu hide screenRatio">
 					Escape From<br>Omsk
 					<div class="mainMenuButtons">
 						
@@ -63,9 +64,9 @@
 						</button>
 				</div>
 				
-        <script src="scripts/game.js"></script>
-				<script type="module" src="scripts/loading.js"></script>
+        
 				<script type="text/javascript" src="scripts/PxLoader.js"></script>
 				<script type="text/javascript" src="scripts/PxLoaderImage.js"></script>
+				<script type="text/javascript" src="scripts/game.js"></script>
     </body>
 </html>
