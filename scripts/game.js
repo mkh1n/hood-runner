@@ -55,11 +55,6 @@ const bgSprites = [];
 for (let i = 1; i < 8; i += 1){
 	bgSprites.push(loader.addImage('assets/bg/'+ i +'.png'));
 }
-const overlays = [];
-for (let i = 1; i < 13; i += 1){
-	overlays.push(loader.addImage('assets/bg/overlay'+ i +'.png'));
-}
-
 
 
 loader.start(); 
