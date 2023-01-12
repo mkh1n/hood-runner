@@ -8,6 +8,7 @@ var pauseButton = document.getElementsByClassName("pauseButton")[0];
 var gameOverBlock = document.getElementsByClassName("gameOver")[0];
 var mainMenuBlock = document.getElementsByClassName("mainMenu")[0];
 var scoreBlock = document.getElementsByClassName("score")[0];
+var overlay = document.getElementsByClassName("overlay")[0];
 var GameOverScoreBlock = document.getElementsByClassName("score")[1];
 
 window.addEventListener("resize", Resize);
@@ -23,7 +24,7 @@ var jumpPressed = false;
 var jumpCount = 0;
 var jumpLength = 50;
 var jumpHeight = 0;
-
+var overIndex = 0;
 var loader = new PxLoader(); 
 
 var frameNumber = 1;
@@ -44,9 +45,19 @@ const barriersSprites = [];
 for (let i = 1; i < 5; i += 1){
 	barriersSprites.push(loader.addImage('assets/sprites/barriers/'+ i +'.png'));
 }
+const dronesSprites = [];
+const leftDronesSprites = [];
+for (let i = 1; i < 8; i += 1){
+	dronesSprites.push(loader.addImage('assets/drones/'+ i +'.png'));
+	leftDronesSprites.push(loader.addImage('assets/drones/'+ 'l' + i +'.png'));
+}
 const bgSprites = [];
-for (let i = 1; i < 5; i += 1){
+for (let i = 1; i < 8; i += 1){
 	bgSprites.push(loader.addImage('assets/bg/'+ i +'.png'));
+}
+const overlays = [];
+for (let i = 1; i < 13; i += 1){
+	overlays.push(loader.addImage('assets/bg/overlay'+ i +'.png'));
 }
 
 
@@ -82,31 +93,41 @@ class Bg {
 		}
 	}
 }
-
 class GameObject {
-	constructor(image, x, y, isPlayer) {
+	constructor(image, x, y, isPlayer, isDrone = false, goToLeft = false) {
 		this.x = x;
 		this.y = y;
-		this.heighCoeff = 0.96;
 		this.dead = false;
 		this.isPlayer = isPlayer
+		this.isDrone = isDrone
+		this.goToLeft = goToLeft
 		this.image = image
 	}
 	Update() {
 		var barrierWidth = (canvas.height / 4.5) * (this.image.width / this.image.height)
+
 		if (!this.isPlayer) {
-			this.x -= speed;
-			if (this.x < 0 - barrierWidth) {
+			if (this.isDrone) {
+				if (this.goToLeft){
+					this.x += speed
+				} else{
+					this.x -= 1.2 * speed
+				}
+				
+			} else{
+				this.x -= speed
+			}
+			if (this.x < 0 - barrierWidth || (this.goToLeft && (this.x > canvas.height +  barrierWidth * 2))) {
 				this.dead = true;
 			}
 		}
 	}
 	Collide(object){	
-		var barrierWidth = (canvas.width / 6.5)  * object.heighCoeff
-		var barrierHight = (canvas.width / 6.5) / (object.image.width / object.image.height)* object.heighCoeff
-		var playerWidth = (canvas.height / 4) * (player.image.width / player.image.height);
-		var playerHeight = (canvas.height / 4) * (player.image.width / player.image.height);
+		var barrierWidth = (canvas.height / 3.2)
+		var barrierHight = (canvas.height / 3.2) / (object.image.naturalWidth / object.image.naturalHeight)
 
+		var playerWidth = (canvas.height / 4) * (player.image.naturalWidth / player.image.naturalHeight);
+		var playerHeight = (canvas.height / 4) * (player.image.naturalWidth / player.image.naturalHeight);
 		var hit = false;
 			
 		if(this.x + playerWidth / 1.5 > object.x && this.x < object.x + barrierWidth / 1.5 )
@@ -125,7 +146,8 @@ class GameObject {
 
 var player = new GameObject(runSprites[0], 50,  canvas.height , true)
 
-var objects = []
+var objects = [];
+var drones = [];
 
 function animate(object, spritesArr) {
 	frameNumber += 1
@@ -173,11 +195,21 @@ var bg = [
 	new Bg(bgSprites[1], 0, 0.4),
 	new Bg(bgSprites[1], canvas.height * bgRatio, 0.4),
 
-	new Bg(bgSprites[2], 0, 0.8),
-	new Bg(bgSprites[2], canvas.height * bgRatio, 0.8),
+	new Bg(bgSprites[2], 0, 0.6),
+	new Bg(bgSprites[2], canvas.height * bgRatio, 0.6),
 
-	new Bg(bgSprites[3], 0, 1),
-	new Bg(bgSprites[3], canvas.height * bgRatio, 1),
+	new Bg(bgSprites[3], 0, 0.85),
+	new Bg(bgSprites[3], canvas.height * bgRatio, 0.85),
+
+	new Bg(bgSprites[4], 0, 1),
+	new Bg(bgSprites[4], canvas.height * bgRatio, 1),
+
+	new Bg(bgSprites[5], 0, 0.95),
+	new Bg(bgSprites[5], canvas.height * bgRatio, 0.95),
+
+	new Bg(bgSprites[6], 0, 0.91),
+	new Bg(bgSprites[6], canvas.height * bgRatio, 0.91),
+
 ]
 
 
@@ -370,7 +402,41 @@ function Update() {
 				}
 		}
 	}
-	var isDead = false; 
+	if (RandomInteger(0, 10000) < 150) {
+		if (drones.length == 0 || drones.at(-1).x < 4 * canvas.width / 3  ){
+			drones.push(new GameObject(barriersSprites[0], 4 * canvas.width / 3 , 100, false, true, false));
+			var randomDrone = RandomInteger(1, 7)
+			if (randomDrone > 4){
+				drones.at(-1).x = -canvas.width / 5
+				drones.at(-1).goToLeft = true;
+				drones.at(-1).image = dronesSprites[randomDrone - 1]
+				
+			} else{
+				drones.at(-1).x = canvas.width
+				drones.at(-1).image = leftDronesSprites[randomDrone - 1]
+
+			}
+			drones.at(-1).y = (wrapperBlock.offsetHeight / 20)
+			
+	}
+	}
+	var isDead = false;
+
+	for(var i = 0; i < drones.length; i++)
+	{
+		drones[i].Update();
+
+		if(drones[i].dead)
+		{
+			isDead = true;
+		}
+	}
+	if(isDead)
+	{
+		drones.shift();
+	}
+	
+	isDead = false;  
 
 	for(var i = 0; i < objects.length; i++)
 	{
@@ -381,6 +447,7 @@ function Update() {
 			isDead = true;
 		}
 	}
+	
 	if(isDead)
 	{
 		objects.shift();
@@ -405,6 +472,18 @@ function Update() {
 		GameOver()
 	}
 	
+	if (score.toFixed(0) % 100 == 0){
+		
+		if (overIndex == 11){
+			overIndex = 0
+		}
+		overlay.style.opacity = 0
+		overlay.style.backgroundImage = "url(" + 'assets/bg/overlay' + Number(overIndex + 1) + '.png)'
+		setTimeout(()=>overlay.style.opacity = 0.15)
+		
+		overIndex += 1
+	}
+
 	speed += 0.001
 	
 	Draw();
@@ -412,10 +491,26 @@ function Update() {
 	showScore()
 }
 
+
 function Draw() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height); 
-
-	for (var i = 0; i < bg.length; i += 1) {
+	for (var i = 0; i < 6; i += 1) {
+		ctx.drawImage(
+				bg[i].image, 
+				0,
+				0,
+				bg[i].image.naturalWidth,
+				bg[i].image.naturalHeight,
+				bg[i].x,
+				bg[i].y, 
+				canvas.height * bgRatio,
+				canvas.height
+			);
+	}
+	for (var i = 0; i < drones.length; i++) {
+		DrawObject(drones[i])
+	}
+	for (var i = 6; i < bg.length; i += 1) {
 		ctx.drawImage(
 				bg[i].image, 
 				0,
@@ -431,14 +526,15 @@ function Draw() {
 	for (var i = 0; i < objects.length; i++) {
 		DrawObject(objects[i])
 	}
+	
 
 	DrawObject(player)
 
 }
 function DrawObject(object)
 {
-	var barrierWidth = (canvas.width / 6.5)  * object.heighCoeff
-	var barrierHight = (canvas.width / 6.5) / (object.image.naturalWidth / object.image.naturalHeight)* object.heighCoeff
+	var barrierWidth = (canvas.height / 3.2)
+	var barrierHight = (canvas.height / 3.2) / (object.image.naturalWidth / object.image.naturalHeight)
 
 	var playerWidth = (canvas.height / 4) * (player.image.naturalWidth / player.image.naturalHeight);
 	var playerHeight = (canvas.height / 4) * (player.image.naturalWidth / player.image.naturalHeight);
