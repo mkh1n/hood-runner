@@ -76,7 +76,7 @@ html {
 	text-align: center;
 	font-size: 35px;
 	padding: 20px;
-	background-color: #e46a86cc;
+	background-color: #8641beb2;
 }
 .credits{
 	font-size: 30px;
@@ -142,7 +142,9 @@ html {
 	text-shadow: -10px 10px 0px #00e6e6,
                  -20px 20px 0px #01cccc,
                  -30px 30px 0px #00bdbd;
-	background-image: url('assets/bg/overlay11.png');
+	background-image: url('assets/bg/mainbg.png ');
+	filter: brightness(0.9);
+	image-rendering: pixelated;
 	background-size: cover;
 	background-position: center;
 }
@@ -162,7 +164,7 @@ html {
   font-size: 15px;
 	font-family: 'GravityNormal';
   text-transform: uppercase;
-	background-color: #920444;
+	background-color: #7b00a1;
   clip-path: polygon(92% 0, 100% 25%, 100% 100%, 8% 100%, 0% 75%, 0 0);
 }
 
@@ -175,7 +177,8 @@ html {
   left: 2px;
   right: 2px;
   bottom: 2px;
-  background-color:#ff91ab;
+	color: #fff;
+  background-color:  #8641be;
   clip-path: polygon(92% 0, 100% 25%, 100% 100%, 8% 100%, 0% 75%, 0 0);
 }
 
@@ -186,7 +189,7 @@ html {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #ff91ab;
+  background-color: #8641be;
   filter: drop-shadow(-2px 3px #67e3f3) drop-shadow(-1px -3px #02d8f3) drop-shadow(2px 1px #02d8f3);
 }
 
@@ -312,9 +315,9 @@ html {
   }
 }
 
-@media (max-width: 540px){
+@media (max-width: 840px){
 	.screenRatio{
-		width: 90%;
+		width: 100%;
 		height: 30%;
 	}
 	.insideScreenRatio{
@@ -322,6 +325,8 @@ html {
 		height: 25%;
 	}
 	.pauseButton {
-		height: i
+		height: 20px;
+		width: 20px
+
 	}
 }
