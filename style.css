@@ -24,18 +24,17 @@ html {
 }
 
 .screenRatio{
-	width: 70%;
+	width: 80%;
 	height: 70%;
 }
 .insideScreenRatio{
-	width: 60%;
+	width: 70%;
 	height: 60%;
 }
 
 .wrapper {
 	position: relative;
 	overflow: hidden;
-
 }
 
 .canvas{
@@ -46,6 +45,26 @@ html {
 	height: 100%;
 	background: #000;
 	z-index: -10;
+}
+.controlBlock{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	background-color: #8641beb2;
+	opacity: 0;
+	top: 30%;
+	left: 50%; 
+	padding: 20px;
+  transform: translate(-50%, -50%);
+	transition: 1s;
+}
+.controlButton{
+	height: 45px;
+	width: 45px;
+	margin: 10px;
+	image-rendering: pixelated;
 }
 .overlay{
 	z-index: 0;
@@ -128,7 +147,7 @@ html {
 
 .gameOverScore{
 	position: unset;
-	font-size: 30px;
+	font-size: 25px;
 }
 
 
@@ -164,7 +183,7 @@ html {
   font-size: 15px;
 	font-family: 'GravityNormal';
   text-transform: uppercase;
-	background-color: #7b00a1;
+	background-color:#46166d;
   clip-path: polygon(92% 0, 100% 25%, 100% 100%, 8% 100%, 0% 75%, 0 0);
 }
 
@@ -178,7 +197,7 @@ html {
   right: 2px;
   bottom: 2px;
 	color: #fff;
-  background-color:  #8641be;
+  background-color: #7b00ac;
   clip-path: polygon(92% 0, 100% 25%, 100% 100%, 8% 100%, 0% 75%, 0 0);
 }
 
@@ -189,7 +208,7 @@ html {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #8641be;
+  background-color:  #7b00ac;
   filter: drop-shadow(-2px 3px #67e3f3) drop-shadow(-1px -3px #02d8f3) drop-shadow(2px 1px #02d8f3);
 }
 

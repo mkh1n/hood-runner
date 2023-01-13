@@ -7,6 +7,7 @@ var pauseBlock = document.getElementsByClassName("pause")[0];
 var pauseButton = document.getElementsByClassName("pauseButton")[0];
 var gameOverBlock = document.getElementsByClassName("gameOver")[0];
 var mainMenuBlock = document.getElementsByClassName("mainMenu")[0];
+var controlBlock = document.getElementsByClassName("controlBlock")[0];
 var scoreBlock = document.getElementsByClassName("score")[0];
 var overlay = document.getElementsByClassName("overlay")[0];
 var GameOverScoreBlock = document.getElementsByClassName("score")[1];
@@ -284,6 +285,8 @@ function PlayButtonActivate(){
 	mainMenuBlock.classList.toggle('hide')
 	pauseButton.classList.toggle('hide')
 	scoreBlock.classList.toggle('hide')
+	controlBlock.style.opacity = 1;
+	setTimeout(()=>controlBlock.style.opacity = 0, 2000)
 	Start()
 }
 function ShowCredits(){
@@ -383,7 +386,7 @@ function Update() {
 		UpdateBg(i)
 	} 
 
-	if (RandomInteger(0, 10000) > 9800) {
+	if (RandomInteger(0, 10000) > 9700) {
 		if (objects.length == 0 || objects.at(-1).x < canvas.width - 100 ){
 			objects.push(new GameObject(barriersSprites[0], 4 * canvas.width / 3 ,canvas.height - (wrapperBlock.offsetHeight / 4.5) , false));
 				var randomBarrier = RandomInteger(1, 5)
