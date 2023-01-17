@@ -9,7 +9,7 @@ The game works using Canvas js.
  [![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&width=435&lines=Do+not+try+to+leave+Omsk.)](https://git.io/typing-svg)
 </div>
 <p align="center">
-<a href='https://moxa-rumin.github.io/escape-from-omsk/'><img style ='width: 30%; 'src='./readmeStuff/play.png'><a></center>
+<a href='https://moxa-rumin.github.io/escape-from-omsk/'><img style ='width: 150px; 'src='./readmeStuff/play.png'><a></center>
 </p>
 
 
