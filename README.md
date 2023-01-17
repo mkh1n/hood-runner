@@ -10,6 +10,8 @@ src='./readmeStuff/1.png'></center>
 
  [![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&width=435&lines=Do+not+try+to+leave+Omsk.)](https://git.io/typing-svg)
 </div>
-<center><a href='https://moxa-rumin.github.io/escape-from-omsk/'><img style ='width: 30%; 'src='./readmeStuff/play.png'><a></center>
+<p align="center">
+<a href='https://moxa-rumin.github.io/escape-from-omsk/'><img style ='width: 30%; 'src='./readmeStuff/play.png'><a></center>
+</p>
 
 
