@@ -97,13 +97,8 @@ html {
 	padding: 20px;
 	background-color: #8641beb2;
 }
-.credits{
-	font-size: 30px;
-	text-shadow: unset;
-}
-.credits a{
-	font-size: 25px;
-}
+
+
 .menuButton{
 	padding: 10px;
 	color: #000;
@@ -113,7 +108,7 @@ html {
 	font-size: 20px;
 }
 .mainMenuButtons{
-	height: 25%;
+	height: 35%;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -168,6 +163,14 @@ html {
 	image-rendering: pixelated;
 	background-size: cover;
 	background-position: center;
+}
+.credits{
+	flex-direction: column;
+	font-size: 30px;
+	text-shadow: unset;
+}
+.credits a{
+	font-size: 25px;
 }
 #mainTitle{
 	-webkit-text-stroke: 0.1px #000000; 

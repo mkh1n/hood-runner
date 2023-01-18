@@ -256,7 +256,7 @@ function keyRightHandler(e) {
 
 		jumpPressed = true;
 	}
-	if ((e.keyCode == 83 || e.keyCode == 40) & !jumpPressed) { //slide
+	if ((e.keyCode == 83 || e.keyCode == 40) && !jumpPressed) { //slide
 		clearInterval(runAnimate)
 		rolling += 1
 		if (rolling == 1) {
@@ -286,7 +286,7 @@ function keyLeftHandler(e) {
 	if (e.keyCode == 37 || e.keyCode == 65) {
 		leftPressed = false;
 	}
-	if (e.keyCode == 83 || e.keyCode == 40) {
+	if (e.keyCode == 83 || e.keyCode == 40 && !jumpPressed) {
 		clearInterval(runAnimate)
 		player.rolling = false;
 		rolling = 0
