@@ -82,7 +82,7 @@ html {
 .pause,
 .gameOver,
 .mainMenu, 
-.credits, .tutorial{
+.credits, .tutorial, .achives{
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -97,18 +97,8 @@ html {
 	padding: 20px;
 	background-color: #8641beb2;
 }
-
-
-.menuButton{
-	padding: 10px;
-	color: #000;
-	background-color: #fff;
-	transition: 0.3s;
-	cursor: pointer;
-	font-size: 20px;
-}
 .mainMenuButtons{
-	height: 35%;
+	height: 45%;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -145,36 +135,72 @@ html {
 	font-size: 25px;
 }
 
-
-.buttonHolder{
-	display: flex;
-}
-.mainMenu, .credits{
+.mainMenu, .credits, .achives{
 	font-family: 'GravityBold';
 	line-height: 2;
 	display: flex;
-	
 	flex-direction: row;
 	text-shadow: -10px 10px 0px #00e6e6,
                  -20px 20px 0px #01cccc,
                  -30px 30px 0px #00bdbd;
 	filter: brightness(0.9);
 	background: #000;
-	image-rendering: pixelated;
-	background-size: cover;
-	background-position: center;
 }
-.credits{
+
+.HighScoreBlock{
+	text-shadow: none;
+}
+.credits, .achives{
 	flex-direction: column;
 	font-size: 30px;
 	text-shadow: unset;
+	justify-content: space-between;
+}
+.achivesHolder{
+	width: 100%;
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+.achiveBlock{
+	font-family: 'GravityNormal';
+	align-items: center;
+	font-size: 12px;
+	display: flex;
+	padding: 10px;
+	color: rgb(255, 255, 255);
+	width: 30%;
+	height:fit-content;
+	background-color: rgb(47, 31, 46);
+	margin-bottom: 20px;
+}
+.achiveText{
+	text-align: center;
+}
+.achiveText p{
+	margin: 0;
+	font-size: 15px;
+	text-decoration: underline 3px;
+}
+.achiveImg{
+	height: 50px;
+	margin-right: 20px;
+}
+.lock{
+	filter: brightness(0.5);
+}
+.statsHolder{
+	display: flex;
+	font-size: 12px;
+}
+.stat{
+	margin-right: 20px;
 }
 .credits a{
 	font-size: 25px;
 }
-#mainTitle{
-	-webkit-text-stroke: 0.1px #000000; 
-}
+
 .mainMenuSide{
 	height: 100%;
 	width: 50%;
@@ -185,6 +211,7 @@ html {
 }
 .mainGif{
 	width: 70%;
+	image-rendering: pixelated;
 }
 .credits{
 	text-shadow: unset;

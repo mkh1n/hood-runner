@@ -3,6 +3,7 @@ var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 var wrapperBlock = document.getElementsByClassName("wrapper")[0];
 var creditsBlock = document.getElementsByClassName("credits")[0];
+var achivesBlock = document.getElementsByClassName("achives")[0];
 var pauseBlock = document.getElementsByClassName("pause")[0];
 var pauseButton = document.getElementsByClassName("pauseButton")[0];
 var gameOverBlock = document.getElementsByClassName("gameOver")[0];
@@ -10,16 +11,42 @@ var mainMenuBlock = document.getElementsByClassName("mainMenu")[0];
 var controlBlock = document.getElementsByClassName("controlBlock")[0];
 var scoreBlock = document.getElementsByClassName("score")[0];
 var overlay = document.getElementsByClassName("overlay")[0];
+var highScoreBlock = document.getElementsByClassName("HighScoreBlock")[0];
 var GameOverScoreBlock = document.getElementsByClassName("score")[1];
+var HIandRecord = document.getElementsByClassName("HIandRecord")[0];
+var achivesBlocks = document.getElementsByClassName("achiveBlock")
 
 window.addEventListener("resize", Resize);
 
 var speed = 9;
-var bgRatio = 0;
+var bgRatio;
+
+var highScore;
+localStorage.getItem('HI') > 0 ? highScore = localStorage.getItem('HI') : highScore = 0;
+
+var numberOfJumps;
+localStorage.getItem('jumps') > 0 ? numberOfJumps = localStorage.getItem('jumps') : numberOfJumps = 0;
+
+var numberOfDeaths;
+localStorage.getItem('deaths') > 0 ? numberOfDeaths = localStorage.getItem('deaths') : numberOfDeaths = 0;
+
+var numberOfSlips;
+localStorage.getItem('slips') > 0 ? numberOfSlips = localStorage.getItem('slips') : numberOfSlips = 0;
+
+/*localStorage.clear('HI');
+localStorage.clear('slips');
+
+localStorage.clear('deaths');
+
+localStorage.clear('jumps');*/
+
+
+
+
 
 var leftPressed = false;
 var rightPressed = false;
-var rolling = 0;
+var sliping = 0;
 var jumpPressed = false;
 var jumpCount = 0;
 var jumpLength = 50;
@@ -33,9 +60,9 @@ const runSprites = [];
 for (let i = 1; i < 9; i += 1) {
 	runSprites.push(loader.addImage('assets/sprites/run/' + i + '.png'));
 }
-const rollSprites = [];
+const slipSprites = [];
 for (let i = 1; i < 4; i += 1) {
-	rollSprites.push(loader.addImage('assets/sprites/roll/' + i + '.png'));
+	slipSprites.push(loader.addImage('assets/sprites/slip/' + i + '.png'));
 }
 const jumpSprites = [];
 for (let i = 1; i < 5; i += 1) {
@@ -70,7 +97,9 @@ var pause = false
 var gameOver = false
 
 Resize();
+updateAchives();
 
+highScoreBlock.innerHTML = 'HI: ' + highScore;
 class Bg {
 	constructor(image, x, layer) {
 		this.x = x;
@@ -91,7 +120,7 @@ class GameObject {
 	constructor(image, x, y, isPlayer, isDrone = false, goToLeft = false) {
 		this.x = x;
 		this.y = y;
-		this.rolling = false;
+		this.sliping = false;
 		this.dead = false;
 		this.deadDrone = false
 		this.isPlayer = isPlayer
@@ -119,8 +148,8 @@ class GameObject {
 				}
 			} else {
 				if (this.isLevitate) {
-					this.levitateCount += 0.02
-					this.levitateHeight = (canvas.height / 100) * Math.sin(Math.PI * this.levitateCount);
+					this.levitateCount += 0.025
+					this.levitateHeight = (canvas.height / 50) * Math.sin(Math.PI * this.levitateCount);
 					this.y += this.levitateHeight
 				}
 				this.x -= speed
@@ -143,10 +172,10 @@ class GameObject {
 		var hit = false;
 
 		if (object.topBarrier) {
-			if (this.x + playerWidth / 2.5 > object.x && this.x < object.x + barrierWidth * object.sizeCoef / 2.5) {
+			if (this.x + playerWidth / 2.5 > object.x && this.x < object.x + barrierWidth * object.sizeCoef / 1.5) {
 				if (this.y - jumpHeight + playerHeight / 1.2 > object.y) {
-					var actualPlayerHigh = this.rolling ?  this.y + playerHeight / 2.2: this.y
-					if (actualPlayerHigh - jumpHeight < object.y + barrierHight * object.sizeCoef) {
+					var actualPlayerHigh = this.sliping ?  this.y + playerHeight / 2.2: this.y
+					if (actualPlayerHigh * 1.1 - jumpHeight < object.y + barrierHight * object.sizeCoef) {
 						hit = true;
 					}
 				}
@@ -202,7 +231,8 @@ function Move() {
 		jumpCount = 0;
 		jumpPressed = false;
 		jumpHeight = 0;
-
+		numberOfJumps = Number(numberOfJumps) + 1;
+		localStorage.setItem('jumps', numberOfJumps)
 		clearInterval(runAnimate)
 		runAnimate = setInterval(() => {
 			animate(player, runSprites)
@@ -239,7 +269,6 @@ var bg = [
 
 function keyRightHandler(e) {
 	if (e.keyCode == 32 && gameOver == true) {
-
 		Replay()
 	}
 	if (e.keyCode == 39 || e.keyCode == 68) { //right
@@ -258,22 +287,22 @@ function keyRightHandler(e) {
 	}
 	if ((e.keyCode == 83 || e.keyCode == 40) && !jumpPressed) { //slide
 		clearInterval(runAnimate)
-		rolling += 1
-		if (rolling == 1) {
-			player.rolling = true;
-			player.image = rollSprites[0]
+		sliping += 1
+		if (sliping == 1) {
+			player.sliping = true;
+			player.image = slipSprites[0]
 			setTimeout(() => {
-				player.image = rollSprites[1]
+				player.image = slipSprites[1]
 				setTimeout(() => {
-					player.image = rollSprites[2]
+					player.image = slipSprites[2]
 				}, 55)
 			}, 55)
 		} else {
-			player.rolling = true;
-			player.image = rollSprites[2]
+			player.sliping = true;
+			player.image = slipSprites[2]
 		}
 	}
-	if (e.keyCode == 27) { //pause
+	if (e.keyCode == 27 && !gameOver) { //pause
 		PauseToggle()
 	}
 
@@ -288,22 +317,52 @@ function keyLeftHandler(e) {
 	}
 	if (e.keyCode == 83 || e.keyCode == 40 && !jumpPressed) {
 		clearInterval(runAnimate)
-		player.rolling = false;
-		rolling = 0
-		player.image = rollSprites[1]
+		player.sliping = false;
+		sliping = 0
+		player.image = slipSprites[1]
 		setTimeout(() => {
-			player.image = rollSprites[0]
+			player.image = slipSprites[0]
 			setTimeout(() => {
 				runAnimate = setInterval(() => {
 					animate(player, runSprites)
 				}, 75)
 			}, 0)
 		}, 55)
+		numberOfSlips = Number(numberOfSlips) + 1;
+		localStorage.setItem('slips', numberOfSlips)
 
 	}
 
 }
+function updateAchives(){
+	const achives = {
+		0: highScore > 99,
+		1: highScore > 281,
+		2: highScore > 349,
+		3: highScore > 499,
+		4: highScore > 999,
+		5: numberOfDeaths > 7,
+		6: numberOfDeaths > 26,
+		7: numberOfDeaths > 41,
+		8: numberOfDeaths > 99,
+		9: numberOfJumps > 99,
+		10: numberOfSlips > 99,
+	}
+	var unlockCount = 0
+	for (var i = 0; i < achivesBlocks.length - 1; i+=1){
+		if (achives[i]){
+			achivesBlocks[i].classList.remove("lock")
+			unlockCount += 1
+		}
+	}
+	if (unlockCount == achivesBlocks.length - 1){
+		achivesBlocks[achivesBlocks.length - 1].classList.remove('lock')
+	}
+	document.getElementById('numberOfJumpsBlock').innerHTML = 'jumps: '+numberOfJumps
+	document.getElementById('numberOfDeathsBlock').innerHTML = 'deaths: '+numberOfDeaths
+	document.getElementById('numberOfSlipsBlock').innerHTML = 'slips: '+numberOfSlips
 
+}
 function PlayButtonActivate() {
 	ResetGlobalVariables()
 	document.addEventListener("keydown", keyRightHandler, false);
@@ -317,6 +376,9 @@ function PlayButtonActivate() {
 }
 function ShowCredits() {
 	creditsBlock.classList.toggle('hide')
+}
+function showAchives() {
+	achivesBlock.classList.toggle('hide')
 }
 function Start() {
 	stopGame = false;
@@ -342,7 +404,7 @@ function PauseToggle() {
 function ResetGlobalVariables() {
 	objects = [];
 	drones = []
-	player.x = 50;
+	player.x = 0.1 * canvas.width;
 	gameOver = false;
 	pause = false;
 	player.dead = false;
@@ -361,6 +423,15 @@ function GameOver() {
 	pauseButton.classList.toggle('hide')
 	gameOverBlock.classList.toggle('hide')
 	player.dead = false;
+	if (score > highScore){
+		HIandRecord.innerHTML = 'new record!'
+		highScore = Number(score.toFixed(0));
+		localStorage.setItem('HI',  score.toFixed(0))
+	} else{
+		HIandRecord.innerHTML = 'HI: ' + highScore;
+	}
+	highScoreBlock.innerHTML = 'HI: ' + highScore;
+	updateAchives()
 	Stop()
 }
 
@@ -388,6 +459,7 @@ function GoToHome() {
 		gameOverBlock.classList.toggle('hide')
 	}
 	ResetGlobalVariables();
+	updateAchives()
 	mainMenuBlock.classList.toggle('hide')
 }
 function UpdateBg(index) {
@@ -400,12 +472,6 @@ function showScore() {
 	scoreBlock.innerText = "score: " + score.toFixed(0)
 }
 function Update() {
-	if (score > 500) {
-		ctx.imageSmoothingQuality = "medium"
-	}
-	else if (score > 800) {
-		ctx.imageSmoothingQuality = "high"
-	}
 	for (let i = 0; i < bg.length - 1; i += 2) {
 		UpdateBg(i)
 	}
@@ -426,7 +492,7 @@ function Update() {
 					break;
 				case 4:
 					objects.at(-1).image = barriersSprites[randomBarrier - 1]
-					objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 2.8)
+					objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 2.4)
 					break;
 				case 5:
 					objects.at(-1).image = barriersSprites[randomBarrier - 1]
@@ -438,14 +504,14 @@ function Update() {
 					objects.at(-1).isLevitate = true
 					objects.at(-1).topBarrier = true
 					objects.at(-1).sizeCoef = 1.4;
-					objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 1.34)
+					objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 1.07)
 					break;
 				case 7:
 					objects.at(-1).image = barriersSprites[randomBarrier - 1]
 					objects.at(-1).isLevitate = true
 					objects.at(-1).topBarrier = true
 					objects.at(-1).sizeCoef = 1.65;
-					objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 1.5	)
+					objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 1.15	)
 					break;
 			}
 		}
@@ -510,6 +576,8 @@ function Update() {
 	player.Update();
 
 	if (player.dead) {
+		numberOfDeaths = Number(numberOfDeaths) + 1;
+		localStorage.setItem('deaths', numberOfDeaths)
 		gameOver = true
 		GameOver()
 	}
@@ -536,7 +604,7 @@ function Draw() {
 			canvas.height
 		);
 	}
-	ctx.filter = 'brightness(0.7) contrast(1.1)';
+	ctx.filter = 'brightness(0.6) contrast(1.1)';
 	for (var i = 0; i < drones.length; i++) {
 		DrawObject(drones[i])
 	}
