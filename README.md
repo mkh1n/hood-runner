@@ -1,6 +1,7 @@
 # Escape From Omsk ![Alt Text](./readmeStuff/1.gif)
 
 A simple endless runner with randomly generated obstacles. You can jump, slide on the ground and move right and left. The character is controlled using the WASD keys or arrows. All the cassettes used in this game were taken from open sources.<br>
+The game locally saves the player's best score and his statistics - the number of jumps, deaths and slips. The game has an achievement system.
 The game works using Canvas js.
 <p align="center">
 <img style ='margin: 40px 0;' src='./readmeStuff/1.png'></p>
