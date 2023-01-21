@@ -12,17 +12,19 @@ body,
 html {
 	width: 100%;
 	height: 100%;
-	padding: 0px;
-	margin: 0px;
+	background-color: black;
+	font-family: 'GravityNormal';
+	color: #fff;
+	overflow: hidden;
+}
+main{
+	width: 100%;
+	height: 100%;
 	overflow: hidden;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: #084b4b;
-	font-family: 'GravityNormal';
-	color: #fff;
 }
-
 .screenRatio{
 	width: 80%;
 	height: 70%;
@@ -68,7 +70,7 @@ html {
 }
 .overlay{
 	z-index: 0;
-	background: url('assets/bg/overlay6.png');
+	background: url('assets/bg/overlay2.png');
 	position: absolute;
 	width: 100%;
 	height: 100%;
@@ -380,6 +382,34 @@ html {
   }
 }
 
+@media screen and (orientation: portrait) {
+	#turnLandscape{
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color:rgb(47, 31, 46);
+		flex-direction: column;
+		width: 100%;
+		height: 100%;
+		background-color: #fff;
+	}
+	#rotateIcon{
+		height: 100px;
+	}
+
+	main {
+	  display: none;
+	}
+}
+  
+@media screen and (orientation: landscape) {
+	#turnLandscape{
+		display: none;
+	}
+	main {
+		display: flex;
+	}
+}
 @media (max-width: 840px){
 	.screenRatio{
 		width: 100%;
