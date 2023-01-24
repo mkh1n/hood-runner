@@ -27,5 +27,5 @@ The game locally saves the player's best score and his statistics - the number o
 </p>
 
 <p align="center">
-<a href='https://moxa-rumin.github.io/escape-from-omsk/'><img style ='width: 150px;' class='but' src='./readmeStuff/play.png'><a>
+<a href='https://moxa-rumin.github.io/escape-from-omsk/' target='_blank'><img style ='width: 150px;' class='but' src='./readmeStuff/play.png'><a>
 </p>
