@@ -281,7 +281,7 @@ function keyRightHandler(e) {
 		}, 65)
 		jumpPressed = true;
 	}
-	if ((e.keyCode == 83 || e.keyCode == 40) && !jumpPressed ) { //slide
+	if ((e.keyCode == 83 || e.keyCode == 40) && !jumpPressed) { //slide
 		player.sliping = true;
 		sliping += 1
 		if (sliping == 1) {
