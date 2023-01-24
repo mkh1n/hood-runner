@@ -11,8 +11,8 @@ The game locally saves the player's best score and his statistics - the number o
 
 
 <p align='center' float="center">
-  <img src="./readmeStuff/4.jpg" width="370" />
-   <img src="./readmeStuff/1.jpg" width="370" />
+  <img src="./readmeStuff/4.jpg" width="49%" />
+   <img src="./readmeStuff/1.jpg" width="49%" />
 </p>
 
 <img src='./readmeStuff/3.jpg'>
