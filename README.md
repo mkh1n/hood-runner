@@ -5,15 +5,17 @@ A simple endless runner with randomly generated obstacles. You can jump, slide o
 The game works using Canvas js.
 
 
-<img style ='width: 100vw; margin-top: 20px;' src='./readmeStuff/2.jpg'>
+<img src='./readmeStuff/2.jpg'>
 
 The game locally saves the player's best score and his statistics - the number of jumps, deaths and slips. The game has an achievement system.
 
-Achives             |  Main Menu
-:-------------------------:|:-------------------------:
-![](./readmeStuff/4.jpg)  |  ![](./readmeStuff/1.jpg)
 
-<img style ='width: 100vw; margin: 20px 0;' src='./readmeStuff/3.jpg'>
+<p align='center' float="center">
+  <img src="./readmeStuff/4.jpg" width="370" />
+   <img src="./readmeStuff/1.jpg" width="370" />
+</p>
+
+<img src='./readmeStuff/3.jpg'>
 
 <p align="center">
 
