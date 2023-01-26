@@ -424,7 +424,7 @@ function ResetGlobalVariables() {
 	gameOver = false;
 	pause = false;
 	player.dead = false;
-	speed = 9;
+	speed =  (canvas.height * bgRatio) / 170;
 	player.y = canvas.height - (wrapperBlock.offsetHeight / 2.2)
 	score = 0;
 	document.removeEventListener("keydown", keyRightHandler, false);
