@@ -427,6 +427,8 @@ function ResetGlobalVariables() {
 	speed = 9;
 	player.y = canvas.height - (wrapperBlock.offsetHeight / 2.2)
 	score = 0;
+	leftPressed = false;
+	rightPressed = false;
 	document.removeEventListener("keydown", keyRightHandler, false);
 	document.removeEventListener("keyup", keyLeftHandler, false);
 	ctx.webkitImageSmoothingEnabled = false;

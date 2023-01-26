@@ -15,10 +15,10 @@
 	<link rel="manifest" href="fav/site.webmanifest">
 </head>
 
-<body>
+<body oncontextmenu="return false;">
 	<div id="turnLandscape">
 		rotate your device
-		<img id='rotateIcon'src="assets/gui/orientation.png" alt="">
+		<img style='margin-top: 30px'id='rotateIcon'src="assets/gui/orientation.png" alt="">
 	</div>
 	<main>
 		<div class="wrapper screenRatio">
@@ -37,6 +37,17 @@
 			<div class="score hide"></div>
 
 			<div class="leftButtonsBlock hide">
+				<img id="mobileLeftButton" 
+					ontouchstart="leftPressed = true; this.style.opacity = '0.5'"  
+					ontouchend="leftPressed = false;  this.style.opacity = '1'" 
+					class="mobileControlButt" src="assets/gui/left.png" alt="">
+				<img id="mobileRightButton" 
+					ontouchstart="rightPressed = true; this.style.opacity = '0.5'"  
+					ontouchend="rightPressed = false; this.style.opacity = '1'" 
+					class="mobileControlButt" src="assets/gui/right.png" alt="">
+			</div>
+
+			<div class="rightButtonsBlock hide">
 				<img id="mobileDownButton" 
 				ontouchstart="slideBegin(); this.style.opacity = '0.5'"   
 				ontouchend="slideEnd(); this.style.opacity = '1'" 
@@ -47,16 +58,7 @@
 				class="mobileControlButt" src="assets/gui/up.png" alt="">
 			</div>
 			
-			<div class="rightButtonsBlock hide">
-				<img id="mobileLeftButton" 
-					ontouchstart="leftPressed = true; this.style.opacity = '0.5'"  
-					ontouchend="leftPressed = false;  this.style.opacity = '1'" 
-					class="mobileControlButt" src="assets/gui/left.png" alt="">
-				<img id="mobileRightButton" 
-					ontouchstart="rightPressed = true; this.style.opacity = '0.5'"  
-					ontouchend="rightPressed = false; this.style.opacity = '1'" 
-					class="mobileControlButt" src="assets/gui/right.png" alt="">
-			</div>
+			
 			
 		</div>
 		<div class="pause insideScreenRatio hide">
