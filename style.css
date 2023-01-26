@@ -81,14 +81,10 @@ main{
 	border-radius: 20%;
 }
 .leftButtonsBlock{
-	position: absolute;
-	left: 10px;
-	bottom: 10px;
+	display: none;
 }
 .rightButtonsBlock{
-	position: absolute;
-	right: 10px;
-	bottom: 10px;
+	display: none;
 }
 .overlay{
 	z-index: 0;
@@ -526,5 +522,17 @@ main{
 	}
 	.credits a{
 		font-size: 13px;
+	}
+	.leftButtonsBlock{
+		display: block;
+		position: absolute;
+		left: 20px;
+		bottom: 20px;
+	}
+	.rightButtonsBlock{
+		display: block;
+		position: absolute;
+		right: 20px;
+		bottom: 20px;
 	}
 }
