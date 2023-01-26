@@ -16,6 +16,7 @@ html {
 	font-family: 'GravityNormal';
 	color: #fff;
 	overflow: hidden;
+	margin: 0;
 }
 main{
 	width: 100%;
@@ -26,10 +27,14 @@ main{
 	justify-content: center;
 }
 .screenRatio{
+	padding: 0;
+	margin: 0;
 	width: 80%;
 	height: 70%;
 }
 .insideScreenRatio{
+	padding: 0;
+	margin: 0;
 	width: 70%;
 	height: 60%;
 }
@@ -68,6 +73,23 @@ main{
 	margin: 10px;
 	image-rendering: pixelated;
 }
+.mobileControlButt{
+	height:15vh;
+	width: auto;
+	image-rendering: pixelated;
+	background-color: rgba(255, 255, 255, 0.136);
+	border-radius: 20%;
+}
+.leftButtonsBlock{
+	position: absolute;
+	left: 10px;
+	bottom: 10px;
+}
+.rightButtonsBlock{
+	position: absolute;
+	right: 10px;
+	bottom: 10px;
+}
 .overlay{
 	z-index: 0;
 	background: url('assets/bg/overlay2.png');
@@ -96,7 +118,6 @@ main{
 	right: 0;
 	text-align: center;
 	font-size: 35px;
-	padding: 20px;
 	background-color: #8641beb2;
 }
 .mainMenuButtons{
@@ -114,12 +135,12 @@ main{
 	
 }
 .replayButton, .homeButton, .playOnPauseButton {
-	height: 40px;
-	width: 40px;
+	height: 55px;
+	width: 55px;
 	margin: 20px;
 }
 .playOnPauseButton{
-	width: 30px;
+	width: 50px;
 }
 .button:hover{
 	filter: brightness(0.7);
@@ -156,7 +177,14 @@ main{
 	flex-direction: column;
 	font-size: 30px;
 	text-shadow: unset;
-	justify-content: space-between;
+	justify-content: space-evenly;
+}
+.credits-holder{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
 }
 .achivesHolder{
 	width: 100%;
@@ -196,6 +224,13 @@ main{
 	display: flex;
 	font-size: 12px;
 }
+.return-btn-holder{
+	width: 100%;
+	height: fit-content;
+	position: sticky;
+	right: 10px;
+    bottom: 10px;
+}
 .stat{
 	margin-right: 20px;
 }
@@ -234,7 +269,6 @@ main{
 	background-color:#46166d;
   clip-path: polygon(92% 0, 100% 25%, 100% 100%, 8% 100%, 0% 75%, 0 0);
 }
-
 .btn__content {
   display: flex;
   align-items: center;
@@ -249,6 +283,7 @@ main{
   clip-path: polygon(92% 0, 100% 25%, 100% 100%, 8% 100%, 0% 75%, 0 0);
 }
 
+
 .btn__glitch {
   display: none;
   position: absolute;
@@ -258,6 +293,7 @@ main{
   height: 100%;
   background-color:  #7b00ac;
   filter: drop-shadow(-2px 3px #67e3f3) drop-shadow(-1px -3px #02d8f3) drop-shadow(2px 1px #02d8f3);
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
 }
 
 .btn:hover .btn__glitch,
@@ -267,6 +303,7 @@ main{
   display: block;
   animation: glitch-animation 2s linear 0s infinite;
 }
+
 
 
 @keyframes glitch-animation {
@@ -410,18 +447,66 @@ main{
 		display: flex;
 	}
 }
-@media (max-width: 840px){
+@media (max-width: 920px){
 	.screenRatio{
 		width: 100%;
-		height: 30%;
+		height: 100%;
+		box-sizing: border-box;
+
 	}
 	.insideScreenRatio{
+		overflow: scroll;
 		width: 85%;
-		height: 25%;
+		height: 85%;
+		box-sizing: border-box;
+	}
+	#mainTitle{
+		font-size: 25px;
+		text-shadow: -8px 8px 0px #00e6e6, -16px 16px 0px #01cccc, -24px 24px 0px #00bdbd;
+	}
+	.HighScoreBlock{
+		font-size: 20px;
+	}
+	.gameOver{
+		font-size: 20px;
+	}
+	.btn{
+		width: 200px;
+		height: 50px;
+
+	}
+	.btn__content{
+		font-size: 13px;
 	}
 	.pauseButton {
 		height: 20px;
 		width: 20px
-
+	}
+	.achiveImg{
+		height: 43px;
+		margin-right: 10px;
+	}
+	.achiveText p{
+		font-size: 12px;
+	}
+	.achiveText{
+		font-size: 9px;
+	}
+	.achivesHolder{
+		justify-content: space-evenly;
+	}
+	.achiveBlock{
+		justify-content: center;
+		width: 43%;
+	}
+	.achives{
+		padding: 10px;
+		overflow: scroll;
+	}
+	.credits{
+		font-size: 15px;
+	}
+	.credits a{
+		font-size: 13px;
 	}
 }

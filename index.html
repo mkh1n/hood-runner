@@ -35,6 +35,29 @@
 			</canvas>
 			<img class="pauseButton button hide" src="assets/gui/Pause.png" alt="" onclick="PauseToggle()">
 			<div class="score hide"></div>
+
+			<div class="leftButtonsBlock hide">
+				<img id="mobileUpButton" 
+				ontouchstart="jumpBegin(); this.style.opacity = '0.5'"  
+				ontouchend="this.style.opacity = '1'" 
+				class="mobileControlButt" src="assets/gui/up.png" alt="">
+				<img id="mobileDownButton" 
+				ontouchstart="slideBegin(); this.style.opacity = '0.5'"   
+				ontouchend="slideEnd(); this.style.opacity = '1'" 
+				class="mobileControlButt" src="assets/gui/down.png" alt="">
+			</div>
+			
+			<div class="rightButtonsBlock hide">
+				<img id="mobileLeftButton" 
+					ontouchstart="leftPressed = true; this.style.opacity = '0.5'"  
+					ontouchend="leftPressed = false;  this.style.opacity = '1'" 
+					class="mobileControlButt" src="assets/gui/left.png" alt="">
+				<img id="mobileRightButton" 
+					ontouchstart="rightPressed = true; this.style.opacity = '0.5'"  
+					ontouchend="rightPressed = false; this.style.opacity = '1'" 
+					class="mobileControlButt" src="assets/gui/right.png" alt="">
+			</div>
+			
 		</div>
 		<div class="pause insideScreenRatio hide">
 			PAUSED
@@ -78,20 +101,26 @@
 		</div>
 		<div class="tutorial insideScreenRatio hide"></div>
 		<div class="credits screenRatio hide">
-			<div>created by: <a href='https://github.com/moxa-rumin' target="_blank">moxa-rumin</a><br></div>
+			<div class="credits-holder">
+				<div>created by: <a href='https://github.com/moxa-rumin' target="_blank">moxa-rumin</a><br></div>
 			<div>Bg & Sprites: <a href='https://itch.io/profile/ansimuz' target="_blank">fansimuz</a>,
 				<a href='https://itch.io/profile/anokolisa' target="_blank">anokolisa</a><br>
 			</div>
-			<button class='btn btn--secondary ' onclick="ShowCredits()">
-				<span class="btn__content">//:return</span>
-				<span class="btn__glitch"></span>
-			</button>
+			</div>
+			
+			<div class="return-btn-holder">
+				<button class='btn btn--secondary return-btn' onclick="ShowCredits()">
+					<span class="btn__content">//:return</span>
+					<span class="btn__glitch"></span>
+				</button>
+			</div>
+			
 		</div>
 		<div class="achives screenRatio hide">
 			<div class="statsHolder">
 				<div class="stat" id="numberOfDeathsBlock"></div>
 				<div class='stat ' id="numberOfJumpsBlock"></div>
-				<div class='stat' id="numberOfSlipsBlock"></div>
+				<div class='stat' id="numberOfslidesBlock"></div>
 			</div>
 			<div class="achivesHolder">
 				<div class="achiveBlock lock"><img class='achiveImg' src="assets/gui/pioneer.png" alt="">
@@ -154,10 +183,10 @@
 						jump 500 times
 					</div>
 				</div>
-				<div class="achiveBlock lock"><img class='achiveImg' src="assets/gui/slip.png" alt="">
+				<div class="achiveBlock lock"><img class='achiveImg' src="assets/gui/slide.png" alt="">
 					<div class='achiveText'>
 						<p>on the ground</p>
-						slip under 300 barriers
+						slide under 300 barriers
 					</div>
 				</div>
 				<div class="achiveBlock lock"><img class='achiveImg' src="assets/gui/success.png" alt="">
@@ -167,13 +196,25 @@
 					</div>
 				</div>
 			</div>
-
-			<button class='btn btn--secondary ' onclick="showAchives()">
-				<span class="btn__content">//:return</span>
-				<span class="btn__glitch"></span>
-			</button>
+			<div class="return-btn-holder">
+				<button class='btn btn--secondary return-btn' onclick="showAchives()">
+					<span class="btn__content">//:return</span>
+					<span class="btn__glitch"></span>
+				</button>
+			</div>
 		</div>
 	</main>
+	<script>
+		function is_touch_enabled() {
+		return ( 'ontouchstart' in window ) ||
+		( navigator.maxTouchPoints > 0 ) ||
+		( navigator.msMaxTouchPoints > 0 );
+		}
+		if (is_touch_enabled){
+			document.getElementsByClassName('leftButtonsBlock')[0].classList.remove('hide')
+			document.getElementsByClassName('rightButtonsBlock')[0].classList.remove('hide')
+		}
+	</script>
 	<script type="text/javascript" src="scripts/PxLoader.js"></script>
 	<script type="text/javascript" src="scripts/PxLoaderImage.js"></script>
 	<script type="text/javascript" src="scripts/game.js"></script>

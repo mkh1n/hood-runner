@@ -30,11 +30,11 @@ localStorage.getItem('jumps') > 0 ? numberOfJumps = localStorage.getItem('jumps'
 var numberOfDeaths;
 localStorage.getItem('deaths') > 0 ? numberOfDeaths = localStorage.getItem('deaths') : numberOfDeaths = 0;
 
-var numberOfSlips;
-localStorage.getItem('slips') > 0 ? numberOfSlips = localStorage.getItem('slips') : numberOfSlips = 0;
+var numberOfslides;
+localStorage.getItem('slides') > 0 ? numberOfslides = localStorage.getItem('slides') : numberOfslides = 0;
 
 /*localStorage.clear('HI');
-localStorage.clear('slips');
+localStorage.clear('slides');
 
 localStorage.clear('deaths');
 
@@ -46,8 +46,10 @@ localStorage.clear('jumps');*/
 
 var leftPressed = false;
 var rightPressed = false;
-var sliping = 0;
-var jumpPressed = false;
+var upPressed = false;
+var downPressed = false;
+var slideing = 0;
+var jumping = false;
 var jumpCount = 0;
 var jumpLength = 50;
 var jumpHeight = 0;
@@ -60,9 +62,9 @@ const runSprites = [];
 for (let i = 1; i < 9; i += 1) {
 	runSprites.push(loader.addImage('assets/sprites/run/' + i + '.png'));
 }
-const slipSprites = [];
+const slideSprites = [];
 for (let i = 1; i < 7; i += 1) {
-	slipSprites.push(loader.addImage('assets/sprites/slip/' + i + '.png'));
+	slideSprites.push(loader.addImage('assets/sprites/slide/' + i + '.png'));
 }
 const jumpSprites = [];
 for (let i = 1; i < 5; i += 1) {
@@ -120,7 +122,7 @@ class GameObject {
 	constructor(image, x, y, isPlayer, isDrone = false, goToLeft = false) {
 		this.x = x;
 		this.y = y;
-		this.sliping = false;
+		this.slideing = false;
 		this.dead = false;
 		this.deadDrone = false
 		this.isPlayer = isPlayer
@@ -174,7 +176,7 @@ class GameObject {
 		if (object.topBarrier) {
 			if (this.x + playerWidth / 2.5 > object.x && this.x < object.x + barrierWidth * object.sizeCoef / 1.5) {
 				if (this.y - jumpHeight + playerHeight / 1.2 > object.y) {
-					var actualPlayerHigh = this.sliping ?  this.y + playerHeight / 2.2: this.y
+					var actualPlayerHigh = this.slideing ?  this.y + playerHeight / 2.2: this.y
 					if (actualPlayerHigh * 1.1 - jumpHeight < object.y + barrierHight * object.sizeCoef) {
 						hit = true;
 					}
@@ -222,14 +224,14 @@ function Move() {
 	{
 		player.x -= speed;
 	}
-	if (jumpPressed) {
+	if (jumping) { //прыжок
 		jumpCount += 1.2 + (score / 1800);
 		jumpHeight = (canvas.height / 110) * jumpLength * Math.sin(Math.PI * jumpCount / jumpLength);
 
 	}
-	if (jumpCount > jumpLength) {
+	if (jumpCount > jumpLength) { //приземление после прыжка
 		jumpCount = 0;
-		jumpPressed = false;
+		jumping = false;
 		jumpHeight = 0;
 		numberOfJumps = Number(numberOfJumps) + 1;
 		localStorage.setItem('jumps', numberOfJumps)
@@ -265,7 +267,53 @@ var bg = [
 
 
 ]
+function jumpBegin(){
+	if (!player.slideing){
+		clearInterval(playerAnimate)
+	playerAnimate = setInterval(() => {
+		animate(player, jumpSprites)
+	}, 65)
+	jumping = true;
+	}
+}
+function slideBegin(){
+	if (!jumping){
+		player.slideing = true;
+		slideing += 1
+		if (slideing == 1) {
+			clearInterval(playerAnimate)
+			player.image = slideSprites[0]
+			setTimeout(() => {
+				player.image = slideSprites[1]
+				setTimeout(() => {
+					playerAnimate = setInterval(() => {
+						animate(player, slideSprites.slice(1,7))
+					}, 100)
+				}, 0.01)
+			}, 0.01)
+		}
+	}
+}
 
+function slideEnd(){
+	if (!jumping){
+		player.slideing = false;
+	clearInterval(playerAnimate)
+	slideing = 0
+	player.image = slideSprites[1]
+	setTimeout(() => {
+		player.image = slideSprites[0]
+		setTimeout(() => {
+			
+			playerAnimate = setInterval(() => {
+				animate(player, runSprites)
+			}, 75)
+		},0.1)
+	},0.1)
+	numberOfslides = Number(numberOfslides) + 1;
+	localStorage.setItem('slides', numberOfslides)
+	}
+}
 
 function keyRightHandler(e) {
 	if (e.keyCode == 39 || e.keyCode == 68) { //right
@@ -275,27 +323,10 @@ function keyRightHandler(e) {
 		leftPressed = true;
 	}
 	if (e.keyCode == 87 || e.keyCode == 38) { //jump
-		clearInterval(playerAnimate)
-		playerAnimate = setInterval(() => {
-			animate(player, jumpSprites)
-		}, 65)
-		jumpPressed = true;
+		jumpBegin()
 	}
-	if ((e.keyCode == 83 || e.keyCode == 40) && !jumpPressed) { //slide
-		player.sliping = true;
-		sliping += 1
-		if (sliping == 1) {
-			clearInterval(playerAnimate)
-			player.image = slipSprites[0]
-			setTimeout(() => {
-				player.image = slipSprites[1]
-				setTimeout(() => {
-					playerAnimate = setInterval(() => {
-						animate(player, slipSprites.slice(1,7))
-					}, 100)
-				}, 0.1)
-			}, 0.1)
-		}
+	if (e.keyCode == 83 || e.keyCode == 40) { //slide
+		slideBegin()
 	}
 	
 	if (e.keyCode == 27 && !gameOver) { //pause
@@ -311,22 +342,8 @@ function keyLeftHandler(e) {
 	if (e.keyCode == 37 || e.keyCode == 65) {
 		leftPressed = false;
 	}
-	if (e.keyCode == 83 || e.keyCode == 40 && !jumpPressed) {
-		player.sliping = false;
-		clearInterval(playerAnimate)
-		sliping = 0
-		player.image = slipSprites[1]
-		setTimeout(() => {
-			player.image = slipSprites[0]
-			setTimeout(() => {
-				
-				playerAnimate = setInterval(() => {
-					animate(player, runSprites)
-				}, 75)
-			},0.1)
-		},0.1)
-		numberOfSlips = Number(numberOfSlips) + 1;
-		localStorage.setItem('slips', numberOfSlips)
+	if (e.keyCode == 83 || e.keyCode == 40) {
+		slideEnd()
 	}
 	if (e.keyCode == 32 && gameOver == true) {
 		Replay()
@@ -345,7 +362,7 @@ function updateAchives(){
 		7: numberOfDeaths > 41,
 		8: numberOfDeaths > 99,
 		9: numberOfJumps > 500,
-		10: numberOfSlips > 300,
+		10: numberOfslides > 300,
 	}
 	var unlockCount = 0
 	for (var i = 0; i < achivesBlocks.length - 1; i+=1){
@@ -359,7 +376,7 @@ function updateAchives(){
 	}
 	document.getElementById('numberOfJumpsBlock').innerHTML = 'jumps: '+numberOfJumps
 	document.getElementById('numberOfDeathsBlock').innerHTML = 'deaths: '+numberOfDeaths
-	document.getElementById('numberOfSlipsBlock').innerHTML = 'slips: '+numberOfSlips
+	document.getElementById('numberOfslidesBlock').innerHTML = 'slides: '+numberOfslides
 
 }
 function PlayButtonActivate() {
