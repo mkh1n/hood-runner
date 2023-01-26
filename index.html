@@ -37,14 +37,14 @@
 			<div class="score hide"></div>
 
 			<div class="leftButtonsBlock hide">
-				<img id="mobileUpButton" 
-				ontouchstart="jumpBegin(); this.style.opacity = '0.5'"  
-				ontouchend="this.style.opacity = '1'" 
-				class="mobileControlButt" src="assets/gui/up.png" alt="">
 				<img id="mobileDownButton" 
 				ontouchstart="slideBegin(); this.style.opacity = '0.5'"   
 				ontouchend="slideEnd(); this.style.opacity = '1'" 
 				class="mobileControlButt" src="assets/gui/down.png" alt="">
+				<img id="mobileUpButton" 
+				ontouchstart="jumpBegin(); this.style.opacity = '0.5'"  
+				ontouchend="this.style.opacity = '1'" 
+				class="mobileControlButt" src="assets/gui/up.png" alt="">
 			</div>
 			
 			<div class="rightButtonsBlock hide">
@@ -97,6 +97,7 @@
 			<div class="mainMenuSide">
 				<img class='mainGif' src='./readmeStuff/1.gif' alt="">
 				<div class='HighScoreBlock'>HI: 0</div>
+				<img id='fullscreenBtn'src="assets/gui/fullscreen.png" onclick="openFullscreen(document.querySelector('body'))" alt="">
 			</div>
 		</div>
 		<div class="tutorial insideScreenRatio hide"></div>
@@ -215,6 +216,23 @@
 			document.getElementsByClassName('rightButtonsBlock')[0].classList.remove('hide')
 		}
 	</script>
+	<script>
+		/* Get the element you want displayed in fullscreen mode (a video in this example): */
+		var elem = document.querySelector('body');
+		
+		/* When the openFullscreen() function is executed, open the video in fullscreen.
+		Note that we must include prefixes for different browsers, as they don't support the requestFullscreen method yet */
+		function openFullscreen() {
+		  if (elem.requestFullscreen) {
+			elem.requestFullscreen();
+		  } else if (elem.webkitRequestFullscreen) { /* Safari */
+			elem.webkitRequestFullscreen();
+		  } else if (elem.msRequestFullscreen) { /* IE11 */
+			elem.msRequestFullscreen();
+		  }
+		}
+		
+		</script>
 	<script type="text/javascript" src="scripts/PxLoader.js"></script>
 	<script type="text/javascript" src="scripts/PxLoaderImage.js"></script>
 	<script type="text/javascript" src="scripts/game.js"></script>
