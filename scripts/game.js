@@ -18,7 +18,7 @@ var achivesBlocks = document.getElementsByClassName("achiveBlock")
 
 window.addEventListener("resize", Resize);
 
-var speed = 9;
+var speed =  wrapperBlock.offsetWidth/ 130;
 var bgRatio;
 
 var highScore;
@@ -424,7 +424,7 @@ function ResetGlobalVariables() {
 	gameOver = false;
 	pause = false;
 	player.dead = false;
-	speed = canvas.width / 130;
+	speed = wrapperBlock.offsetWidth/ 130;
 	player.y = canvas.height - (wrapperBlock.offsetHeight / 2.2)
 	score = 0;
 	document.removeEventListener("keydown", keyRightHandler, false);
