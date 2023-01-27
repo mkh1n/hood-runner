@@ -55,7 +55,8 @@ var jumpLength = 50;
 var jumpHeight = 0;
 var overIndex = 1;
 var loader = new PxLoader();
-
+var fpsInterval, startTime, now, then, elapsed;
+var frameCount = 0;
 var frameNumber = 1;
 
 const runSprites = [];
@@ -285,12 +286,10 @@ function slideBegin(){
 			player.image = slideSprites[0]
 			setTimeout(() => {
 				player.image = slideSprites[1]
-				setTimeout(() => {
-					playerAnimate = setInterval(() => {
-						animate(player, slideSprites.slice(1,7))
-					}, 100)
-				}, 0.01)
-			}, 0.01)
+			}, 20)
+			playerAnimate = setInterval(() => {
+				animate(player, slideSprites.slice(2, 6))
+			}, 100)
 		}
 	}
 }
@@ -303,13 +302,10 @@ function slideEnd(){
 	player.image = slideSprites[1]
 	setTimeout(() => {
 		player.image = slideSprites[0]
-		setTimeout(() => {
-			
-			playerAnimate = setInterval(() => {
-				animate(player, runSprites)
-			}, 75)
-		},0.1)
-	},0.1)
+	},20)
+	playerAnimate = setInterval(() => {
+		animate(player, runSprites)
+	}, 75)
 	numberOfslides = Number(numberOfslides) + 1;
 	localStorage.setItem('slides', numberOfslides)
 	}
@@ -396,20 +392,7 @@ function ShowCredits() {
 function showAchives() {
 	achivesBlock.classList.toggle('hide')
 }
-function Start() {
-	stopGame = false;
-	Update();
-	if (stopGame === false) {
-		frame = requestAnimationFrame(Start);
-	}
-}
 
-function Stop() {
-	if (frame) {
-		cancelAnimationFrame(frame);
-		stopGame = true;
-	}
-}
 function PauseToggle() {
 	stopGame ? Start() : Stop()
 	pause = pauseBlock.classList.contains('hide') ? true : false
@@ -424,7 +407,7 @@ function ResetGlobalVariables() {
 	gameOver = false;
 	pause = false;
 	player.dead = false;
-	speed = canvas.clientWidth / 130;
+	speed = canvas.clientWidth / 120;
 	player.y = canvas.height - (wrapperBlock.offsetHeight / 2.2)
 	score = 0;
 	leftPressed = false;
@@ -489,121 +472,147 @@ function showScore() {
 	score += 0.12
 	scoreBlock.innerText = "score: " + score.toFixed(0)
 }
+
+function Start() {
+	stopGame = false;
+    fpsInterval = 1000 / 60;
+    then = Date.now();
+    startTime = then;
+    Update();
+}
+
+function Stop() {
+		stopGame = true;
+}
 function Update() {
-	for (let i = 0; i < bg.length - 1; i += 2) {
-		UpdateBg(i)
-	}
 
-	if (RandomInteger(0, 10000) > 9600) {
-		if (objects.length == 0 || objects.at(-1).x < canvas.width - 100) {
-			objects.push(new GameObject(barriersSprites[0], 4 * canvas.width / 3, canvas.height - (wrapperBlock.offsetHeight / 2.6), false));
-			var randomBarrier = RandomInteger(1, 7)
-			switch (randomBarrier) {
-				case 1:
-					objects.at(-1).image = barriersSprites[randomBarrier - 1]
-					break;
-				case 2:
-					objects.at(-1).image = barriersSprites[randomBarrier - 1]
-					break;
-				case 3:
-					objects.at(-1).image = barriersSprites[randomBarrier - 1]
-					break;
-				case 4:
-					objects.at(-1).image = barriersSprites[randomBarrier - 1]
-					objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 2.4)
-					break;
-				case 5:
-					objects.at(-1).image = barriersSprites[randomBarrier - 1]
-					objects.at(-1).topBarrier = true
-					objects.at(-1).y = canvas.height - (canvas.height / 2.4) / (objects.at(-1).image.naturalWidth / objects.at(-1).image.naturalHeight)
-					break;
-				case 6:
-					objects.at(-1).image = barriersSprites[randomBarrier - 1]
-					objects.at(-1).isLevitate = true
-					objects.at(-1).topBarrier = true
-					objects.at(-1).sizeCoef = 1.4;
-					objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 1.07)
-					break;
-				case 7:
-					objects.at(-1).image = barriersSprites[randomBarrier - 1]
-					objects.at(-1).isLevitate = true
-					objects.at(-1).topBarrier = true
-					objects.at(-1).sizeCoef = 1.65;
-					objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 1.15	)
-					break;
+	if (stopGame) {
+        return;
+    }
+
+	frame = requestAnimationFrame(Update);
+
+	now = Date.now();
+    elapsed = now - then;
+
+	if (elapsed > fpsInterval) {
+        then = now - (elapsed % fpsInterval);
+
+		for (let i = 0; i < bg.length - 1; i += 2) {
+			UpdateBg(i)
+		}
+
+		if (RandomInteger(0, 10000) > 9600) {
+			if (objects.length == 0 || objects.at(-1).x < canvas.width - 100) {
+				objects.push(new GameObject(barriersSprites[0], 4 * canvas.width / 3, canvas.height - (wrapperBlock.offsetHeight / 2.6), false));
+				var randomBarrier = RandomInteger(1, 7)
+				switch (randomBarrier) {
+					case 1:
+						objects.at(-1).image = barriersSprites[randomBarrier - 1]
+						break;
+					case 2:
+						objects.at(-1).image = barriersSprites[randomBarrier - 1]
+						break;
+					case 3:
+						objects.at(-1).image = barriersSprites[randomBarrier - 1]
+						break;
+					case 4:
+						objects.at(-1).image = barriersSprites[randomBarrier - 1]
+						objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 2.4)
+						break;
+					case 5:
+						objects.at(-1).image = barriersSprites[randomBarrier - 1]
+						objects.at(-1).topBarrier = true
+						objects.at(-1).y = canvas.height - (canvas.height / 2.4) / (objects.at(-1).image.naturalWidth / objects.at(-1).image.naturalHeight)
+						break;
+					case 6:
+						objects.at(-1).image = barriersSprites[randomBarrier - 1]
+						objects.at(-1).isLevitate = true
+						objects.at(-1).topBarrier = true
+						objects.at(-1).sizeCoef = 1.4;
+						objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 1.07)
+						break;
+					case 7:
+						objects.at(-1).image = barriersSprites[randomBarrier - 1]
+						objects.at(-1).isLevitate = true
+						objects.at(-1).topBarrier = true
+						objects.at(-1).sizeCoef = 1.65;
+						objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 1.15	)
+						break;
+				}
 			}
 		}
-	}
-	if (RandomInteger(0, 10000) < 300) {
-		var leftSideDrone = RandomInteger(1, 2)
-		var condition = leftSideDrone == 1 ? (drones.length == 0 || drones.at(-1).x < canvas.width / 3)
-			: (drones.length == 0 || drones.at(-1).x > canvas.width / 3)
-		if (condition) {
-			drones.push(new GameObject(barriersSprites[0], 4 * canvas.width / 3, wrapperBlock.offsetHeight / 20, false, true, false));
-			var randomDrone = RandomInteger(1, 7)
-			drones.at(-1).speed += (Math.random())
-			if (leftSideDrone == 1) {
-				drones.at(-1).goToLeft = true;
-				drones.at(-1).x = canvas.width
-				drones.at(-1).image = leftDronesSprites[randomDrone - 1]
-			} else {
-				drones.at(-1).x = -canvas.width / 5
-				drones.at(-1).image = dronesSprites[randomDrone - 1]
+		if (RandomInteger(0, 10000) < 300) {
+			var leftSideDrone = RandomInteger(1, 2)
+			var condition = leftSideDrone == 1 ? (drones.length == 0 || drones.at(-1).x < canvas.width / 3)
+				: (drones.length == 0 || drones.at(-1).x > canvas.width / 3)
+			if (condition) {
+				drones.push(new GameObject(barriersSprites[0], 4 * canvas.width / 3, wrapperBlock.offsetHeight / 20, false, true, false));
+				var randomDrone = RandomInteger(1, 7)
+				drones.at(-1).speed += (Math.random())
+				if (leftSideDrone == 1) {
+					drones.at(-1).goToLeft = true;
+					drones.at(-1).x = canvas.width
+					drones.at(-1).image = leftDronesSprites[randomDrone - 1]
+				} else {
+					drones.at(-1).x = -canvas.width / 5
+					drones.at(-1).image = dronesSprites[randomDrone - 1]
+
+				}
 
 			}
-
 		}
-	}
-	var droneIsDead = false;
+		var droneIsDead = false;
 
-	for (var i = 0; i < drones.length; i++) {
-		drones[i].Update();
+		for (var i = 0; i < drones.length; i++) {
+			drones[i].Update();
 
-		if (drones[i].deadDrone) {
-			droneIsDead = true;
+			if (drones[i].deadDrone) {
+				droneIsDead = true;
+			}
 		}
-	}
-	if (droneIsDead) {
-		drones.shift();
-	}
-
-	var isDead = false;
-
-	for (var i = 0; i < objects.length; i++) {
-		objects[i].Update();
-
-		if (objects[i].dead) {
-			isDead = true;
+		if (droneIsDead) {
+			drones.shift();
 		}
-	}
 
-	if (isDead) {
-		objects.shift();
-	}
+		var isDead = false;
 
-	var hit = false;
+		for (var i = 0; i < objects.length; i++) {
+			objects[i].Update();
 
-	for (var i = 0; i < objects.length; i++) {
-		hit = player.Collide(objects[i]);
-
-		if (hit) {
-			player.dead = true
+			if (objects[i].dead) {
+				isDead = true;
+			}
 		}
+
+		if (isDead) {
+			objects.shift();
+		}
+
+		var hit = false;
+
+		for (var i = 0; i < objects.length; i++) {
+			hit = player.Collide(objects[i]);
+
+			if (hit) {
+				player.dead = true
+			}
+		}
+
+		player.Update();
+
+		if (player.dead) {
+			numberOfDeaths = Number(numberOfDeaths) + 1;
+			localStorage.setItem('deaths', numberOfDeaths)
+			gameOver = true
+			GameOver()
+		}
+		speed += 0.001
+
+		Draw();
+		Move();
+		showScore()
 	}
-
-	player.Update();
-
-	if (player.dead) {
-		numberOfDeaths = Number(numberOfDeaths) + 1;
-		localStorage.setItem('deaths', numberOfDeaths)
-		gameOver = true
-		GameOver()
-	}
-	speed += 0.001
-
-	Draw();
-	Move();
-	showScore()
 }
 
 
