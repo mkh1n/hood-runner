@@ -424,7 +424,7 @@ function ResetGlobalVariables() {
 	gameOver = false;
 	pause = false;
 	player.dead = false;
-	speed = canvas.clientWidth / 130;
+	speed = 9;
 	player.y = canvas.height - (wrapperBlock.offsetHeight / 2.2)
 	score = 0;
 	leftPressed = false;
