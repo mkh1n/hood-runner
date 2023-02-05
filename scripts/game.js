@@ -447,7 +447,7 @@ function ResetGlobalVariables() {
 	gameOver = false;
 	pause = false;
 	player.dead = false;
-	speed = canvas.clientWidth / 120;
+	speed = canvas.clientWidth / 240;
 	player.y = canvas.height - (wrapperBlock.offsetHeight / 2.2)
 	score = 0;
 	leftPressed = false;
@@ -524,7 +524,7 @@ function showScore() {
 
 function Start() {
 	stopGame = false;
-    fpsInterval = 1000 / 60;
+    fpsInterval = 1000 / 120;
     then = Date.now();
     startTime = then;
     Update();
