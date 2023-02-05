@@ -33,7 +33,7 @@
 			</div>
 			<canvas width="0" height="0" class="canvas" id="canvas">Ваш браузер не поддерживает JavaScript и HTML5!
 			</canvas>
-			<img class="pauseButton button hide" src="assets/gui/Pause.png" alt="" onclick="PauseToggle()">
+			<img class="pauseButton button hide" src="assets/gui/Pause.png" alt="" onclick="PauseToggle(); clickSound.play()">
 			<div class="score hide"></div>
 
 			<div class="leftButtonsBlock hide">
@@ -64,9 +64,9 @@
 		<div class="pause insideScreenRatio hide">
 			PAUSED
 			<div class="buttonHolder">
-				<img class='replayButton button' src="assets/gui/Redo.png" alt="" onclick="Replay()">
-				<img class="playOnPauseButton button" src="assets/gui/Play.png" alt="" onclick="PauseToggle()">
-				<img class='homeButton button' src="assets/gui/Home.png" alt="" onclick="GoToHome()">
+				<img class='replayButton button' src="assets/gui/Redo.png" alt="" onclick="Replay(); clickSound.play()">
+				<img class="playOnPauseButton button" src="assets/gui/Play.png" alt="" onclick="PauseToggle(); clickSound.play()">
+				<img class='homeButton button' src="assets/gui/Home.png" alt="" onclick="GoToHome(); clickSound.play()">
 			</div>
 		</div>
 		<div class="gameOver insideScreenRatio hide">
@@ -74,8 +74,8 @@
 			<div class="score gameOverScore"></div>
 			<p>press SPACE to restart</p>
 			<div class="buttonHolder">
-				<img class='homeButton button' src="assets/gui/Home.png" alt="" onclick="GoToHome()">
-				<img class='replayButton button' src="assets/gui/Redo.png" alt="" onclick="Replay()">
+				<img class='homeButton button' src="assets/gui/Home.png" alt="" onclick="GoToHome(); clickSound.play()">
+				<img class='replayButton button' src="assets/gui/Redo.png" alt="" onclick="Replay(); clickSound.play()">
 			</div>
 		</div>
 		<div class="mainMenu hide screenRatio">
@@ -83,15 +83,15 @@
 				<div id='mainTitle'>Escape From<br>Omsk</div>
 				<div class="mainMenuButtons">
 					<button class='playButton menuButton creditsButton btn btn--secondary '
-						onclick="PlayButtonActivate()">
+						onclick="PlayButtonActivate(); clickSound.play();bgMusic.play()">
 						<span class="btn__content">//:play</span>
 						<span class="btn__glitch"></span>
 					</button>
-					<button class='playButton menuButton btn btn--secondary ' onclick="showAchives()">
+					<button class='playButton menuButton btn btn--secondary ' onclick="showAchives(); clickSound.play()">
 						<span class="btn__content">//:achives</span>
 						<span class="btn__glitch"></span>
 					</button>
-					<button class='menuButton btn btn--secondary ' onclick="ShowCredits()">
+					<button class='menuButton btn btn--secondary ' onclick="ShowCredits(); clickSound.play()">
 						<span class="btn__content">//:credits</span>
 						<span class="btn__glitch"></span>
 					</button>
@@ -100,7 +100,11 @@
 			<div class="mainMenuSide">
 				<img class='mainGif' src='./readmeStuff/1.gif' alt="">
 				<div class='HighScoreBlock'>HI: 0</div>
-				<img id='fullscreenBtn'src="assets/gui/fullscreen.png" onclick="openFullscreen(document.querySelector('body'))" alt="">
+				<div class="settingsBlock">
+					<div class='soundBtn' onclick="mutePage(); clickSound.play()" alt=""></div>
+					<img id='fullscreenBtn'src="assets/gui/fullscreen.png" onclick="openFullscreen(document.querySelector('body')); clickSound.play()" alt="">
+
+				</div>
 			</div>
 		</div>
 		<div class="tutorial insideScreenRatio hide"></div>
@@ -113,7 +117,7 @@
 			</div>
 			
 			<div class="return-btn-holder">
-				<button class='btn btn--secondary return-btn' onclick="ShowCredits()">
+				<button class='btn btn--secondary return-btn' onclick="ShowCredits(); clickSound.play()">
 					<span class="btn__content">//:return</span>
 					<span class="btn__glitch"></span>
 				</button>
@@ -201,7 +205,7 @@
 				</div>
 			</div>
 			<div class="return-btn-holder">
-				<button class='btn btn--secondary return-btn' onclick="showAchives()">
+				<button class='btn btn--secondary return-btn' onclick="showAchives(); clickSound.play()">
 					<span class="btn__content">//:return</span>
 					<span class="btn__glitch"></span>
 				</button>
@@ -220,11 +224,7 @@
 		}
 	</script>
 	<script>
-		/* Get the element you want displayed in fullscreen mode (a video in this example): */
 		var elem = document.querySelector('body');
-		
-		/* When the openFullscreen() function is executed, open the video in fullscreen.
-		Note that we must include prefixes for different browsers, as they don't support the requestFullscreen method yet */
 		function openFullscreen() {
 		  if (elem.requestFullscreen) {
 			elem.requestFullscreen();

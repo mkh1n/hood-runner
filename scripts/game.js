@@ -14,12 +14,15 @@ var overlay = document.getElementsByClassName("overlay")[0];
 var highScoreBlock = document.getElementsByClassName("HighScoreBlock")[0];
 var GameOverScoreBlock = document.getElementsByClassName("score")[1];
 var HIandRecord = document.getElementsByClassName("HIandRecord")[0];
+var soundBtn = document.getElementsByClassName("soundBtn")[0];
+
 var achivesBlocks = document.getElementsByClassName("achiveBlock")
 
 window.addEventListener("resize", Resize);
 
 var speed;
 var bgRatio;
+
 
 var highScore;
 localStorage.getItem('HI') > 0 ? highScore = localStorage.getItem('HI') : highScore = 0;
@@ -58,6 +61,7 @@ var loader = new PxLoader();
 var fpsInterval, startTime, now, then, elapsed;
 var frameCount = 0;
 var frameNumber = 1;
+var pageMuted = false
 
 const runSprites = [];
 for (let i = 1; i < 9; i += 1) {
@@ -68,11 +72,11 @@ for (let i = 1; i < 7; i += 1) {
 	slideSprites.push(loader.addImage('assets/sprites/slide/' + i + '.png'));
 }
 const jumpSprites = [];
-for (let i = 1; i < 5; i += 1) {
+for (let i = 1; i < 8; i += 1) {
 	jumpSprites.push(loader.addImage('assets/sprites/jump/' + i + '.png'));
 }
 const barriersSprites = [];
-for (let i = 1; i < 8; i += 1) {
+for (let i = 1; i < 9; i += 1) {
 	barriersSprites.push(loader.addImage('assets/sprites/barriers/' + i + '.png'));
 }
 const dronesSprites = [];
@@ -87,12 +91,46 @@ for (let i = 1; i < 8; i += 1) {
 }
 
 
+var jumpSound = new Audio('assets/audio/jump.wav');
+
+var slideSound = new Audio('assets/audio/slide.mp3');
+
+var clickSound = new Audio('assets/audio/click.mp3');
+
+var gameOverSound = new Audio('assets/audio/gameOver.wav');
+
+var bgMusic = new Audio('assets/audio/bgMusic.mp3');
+	bgMusic.volume = 0.3
+	bgMusic.loop = true;
+
+const audioArr = [jumpSound, slideSound, clickSound, gameOverSound, bgMusic]
+
 loader.start();
 
 loader.addCompletionListener(() => {
 	mainMenuBlock.classList.toggle('hide')
 	bgRatio = bgSprites[0].naturalWidth / bgSprites[0].naturalHeight
 })
+
+function muteMe(audio) {
+	if (pageMuted){
+		audio.muted = false;
+	} else{
+		audio.muted = true;
+	}
+    
+}
+
+function mutePage() {
+	soundBtn.classList.toggle('soundBtnOff');
+	if (pageMuted){
+		[].forEach.call(audioArr, function(elem) { muteMe(elem); });
+		pageMuted = false
+	} else{
+		[].forEach.call(audioArr, function(elem) { muteMe(elem); });
+		pageMuted = true
+	}
+}
 
 var stopGame = false;
 var score = 0;
@@ -273,15 +311,17 @@ function jumpBegin(){
 		clearInterval(playerAnimate)
 	playerAnimate = setInterval(() => {
 		animate(player, jumpSprites)
-	}, 65)
+	}, 30)
 	jumping = true;
 	}
+	jumpSound.play();
 }
 function slideBegin(){
 	if (!jumping){
 		player.slideing = true;
 		slideing += 1
 		if (slideing == 1) {
+			slideSound.play()
 			clearInterval(playerAnimate)
 			player.image = slideSprites[0]
 			setTimeout(() => {
@@ -419,6 +459,11 @@ function ResetGlobalVariables() {
 	ctx.imageSmoothingEnabled = false;
 }
 function GameOver() {
+	bgMusic.pause();
+	bgMusic.currentTime = 0;
+
+	gameOverSound.play()
+
 	GameOverScoreBlock.innerText = 'Score: ' + score.toFixed(0)
 	scoreBlock.classList.toggle('hide')
 	pauseButton.classList.toggle('hide')
@@ -433,11 +478,13 @@ function GameOver() {
 	}
 	highScoreBlock.innerHTML = 'HI: ' + highScore;
 	updateAchives()
+	
 	Stop()
 }
 
 function Replay() {
 	if (gameOver) {
+		bgMusic.play()
 		gameOverBlock.classList.toggle('hide')
 		pauseButton.classList.toggle('hide')
 		scoreBlock.classList.toggle('hide')
@@ -459,6 +506,8 @@ function GoToHome() {
 	if (gameOver) {
 		gameOverBlock.classList.toggle('hide')
 	}
+	bgMusic.pause();
+	bgMusic.currentTime = 0;
 	ResetGlobalVariables();
 	updateAchives()
 	mainMenuBlock.classList.toggle('hide')
@@ -505,7 +554,7 @@ function Update() {
 		if (RandomInteger(0, 10000) > 9600) {
 			if (objects.length == 0 || objects.at(-1).x < canvas.width - 100) {
 				objects.push(new GameObject(barriersSprites[0], 4 * canvas.width / 3, canvas.height - (wrapperBlock.offsetHeight / 2.6), false));
-				var randomBarrier = RandomInteger(1, 7)
+				var randomBarrier = RandomInteger(1, 8)
 				switch (randomBarrier) {
 					case 1:
 						objects.at(-1).image = barriersSprites[randomBarrier - 1]
@@ -537,7 +586,14 @@ function Update() {
 						objects.at(-1).isLevitate = true
 						objects.at(-1).topBarrier = true
 						objects.at(-1).sizeCoef = 1.65;
-						objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 1.15	)
+						objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 1.15)
+						break;
+					case 8:
+						objects.at(-1).image = barriersSprites[randomBarrier - 1]
+						objects.at(-1).isLevitate = true
+						objects.at(-1).topBarrier = true
+						objects.at(-1).sizeCoef = 1.4;
+						objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 1.07)
 						break;
 				}
 			}
@@ -652,6 +708,8 @@ function Draw() {
 	for (var i = 0; i < objects.length; i++) {
 		DrawObject(objects[i])
 	}
+
+	
 
 
 	DrawObject(player)

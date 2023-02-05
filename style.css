@@ -135,20 +135,40 @@ main{
 	width: 55px;
 	margin: 20px;
 }
-#fullscreenBtn{
+.settingsBlock{
 	position:absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	top: 20px;
 	right: 20px;
+}
+#fullscreenBtn{
 	width: 40px;
 	cursor: pointer;
-	background: rgba(255, 255, 255, 0.168);
-	border-radius: 20%;
-	padding: 8px;
 	filter: brightness(0.9);
 	transition: 0.2s;
 }
 #fullscreenBtn:hover{
 	filter: brightness(0.7);
+}
+.soundBtn{
+	cursor: pointer;
+
+	background-image: url('assets/gui/soundOn.png');
+	background-size: cover;
+	width: 40px;
+	height: 40px;
+	margin-right: 30px;
+	transition: 0.3s;
+}
+.soundBtn:hover{
+	filter: brightness(0.7);
+}
+.soundBtnOff{
+	background-image: url('assets/gui/soundOff.png');
+	filter: brightness(0.8);
+
 }
 .playOnPauseButton{
 	width: 50px;
