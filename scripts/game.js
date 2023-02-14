@@ -1,4 +1,3 @@
-
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 var wrapperBlock = document.getElementsByClassName("wrapper")[0];
@@ -72,18 +71,16 @@ for (let i = 1; i < 7; i += 1) {
 	slideSprites.push(loader.addImage('assets/sprites/slide/' + i + '.png'));
 }
 const jumpSprites = [];
-for (let i = 1; i < 8; i += 1) {
+for (let i = 1; i < 7; i += 1) {
 	jumpSprites.push(loader.addImage('assets/sprites/jump/' + i + '.png'));
 }
-const barriersSprites = [];
-for (let i = 1; i < 9; i += 1) {
-	barriersSprites.push(loader.addImage('assets/sprites/barriers/' + i + '.png'));
+const deathSprites = [];
+for (let i = 1; i < 6; i += 1) {
+	deathSprites.push(loader.addImage('assets/sprites/death/' + i + '.png'));
 }
-const dronesSprites = [];
-const leftDronesSprites = [];
+const barriersSprites = [];
 for (let i = 1; i < 8; i += 1) {
-	dronesSprites.push(loader.addImage('assets/drones/' + i + '.png'));
-	leftDronesSprites.push(loader.addImage('assets/drones/' + 'l' + i + '.png'));
+	barriersSprites.push(loader.addImage('assets/sprites/barriers/' + i + '.png'));
 }
 const bgSprites = [];
 for (let i = 1; i < 8; i += 1) {
@@ -91,25 +88,33 @@ for (let i = 1; i < 8; i += 1) {
 }
 
 
-var jumpSound = new Audio('assets/audio/jump.wav');
+var jumpSound = new Audio();
+jumpSound.src ='assets/audio/jump.wav';
 
-var slideSound = new Audio('assets/audio/slide.mp3');
+var slideSound = new Audio();
+slideSound.src = 'assets/audio/slide.mp3';
 
-var clickSound = new Audio('assets/audio/click.mp3');
+var clickSound = new Audio();
+clickSound.src = 'assets/audio/click.mp3';
 
-var gameOverSound = new Audio('assets/audio/gameOver.wav');
+var gameOverSound = new Audio();
+gameOverSound.src = 'assets/audio/gameOver.wav'
 
-var bgMusic = new Audio('assets/audio/bgMusic.mp3');
+var bgMusic = new Audio();
+bgMusic.src = 'assets/audio/bgMusic.mp3';
 	bgMusic.volume = 0.3
 	bgMusic.loop = true;
 
 const audioArr = [jumpSound, slideSound, clickSound, gameOverSound, bgMusic]
 
+function play(audio){
+	audio.play()
+}
 loader.start();
 
 loader.addCompletionListener(() => {
 	mainMenuBlock.classList.toggle('hide')
-	bgRatio = bgSprites[0].naturalWidth / bgSprites[0].naturalHeight
+	bgRatio = bgSprites[0].naturalWidth / bgSprites[0].naturalHeight;
 })
 
 function muteMe(audio) {
@@ -140,7 +145,7 @@ var gameOver = false
 Resize();
 updateAchives();
 
-highScoreBlock.innerHTML = 'HI: ' + highScore;
+highScoreBlock.innerText =  highScore;
 class Bg {
 	constructor(image, x, layer) {
 		this.x = x;
@@ -204,8 +209,8 @@ class GameObject {
 		}
 	}
 	Collide(object) {
-		var barrierWidth = (canvas.height / 3.2)
-		var barrierHight = (canvas.height / 3.2) / (object.image.naturalWidth / object.image.naturalHeight)
+		var barrierWidth = (canvas.height / 3)
+		var barrierHight = (canvas.height / 3) / (object.image.naturalWidth / object.image.naturalHeight)
 
 		var playerWidth = (canvas.height / 4) * (player.image.naturalWidth / player.image.naturalHeight);
 		var playerHeight = (canvas.height / 4) * (player.image.naturalWidth / player.image.naturalHeight);
@@ -239,8 +244,6 @@ var player = new GameObject(runSprites[0], 50,
 	canvas.height - (wrapperBlock.offsetHeight / 2.2), true)
 
 var objects = [];
-var drones = [];
-
 function animate(object, spritesArr) {
 	frameNumber += 1
 	if (frameNumber > spritesArr.length - 1) {
@@ -285,33 +288,32 @@ var bg = [
 	new Bg(bgSprites[0], 0, 0.1),
 	new Bg(bgSprites[0], canvas.height * bgRatio, 0.1),
 
-	new Bg(bgSprites[1], 0, 0.3),
-	new Bg(bgSprites[1], canvas.height * bgRatio, 0.3),
+	new Bg(bgSprites[1], 0, 0.2),
+	new Bg(bgSprites[1], canvas.height * bgRatio, 0.2),
 
-	new Bg(bgSprites[2], 0, 0.4),
-	new Bg(bgSprites[2], canvas.height * bgRatio, 0.4),
+	new Bg(bgSprites[2], 0, 0.3),
+	new Bg(bgSprites[2], canvas.height * bgRatio, 0.3),
 
-	new Bg(bgSprites[3], 0, 0.65),
-	new Bg(bgSprites[3], canvas.height * bgRatio, 0.65),
+	new Bg(bgSprites[6], 0, 0.4),
+	new Bg(bgSprites[6], canvas.height * bgRatio, 0.4),
 
-	new Bg(bgSprites[5], 0, 0.75),
-	new Bg(bgSprites[5], canvas.height * bgRatio, 0.75),
+	new Bg(bgSprites[3], 0, 0.6),
+	new Bg(bgSprites[3], canvas.height * bgRatio, 0.6),
 
 	new Bg(bgSprites[4], 0, 1),
 	new Bg(bgSprites[4], canvas.height * bgRatio, 1),
 
-	new Bg(bgSprites[6], 0, 1),
-	new Bg(bgSprites[6], canvas.height * bgRatio, 1),
+	new Bg(bgSprites[5], 0, 1.2),
+	new Bg(bgSprites[5], canvas.height * bgRatio, 1.2),
 
-
-
+	
 ]
 function jumpBegin(){
 	if (!player.slideing){
 		clearInterval(playerAnimate)
 	playerAnimate = setInterval(() => {
 		animate(player, jumpSprites)
-	}, 30)
+	}, 100 + score / 10)
 	jumping = true;
 	}
 	jumpSound.play();
@@ -410,9 +412,9 @@ function updateAchives(){
 	if (unlockCount == achivesBlocks.length - 1){
 		achivesBlocks[achivesBlocks.length - 1].classList.remove('lock')
 	}
-	document.getElementById('numberOfJumpsBlock').innerHTML = 'jumps: '+numberOfJumps
-	document.getElementById('numberOfDeathsBlock').innerHTML = 'deaths: '+numberOfDeaths
-	document.getElementById('numberOfslidesBlock').innerHTML = 'slides: '+numberOfslides
+	document.getElementById('numberOfJumpsBlock').innerHTML = 'Jumps: '+numberOfJumps
+	document.getElementById('numberOfDeathsBlock').innerHTML = 'Deaths: '+numberOfDeaths
+	document.getElementById('numberOfslidesBlock').innerHTML = 'Slides: '+numberOfslides
 
 }
 function PlayButtonActivate() {
@@ -442,12 +444,11 @@ function PauseToggle() {
 }
 function ResetGlobalVariables() {
 	objects = [];
-	drones = []
 	player.x = 0.1 * canvas.width;
 	gameOver = false;
 	pause = false;
 	player.dead = false;
-	speed = canvas.clientWidth / 240;
+	speed = canvas.clientWidth / 120;
 	player.y = canvas.height - (wrapperBlock.offsetHeight / 2.2)
 	score = 0;
 	leftPressed = false;
@@ -461,25 +462,47 @@ function ResetGlobalVariables() {
 function GameOver() {
 	bgMusic.pause();
 	bgMusic.currentTime = 0;
-
-	gameOverSound.play()
-
-	GameOverScoreBlock.innerText = 'Score: ' + score.toFixed(0)
-	scoreBlock.classList.toggle('hide')
-	pauseButton.classList.toggle('hide')
-	gameOverBlock.classList.toggle('hide')
-	player.dead = false;
-	if (score > highScore){
-		HIandRecord.innerHTML = 'new record!'
-		highScore = Number(score.toFixed(0));
-		localStorage.setItem('HI',  score.toFixed(0))
-	} else{
-		HIandRecord.innerHTML = 'HI: ' + highScore;
-	}
-	highScoreBlock.innerHTML = 'HI: ' + highScore;
-	updateAchives()
-	
 	Stop()
+	gameOverSound.play()
+	setTimeout(()=>{
+		player.image = deathSprites[0];
+		Draw()
+		setTimeout(()=>{
+			player.image = deathSprites[1]
+			Draw()
+			setTimeout(()=>{
+				player.image = deathSprites[2]
+				Draw()
+				setTimeout(()=>{
+					player.image = deathSprites[3]
+					Draw()
+					setTimeout(()=>{
+						GameOverScoreBlock.innerText = 'Score: ' + score.toFixed(0)
+					
+					scoreBlock.classList.toggle('hide')
+					pauseButton.classList.toggle('hide')
+					gameOverBlock.classList.toggle('hide')
+					player.dead = false;
+					if (score > highScore){
+						HIandRecord.innerHTML = 'new record!'
+						highScore = Number(score.toFixed(0));
+						localStorage.setItem('HI',  score.toFixed(0))
+					} else{
+						HIandRecord.innerText =  'HI: ' +highScore;
+					}
+					highScoreBlock.innerText =  highScore;
+					updateAchives()
+					}, 80)
+					
+							
+				}, 50)
+			}, 50)
+		}, 50)
+
+	}, 50)
+	
+	
+	
 }
 
 function Replay() {
@@ -519,12 +542,12 @@ function UpdateBg(index) {
 
 function showScore() {
 	score += 0.12
-	scoreBlock.innerText = "score: " + score.toFixed(0)
+	scoreBlock.innerText = "Score: " + score.toFixed(0)
 }
 
 function Start() {
 	stopGame = false;
-    fpsInterval = 1000 / 120;
+    fpsInterval = 1000 / 60;
     then = Date.now();
     startTime = then;
     Update();
@@ -553,8 +576,8 @@ function Update() {
 
 		if (RandomInteger(0, 10000) > 9600) {
 			if (objects.length == 0 || objects.at(-1).x < canvas.width - 100) {
-				objects.push(new GameObject(barriersSprites[0], 4 * canvas.width / 3, canvas.height - (wrapperBlock.offsetHeight / 2.6), false));
-				var randomBarrier = RandomInteger(1, 8)
+				objects.push(new GameObject(barriersSprites[0], 4 * canvas.width / 3, canvas.height - (wrapperBlock.offsetHeight / 2.5), false));
+				var randomBarrier = RandomInteger(1, 7)
 				switch (randomBarrier) {
 					case 1:
 						objects.at(-1).image = barriersSprites[randomBarrier - 1]
@@ -572,7 +595,7 @@ function Update() {
 					case 5:
 						objects.at(-1).image = barriersSprites[randomBarrier - 1]
 						objects.at(-1).topBarrier = true
-						objects.at(-1).y = canvas.height - (canvas.height / 2.4) / (objects.at(-1).image.naturalWidth / objects.at(-1).image.naturalHeight)
+						objects.at(-1).y = canvas.height - (canvas.height / 2.25) / (objects.at(-1).image.naturalWidth / objects.at(-1).image.naturalHeight)
 						break;
 					case 6:
 						objects.at(-1).image = barriersSprites[randomBarrier - 1]
@@ -588,48 +611,10 @@ function Update() {
 						objects.at(-1).sizeCoef = 1.65;
 						objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 1.15)
 						break;
-					case 8:
-						objects.at(-1).image = barriersSprites[randomBarrier - 1]
-						objects.at(-1).isLevitate = true
-						objects.at(-1).topBarrier = true
-						objects.at(-1).sizeCoef = 1.4;
-						objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 1.07)
-						break;
 				}
 			}
 		}
-		if (RandomInteger(0, 10000) < 300) {
-			var leftSideDrone = RandomInteger(1, 2)
-			var condition = leftSideDrone == 1 ? (drones.length == 0 || drones.at(-1).x < canvas.width / 3)
-				: (drones.length == 0 || drones.at(-1).x > canvas.width / 3)
-			if (condition) {
-				drones.push(new GameObject(barriersSprites[0], 4 * canvas.width / 3, wrapperBlock.offsetHeight / 20, false, true, false));
-				var randomDrone = RandomInteger(1, 7)
-				drones.at(-1).speed += (Math.random())
-				if (leftSideDrone == 1) {
-					drones.at(-1).goToLeft = true;
-					drones.at(-1).x = canvas.width
-					drones.at(-1).image = leftDronesSprites[randomDrone - 1]
-				} else {
-					drones.at(-1).x = -canvas.width / 5
-					drones.at(-1).image = dronesSprites[randomDrone - 1]
-
-				}
-
-			}
-		}
-		var droneIsDead = false;
-
-		for (var i = 0; i < drones.length; i++) {
-			drones[i].Update();
-
-			if (drones[i].deadDrone) {
-				droneIsDead = true;
-			}
-		}
-		if (droneIsDead) {
-			drones.shift();
-		}
+		
 
 		var isDead = false;
 
@@ -673,8 +658,9 @@ function Update() {
 
 
 function Draw() {
+
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	for (var i = 0; i < 6; i += 1) {
+	for (var i = 0; i < bg.length; i += 1) {
 		ctx.drawImage(
 			bg[i].image,
 			0,
@@ -687,11 +673,6 @@ function Draw() {
 			canvas.height
 		);
 	}
-	ctx.filter = 'brightness(0.6) contrast(1.1)';
-	for (var i = 0; i < drones.length; i++) {
-		DrawObject(drones[i])
-	}
-	ctx.filter = 'none'
 	for (var i = 6; i < bg.length; i += 1) {
 		ctx.drawImage(
 			bg[i].image,
@@ -716,8 +697,8 @@ function Draw() {
 
 }
 function DrawObject(object) {
-	var barrierWidth = (canvas.height / 3.2)
-	var barrierHight = (canvas.height / 3.2) / (object.image.naturalWidth / object.image.naturalHeight)
+	var barrierWidth = (canvas.height / 3)
+	var barrierHight = (canvas.height / 3) / (object.image.naturalWidth / object.image.naturalHeight)
 
 	var playerWidth = (canvas.height / 4) * (player.image.naturalWidth / player.image.naturalHeight);
 	var playerHeight = (canvas.height / 4) * (player.image.naturalWidth / player.image.naturalHeight);

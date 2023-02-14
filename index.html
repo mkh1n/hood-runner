@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Escape from Omsk</title>
+	<title>Hood Runner</title>
 	<link rel="stylesheet" href="style.css">
 	<meta name="viewport" content="width = device-width, height = device-height">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,7 +23,7 @@
 	<main>
 		<div class="wrapper screenRatio">
 			<div class="overlay"></div>
-			<div class="controlBlock  pixel-borders">
+			<div class="controlBlock">
 				Controls
 				<img class='controlButton' src="assets/gui/W.png" alt="">
 				<div><img class='controlButton' src="assets/gui/A.png" alt="">
@@ -33,7 +33,7 @@
 			</div>
 			<canvas width="0" height="0" class="canvas" id="canvas">Ваш браузер не поддерживает JavaScript и HTML5!
 			</canvas>
-			<img class="pauseButton button hide" src="assets/gui/Pause.png" alt="" onclick="PauseToggle(); clickSound.play()">
+			<img class="pauseButton button hide" src="assets/gui/Pause.png" alt="" onclick="PauseToggle(); play(clickSound)">
 			<div class="score hide"></div>
 
 			<div class="leftButtonsBlock hide">
@@ -63,63 +63,73 @@
 		</div>
 		<div class="pause insideScreenRatio hide">
 			PAUSED
-			<div class="buttonHolder">
-				<img class='replayButton button' src="assets/gui/Redo.png" alt="" onclick="Replay(); clickSound.play()">
-				<img class="playOnPauseButton button" src="assets/gui/Play.png" alt="" onclick="PauseToggle(); clickSound.play()">
-				<img class='homeButton button' src="assets/gui/Home.png" alt="" onclick="GoToHome(); clickSound.play()">
+			<div class="buttonHolder ">
+				<img class='replayButton button' src="assets/gui/Redo.png" alt="" onclick="Replay(); play(clickSound)">
+				<img class="playOnPauseButton button" src="assets/gui/Play.png" alt="" onclick="PauseToggle(); play(clickSound)">
+				<img class='homeButton button' src="assets/gui/Home.png" alt="" onclick="GoToHome(); play(clickSound)">
 			</div>
 		</div>
 		<div class="gameOver insideScreenRatio hide">
 			<div class='HIandRecord'></div>
 			<div class="score gameOverScore"></div>
-			<p>press SPACE to restart</p>
+			<p>Press SPACE<br>to restart</p>
 			<div class="buttonHolder">
-				<img class='homeButton button' src="assets/gui/Home.png" alt="" onclick="GoToHome(); clickSound.play()">
-				<img class='replayButton button' src="assets/gui/Redo.png" alt="" onclick="Replay(); clickSound.play()">
+				<img class='homeButton button' src="assets/gui/Home.png" alt="" onclick="GoToHome(); play(clickSound)">
+				<img class='replayButton button' src="assets/gui/Redo.png" alt="" onclick="Replay(); play(clickSound)">
 			</div>
 		</div>
 		<div class="mainMenu hide screenRatio">
 			<div class="mainMenuSide">
-				<div id='mainTitle'>Escape From<br>Omsk</div>
-				<div class="mainMenuButtons">
-					<button class='playButton menuButton creditsButton btn btn--secondary '
-						onclick="PlayButtonActivate(); clickSound.play();bgMusic.play()">
-						<span class="btn__content">//:play</span>
-						<span class="btn__glitch"></span>
-					</button>
-					<button class='playButton menuButton btn btn--secondary ' onclick="showAchives(); clickSound.play()">
-						<span class="btn__content">//:achives</span>
-						<span class="btn__glitch"></span>
-					</button>
-					<button class='menuButton btn btn--secondary ' onclick="ShowCredits(); clickSound.play()">
-						<span class="btn__content">//:credits</span>
-						<span class="btn__glitch"></span>
-					</button>
+				<ul class="circles">
+						<li></li>
+						<li></li>
+						<li></li>
+						<li></li>
+						<li></li>
+						<li></li>
+						<li></li>
+						<li></li>
+						<li></li>
+						<li></li>
+				</ul>
+				<div class='mainTitle'>
+					hood runner
+					<div class="subtitle">Pixel hero</div>
 				</div>
-			</div>
-			<div class="mainMenuSide">
-				<img class='mainGif' src='./readmeStuff/1.gif' alt="">
-				<div class='HighScoreBlock'>HI: 0</div>
-				<div class="settingsBlock">
-					<div class='soundBtn' onclick="mutePage(); clickSound.play()" alt=""></div>
-					<img id='fullscreenBtn'src="assets/gui/fullscreen.png" onclick="openFullscreen(document.querySelector('body')); clickSound.play()" alt="">
 
+				<div class="mainMenuButtons">
+					<button class='btn playButton menuButton' onclick="PlayButtonActivate(); clickSound.play();play(bgMusic)">
+						Play
+					</button>
+					<button class='btn menuButton'  onclick="showAchives(); play(clickSound)">
+						Achives
+					</button>
 				</div>
+				<div class="HightScoreBlockWrapper">
+					<img id='prizeImg'src="assets/gui/prize.png">
+					<div class='HighScoreBlock'></div>
+				</div>
+				
+				<div class="rightTopBlock">
+					<img class='smallBtn soundBtn' onclick="mutePage(); play(clickSound)" alt="">
+					<img class='smallBtn' src="assets/gui/info.png"  onclick="ShowCredits(); play(clickSound)" alt="">
+					<img class='smallBtn' src="assets/gui/fullscreen.png" onclick="openFullscreen(document.querySelector('body')); play(clickSound)" alt="">
+				</div>
+				
 			</div>
 		</div>
-		<div class="tutorial insideScreenRatio hide"></div>
+		<div class="tutorial  hide"></div>
 		<div class="credits screenRatio hide">
 			<div class="credits-holder">
-				<div>created by: <a href='https://github.com/moxa-rumin' target="_blank">moxa-rumin</a><br></div>
-			<div>Bg & Sprites: <a href='https://itch.io/profile/ansimuz' target="_blank">fansimuz</a>,
-				<a href='https://itch.io/profile/anokolisa' target="_blank">anokolisa</a><br>
+				<div>created by: <a href='https://github.com/moxa-rumin' target="_blank">MUKH1N</a><br></div>
+			<div>bg and sprites: <a href='https://trixelized.itch.io/' target="_blank">TRIXIE</a>,
+				<a href='https://penzilla.itch.io/' target="_blank">PENZILLA</a><br>
 			</div>
 			</div>
 			
 			<div class="return-btn-holder">
-				<button class='btn btn--secondary return-btn' onclick="ShowCredits(); clickSound.play()">
-					<span class="btn__content">//:return</span>
-					<span class="btn__glitch"></span>
+				<button class='btn return-btn' onclick="ShowCredits(); clickSound.play()">
+					Return
 				</button>
 			</div>
 			
@@ -133,81 +143,80 @@
 			<div class="achivesHolder">
 				<div class="achiveBlock lock"><img class='achiveImg' src="assets/gui/pioneer.png" alt="">
 					<div class='achiveText'>
-						<p>pioneer</p>
-						score 100 points
+						<p>Pioneer</p>
+						Score 100 points
 					</div>
 				</div>
 				<div class="achiveBlock lock"><img class='achiveImg' src="assets/gui/bomb.png" alt="">
 					<div class='achiveText'>
-						<p>extreme</p>
-						score 282 points
+						<p>Extreme</p>
+						Score 282 points
 					</div>
 				</div>
 				<div class="achiveBlock lock"><img class='achiveImg' src="assets/gui/motorbike.png" alt="">
 					<div class='achiveText'>
-						<p>racer</p>
-						score 350 points
+						<p>Racer</p>
+						Score 350 points
 					</div>
 				</div>
 				<div class="achiveBlock lock"><img class='achiveImg' src="assets/gui/trees.png" alt="">
 					<div class='achiveText'>
-						<p>run forrest run</p>
-						score 500 points
+						<p>Run forest, run</p>
+						Score 500 points
 					</div>
 				</div>
 				<div class="achiveBlock lock"><img class='achiveImg' src="assets/gui/gigachad.png" alt="">
 					<div class='achiveText'>
-						<p>gigachad</p>
-						score 1000 points
+						<p>Gigachad</p>
+						Score 1000 points
 					</div>
 				</div>
 				<div class="achiveBlock lock"><img class='achiveImg' src="assets/gui/dead cat.png" alt="">
 					<div class='achiveText'>
-						<p>puss in boots</p>
-						die 8 times
+						<p>Puss in boots</p>
+						Die 8 times
 					</div>
 				</div>
 				<div class="achiveBlock lock"><img class='achiveImg' src="assets/gui/guitar.png" alt="">
 					<div class='achiveText'>
-						<p>smells like nirvana</p>
-						die 27 times
+						<p>Smells like Nirvana</p>
+						Die 27 times
 					</div>
 				</div>
 				<div class="achiveBlock lock"><img class='achiveImg' src="assets/gui/earth.png" alt="">
 					<div class='achiveText'>
-						<p>main question</p>
-						die 42 times
+						<p>Main question</p>
+						Die 42 times
 					</div>
 				</div>
 				<div class="achiveBlock lock"><img class='achiveImg' src="assets/gui/skull.png" alt="">
 					<div class='achiveText'>
 						<p>Memento mori</p>
-						die 100 times
+						Die 100 times
 					</div>
 				</div>
 				<div class="achiveBlock lock"><img class='achiveImg' src="assets/gui/bouncer.png" alt="">
 					<div class='achiveText'>
-						<p>bouncer</p>
-						jump 500 times
+						<p>Bouncer</p>
+						Jump 500 times
 					</div>
 				</div>
 				<div class="achiveBlock lock"><img class='achiveImg' src="assets/gui/slide.png" alt="">
 					<div class='achiveText'>
-						<p>on the ground</p>
-						slide under 300 barriers
+						<p>On the ground</p>
+						Slide under 300 barriers
 					</div>
 				</div>
 				<div class="achiveBlock lock"><img class='achiveImg' src="assets/gui/success.png" alt="">
 					<div class='achiveText'>
-						<p>all for one</p>
-						unlock all achives
+						<p>All for one</p>
+						Unlock all achives
 					</div>
 				</div>
 			</div>
 			<div class="return-btn-holder">
-				<button class='btn btn--secondary return-btn' onclick="showAchives(); clickSound.play()">
-					<span class="btn__content">//:return</span>
-					<span class="btn__glitch"></span>
+				<button class='btn return-btn' onclick="showAchives(); play(clickSound)">
+					Return
 				</button>
 			</div>
 		</div>

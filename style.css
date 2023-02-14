@@ -1,22 +1,154 @@
 @font-face {
-	font-family: 'GravityBold'; 
-	src: url('assets/fonts/GravityBold8.ttf'); 
+	font-family: 'pressStart2Play'; 
+	src: url('assets/fonts/PressStart2P-Regular.ttf') 
 }
 
 @font-face {
-	font-family: 'GravityNormal'; 
-	src: url('assets/fonts/GravityRegular5.ttf'); 
+	font-family: 'Botsmatic3d'; 
+	src: url('assets/fonts/Botsmatic3d.ttf') 
 }
+@font-face {
+	font-family: 'BotsmaticOutline'; 
+	src: url('assets/fonts/BotsmaticOutline.ttf') 
+}
+@font-face {
+	font-family: 'BotsmaticDemo'; 
+	src: url('assets/fonts/BotsmaticDemo.ttf') 
+}
+::-webkit-scrollbar {
+	width: 0;
+  }
 
 body,
 html {
 	width: 100%;
 	height: 100%;
 	background-color: black;
-	font-family: 'GravityNormal';
+	font-family: 'pressStart2Play';
 	color: #fff;
 	overflow: hidden;
 	margin: 0;
+}
+
+.circles{
+	position: absolute;
+    overflow: hidden;
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	pointer-events: none;
+	z-index: 0;
+}
+
+.circles li{
+    position: absolute;
+    display: block;
+    list-style: none;
+    width: 20px;
+    height: 20px;
+	border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    animation: animate 5s linear infinite;
+    bottom: -150px;
+	
+    
+}
+
+.circles li:nth-child(1){
+    left: 25%;
+    width: 80px;
+    height: 80px;
+    animation-delay: 0s;
+	animation-duration: 7s;
+}
+
+
+.circles li:nth-child(2){
+    left: 10%;
+    width: 50px;
+    height: 50px;
+    animation-delay: 2s;
+    animation-duration: 18s;
+}
+
+.circles li:nth-child(3){
+    left: 70%;
+    width: 30px;
+    height: 30px;
+    animation-delay: 9s;
+	animation-duration: 8s;
+}
+
+.circles li:nth-child(4){
+    left: 40%;
+    width: 60px;
+    height: 60px;
+    animation-delay: 0s;
+    animation-duration: 17s;
+}
+
+.circles li:nth-child(5){
+    left: 65%;
+    width: 20px;
+    height: 20px;
+    animation-delay: 0s;
+}
+
+.circles li:nth-child(6){
+    left: 75%;
+    width: 80px;
+    height: 80px;
+    animation-delay: 3s;
+	animation-duration: 6s;
+}
+
+.circles li:nth-child(7){
+    left: 35%;
+    width: 50px;
+    height: 50px;
+    animation-delay: 5s;
+	animation-duration: 20s;
+}
+
+.circles li:nth-child(8){
+    left: 50%;
+    width: 25px;
+    height: 25px;
+    animation-delay: 15s;
+    animation-duration: 15s;
+}
+
+.circles li:nth-child(9){
+    left: 20%;
+    width: 40px;
+    height: 40px;
+    animation-delay: 2s;
+    animation-duration: 10s;
+}
+
+.circles li:nth-child(10){
+    left: 85%;
+    width: 100px;
+    height: 100px;
+    animation-delay: 0s;
+    animation-duration: 5s;
+}
+
+
+
+@keyframes animate {
+
+    0%{
+        transform: translateY(-50vh);
+        opacity: 0;
+    }
+
+    100%{
+        transform: translateY(-120vh);
+        opacity: 1;
+    }
+
 }
 main{
 	width: 100%;
@@ -26,6 +158,7 @@ main{
 	align-items: center;
 	justify-content: center;
 }
+
 .screenRatio{
 	padding: 0;
 	margin: 0;
@@ -33,7 +166,7 @@ main{
 	height: 70%;
 }
 .insideScreenRatio{
-	padding: 0;
+	padding: 20px;
 	margin: 0;
 	width: 70%;
 	height: 60%;
@@ -59,15 +192,18 @@ main{
 	align-items: center;
 	justify-content: center;
 	position: absolute;
-	background-color: #8641beb2;
+	background-color: rgba(47, 31, 46, 0.55);
+	border-radius: 10px 10px;
 	opacity: 0;
 	top: 30%;
 	left: 50%; 
-	padding: 20px;
+	padding: 30px;
+	box-sizing: border-box;
   	transform: translate(-50%, -50%);
 	transition: 1s;
 }
 .controlButton{
+	
 	height: 45px;
 	width: 45px;
 	margin: 10px;
@@ -87,18 +223,6 @@ main{
 .rightButtonsBlock{
 	display: none;
 }
-.overlay{
-	z-index: 0;
-	background: url('assets/bg/overlay2.png');
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	background-size: cover;
-	background-position: center;
-	background-repeat: repeat;
-	opacity: 0.1;
-	transition: 1s ease;
-}
 
 .pause,
 .gameOver,
@@ -115,13 +239,42 @@ main{
 	right: 0;
 	text-align: center;
 	font-size: 35px;
-	background-color: #8641beb2;
+}
+.mainTitle{
+	font-family: 'BotsmaticDemo';
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	font-size: 70px;
+	height: 40%;
+	z-index: 100;
+}
+.subtitle{
+	font-family: 'pressStart2Play';
+	font-weight: bold;
+	font-size: 20px;
+	letter-spacing: 3px;
+
+}
+.pause, .gameOver{
+	background: url('assets/gui/popup.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+	image-rendering: pixelated;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background-repeat: no-repeat;
+	border-radius: 20px 20px;
+	line-height: 1.3;
 }
 .mainMenuButtons{
 	height: 45%;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
+	justify-content: space-evenly;
+	z-index: 100;
 }
 .pauseButton {
 	position: absolute;
@@ -135,7 +288,7 @@ main{
 	width: 55px;
 	margin: 20px;
 }
-.settingsBlock{
+.rightTopBlock{
 	position:absolute;
 	display: flex;
 	align-items: center;
@@ -143,38 +296,38 @@ main{
 	top: 20px;
 	right: 20px;
 }
-#fullscreenBtn{
+.smallBtn{
 	width: 40px;
+	height: 40px;
 	cursor: pointer;
-	filter: brightness(0.9);
-	transition: 0.2s;
+	background-image: url('assets/gui/smallBtn.png');
+	background-size: contain;
+	background-repeat: no-repeat;
+	image-rendering: pixelated;
+	padding: 10px;
+	margin: 10px;
 }
-#fullscreenBtn:hover{
+.smallBtn:hover{
 	filter: brightness(0.7);
 }
 .soundBtn{
-	cursor: pointer;
-
-	background-image: url('assets/gui/soundOn.png');
-	background-size: cover;
-	width: 40px;
-	height: 40px;
-	margin-right: 30px;
-	transition: 0.3s;
-}
-.soundBtn:hover{
-	filter: brightness(0.7);
+	content: url('assets/gui/soundOn.png');
 }
 .soundBtnOff{
-	background-image: url('assets/gui/soundOff.png');
-	filter: brightness(0.8);
-
+	content: url('assets/gui/soundOff.png');
+	filter: brightness(0.6);
 }
 .playOnPauseButton{
 	width: 50px;
 }
+.button, .smallBtn{
+	filter:drop-shadow(5px 5px 5px #0000004e);
+	cursor: pointer;
+
+}
 .button:hover{
 	filter: brightness(0.7);
+
 }
 .score{
 	position: absolute;
@@ -190,24 +343,38 @@ main{
 }
 
 .mainMenu, .credits, .achives{
-	font-family: 'GravityBold';
+	font-family: 'pressStart2Play';
 	line-height: 2;
 	display: flex;
 	flex-direction: row;
-	text-shadow: -10px 10px 0px #00e6e6,
-                 -20px 20px 0px #01cccc,
-                 -30px 30px 0px #00bdbd;
 	filter: brightness(0.9);
-	background: #000;
+	background-size: cover;
+	background-position:top;
+	background-image: url('readmeStuff/bg.png');
+}
+.HightScoreBlockWrapper{
+	position: absolute;
+	display: flex;
+	align-items: center;
+	left: 25px;
+	top: 30px;
+	font-size: 30px;
+	text-shadow: none;
+	z-index: 100;
+}
+#prizeImg{
+	width: 60px;
+	height: auto;
+	margin-right: 20px;
 }
 
-.HighScoreBlock{
-	text-shadow: none;
-}
 .credits, .achives{
 	flex-direction: column;
 	font-size: 30px;
 	text-shadow: unset;
+	overflow-y: auto;
+	padding: 30px;
+	box-sizing: border-box;
 	justify-content: space-between;
 }
 .credits-holder{
@@ -221,21 +388,23 @@ main{
 	width: 100%;
 	display: flex;
 	align-items: flex-start;
-	justify-content: space-between;
+	justify-content: space-evenly;
 	flex-wrap: wrap;
 }
 .achiveBlock{
-	font-family: 'GravityNormal';
+	font-family: 'pressStart2Play';
 	align-items: center;
 	font-size: 12px;
 	display: flex;
 	padding: 10px;
 	color: rgb(255, 255, 255);
-	width: 30%;
+	width: 40%;
 	height:fit-content;
 	background-color: rgb(47, 31, 46);
 	margin-bottom: 20px;
+	border-radius: 10px 10px;
 }
+
 .achiveText{
 	text-align: center;
 }
@@ -249,24 +418,58 @@ main{
 	margin-right: 20px;
 }
 .lock{
-	filter: brightness(0.5);
+	opacity: 0.7;
 }
 .statsHolder{
 	display: flex;
 	font-size: 12px;
+	margin-bottom: 20px
+}
+.btn {
+	width: auto;
+	height: auto;
+	padding: 30px;
+	height: auto; 
+	border: 0;
+	outline: none;
+	cursor: pointer;
+	font-size: 20px;
+	font-family: 'pressStart2Play';
+	background: none;
+	background-image: url('assets/gui/btn.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position:right;
+	image-rendering: pixelated;
+	color:rgb(255, 255, 255);
+}
+.btn:hover{
+	filter: brightness(0.8);
 }
 .return-btn-holder{
 	width: 100%;
 	height: fit-content;
 	position: sticky;
 	right: 10px;
-    bottom: 10px;
+    bottom: -10px;
+}
+.return-btn{
+	font-size: 18px;
 }
 .stat{
 	margin-right: 20px;
 }
+.credits{
+	font-family: 'BotsmaticDemo';
+}
 .credits a{
-	font-size: 25px;
+	font-family: 'pressStart2Play';
+	font-weight: bold;
+	font-size: 17px;
+	color: rgb(30, 0, 94)
+}
+.credits a:hover{
+	color: rgb(51, 10, 140)
 }
 
 .mainMenuSide{
@@ -278,7 +481,7 @@ main{
 	justify-content: space-around;
 }
 .mainGif{
-	width: 70%;
+	width: 0%;
 	image-rendering: pixelated;
 }
 .credits{
@@ -287,168 +490,8 @@ main{
 .hide {
 	display: none;
 }
-.btn {
-  width: 230px;
-  height: 60px; 
-  border: 0;
-  outline: none;
-  cursor: pointer;
-  position: relative;
-  font-size: 15px;
-	font-family: 'GravityNormal';
-  text-transform: uppercase;
-	background-color:#46166d;
-  clip-path: polygon(92% 0, 100% 25%, 100% 100%, 8% 100%, 0% 75%, 0 0);
-}
-.btn__content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  right: 2px;
-  bottom: 2px;
-	color: #fff;
-  background-color: #7b00ac;
-  clip-path: polygon(92% 0, 100% 25%, 100% 100%, 8% 100%, 0% 75%, 0 0);
-}
 
 
-.btn__glitch {
-  display: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color:  #7b00ac;
-  filter: drop-shadow(-2px 3px #67e3f3) drop-shadow(-1px -3px #02d8f3) drop-shadow(2px 1px #02d8f3);
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
-}
-
-.btn:hover .btn__glitch,
-.btn:hover .btn__content::after,
-.btn:focus .btn__glitch,
-.btn:focus .btn__content::after {
-  display: block;
-  animation: glitch-animation 2s linear 0s infinite;
-}
-
-
-
-@keyframes glitch-animation {
-  0% {
-    opacity: 1;
-    transform: translateZ(0);
-    clip-path: polygon(0 2%, 100% 2%, 100% 5%, 0 5%);
-  }
-
-  2% {
-    clip-path: polygon(0 78%, 100% 78%, 100% 100%, 0 100%);
-    transform: translate(-5px);
-  }
-
-  6% {
-    clip-path: polygon(0 78%, 100% 78%, 100% 100%, 0 100%);
-    transform: translate(5px);
-  }
-
-  8% {
-    clip-path: polygon(0 78%, 100% 78%, 100% 100%, 0 100%);
-    transform: translate(-5px);
-  }
-
-  9% {
-    clip-path: polygon(0 78%, 100% 78%, 100% 100%, 0 100%);
-    transform: translate(0);
-  }
-
-  10% {
-    clip-path: polygon(0 54%, 100% 54%, 100% 44%, 0 44%);
-    transform: translate3d(5px, 0, 0);
-  }
-
-  13% {
-    clip-path: polygon(0 54%, 100% 54%, 100% 44%, 0 44%);
-    transform: translateZ(0);
-  }
-
-  13.1% {
-    clip-path: polygon(0 0, 0 0, 0 0, 0 0);
-    transform: translate3d(5px, 0, 0);
-  }
-
-  15% {
-    clip-path: polygon(0 60%, 100% 60%, 100% 40%, 0 40%);
-    transform: translate3d(5px, 0, 0);
-  }
-
-  20% {
-    clip-path: polygon(0 60%, 100% 60%, 100% 40%, 0 40%);
-    transform: translate3d(-5px, 0, 0);
-  }
-
-  20.1% {
-    clip-path: polygon(0 0, 0 0, 0 0, 0 0);
-    transform: translate3d(5px, 0, 0);
-  }
-
-  25% {
-    clip-path: polygon(0 85%, 100% 85%, 100% 40%, 0 40%);
-    transform: translate3d(5px, 0, 0);
-  }
-
-  30% {
-    clip-path: polygon(0 85%, 100% 85%, 100% 40%, 0 40%);
-    transform: translate3d(-5px, 0, 0);
-  }
-
-  30.1% {
-    clip-path: polygon(0 0, 0 0, 0 0, 0 0);
-  }
-
-  35% {
-    clip-path: polygon(0 63%, 100% 63%, 100% 80%, 0 80%);
-    transform: translate(-5px);
-  }
-
-  40% {
-    clip-path: polygon(0 63%, 100% 63%, 100% 80%, 0 80%);
-    transform: translate(5px);
-  }
-
-  45% {
-    clip-path: polygon(0 63%, 100% 63%, 100% 80%, 0 80%);
-    transform: translate(-5px);
-  }
-
-  50% {
-    clip-path: polygon(0 63%, 100% 63%, 100% 80%, 0 80%);
-    transform: translate(0);
-  }
-
-  55% {
-    clip-path: polygon(0 10%, 100% 10%, 100% 0, 0 0);
-    transform: translate3d(5px, 0, 0);
-  }
-
-  60% {
-    clip-path: polygon(0 10%, 100% 10%, 100% 0, 0 0);
-    transform: translateZ(0);
-    opacity: 1;
-  }
-
-  60.1% {
-    clip-path: polygon(0 0, 0 0, 0 0, 0 0);
-    opacity: 1;
-  }
-
-  to {
-    clip-path: polygon(0 0, 0 0, 0 0, 0 0);
-    opacity: 1;
-  }
-}
 
 @media screen and (orientation: portrait) {
 	#turnLandscape{
@@ -491,30 +534,21 @@ main{
 		height: 85%;
 		box-sizing: border-box;
 	}
-	#mainTitle{
-		font-size: 25px;
-		text-shadow: -8px 8px 0px #00e6e6, -16px 16px 0px #01cccc, -24px 24px 0px #00bdbd;
-	}
+
 	.HighScoreBlock{
 		font-size: 20px;
 	}
-	.gameOver{
-		font-size: 20px;
+	.pause, .gameOver{
+		font-size: 23px;
 	}
-	.btn{
-		width: 200px;
-		height: 50px;
 
-	}
-	.btn__content{
-		font-size: 13px;
-	}
 	.pauseButton {
 		height: 30px;
 		width: 30px
 	}
-	#fullscreenBtn{
+	.rightTopBlock{
 		width: 30px;
+		height: 30px;
 	}
 	.achiveImg{
 		height: 43px;
