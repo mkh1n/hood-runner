@@ -75,7 +75,7 @@ for (let i = 1; i < 7; i += 1) {
 	jumpSprites.push(loader.addImage('assets/sprites/jump/' + i + '.png'));
 }
 const deathSprites = [];
-for (let i = 1; i < 6; i += 1) {
+for (let i = 1; i < 5; i += 1) {
 	deathSprites.push(loader.addImage('assets/sprites/death/' + i + '.png'));
 }
 const barriersSprites = [];
@@ -85,6 +85,10 @@ for (let i = 1; i < 8; i += 1) {
 const bgSprites = [];
 for (let i = 1; i < 8; i += 1) {
 	bgSprites.push(loader.addImage('assets/bg/' + i + '.png'));
+}
+const fgSprites = [];
+for (let i = 1; i < 2; i += 1) {
+	fgSprites.push(loader.addImage('assets/fg/' + i + '.png'));
 }
 
 
@@ -304,10 +308,15 @@ var bg = [
 	new Bg(bgSprites[4], canvas.height * bgRatio, 1),
 
 	new Bg(bgSprites[5], 0, 1.2),
-	new Bg(bgSprites[5], canvas.height * bgRatio, 1.2),
-
-	
+	new Bg(bgSprites[5], canvas.height * bgRatio, 1.2)
 ]
+
+var fg = [
+  new Bg(fgSprites[0], 0, 0.3),
+	new Bg(fgSprites[0], canvas.height * bgRatio, 0.3)
+  
+]
+
 function jumpBegin(){
 	if (!player.slideing){
 		clearInterval(playerAnimate)
@@ -535,9 +544,9 @@ function GoToHome() {
 	updateAchives()
 	mainMenuBlock.classList.toggle('hide')
 }
-function UpdateBg(index) {
-	bg[index].Update(bg[index + 1])
-	bg[index + 1].Update(bg[index])
+function UpdateBg(index, arr = bg) {
+	arr[index].Update(arr[index + 1])
+	arr[index + 1].Update(arr[index])
 }
 
 function showScore() {
@@ -568,11 +577,12 @@ function Update() {
     elapsed = now - then;
 
 	if (elapsed > fpsInterval) {
-        then = now - (elapsed % fpsInterval);
+    then = now - (elapsed % fpsInterval);
 
 		for (let i = 0; i < bg.length - 1; i += 2) {
 			UpdateBg(i)
 		}
+
 
 		if (RandomInteger(0, 10000) > 9600) {
 			if (objects.length == 0 || objects.at(-1).x < canvas.width - 100) {
@@ -590,30 +600,32 @@ function Update() {
 						break;
 					case 4:
 						objects.at(-1).image = barriersSprites[randomBarrier - 1]
-						objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 2.4)
+            objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 2.2)
 						break;
 					case 5:
 						objects.at(-1).image = barriersSprites[randomBarrier - 1]
 						objects.at(-1).topBarrier = true
 						objects.at(-1).y = canvas.height - (canvas.height / 2.25) / (objects.at(-1).image.naturalWidth / objects.at(-1).image.naturalHeight)
 						break;
-					case 6:
-						objects.at(-1).image = barriersSprites[randomBarrier - 1]
-						objects.at(-1).isLevitate = true
-						objects.at(-1).topBarrier = true
-						objects.at(-1).sizeCoef = 1.4;
-						objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 1.07)
-						break;
+          case 6:
+            objects.at(-1).image = barriersSprites[randomBarrier - 1]
+            
+            break;
 					case 7:
 						objects.at(-1).image = barriersSprites[randomBarrier - 1]
 						objects.at(-1).isLevitate = true
 						objects.at(-1).topBarrier = true
 						objects.at(-1).sizeCoef = 1.65;
-						objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 1.15)
+						objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 1.11)
 						break;
 				}
 			}
 		}
+
+    for (let i = 0; i < fg.length - 1; i += 2) {
+			UpdateBg(i, fg)
+		}
+    
 		
 
 		var isDead = false;
@@ -673,26 +685,22 @@ function Draw() {
 			canvas.height
 		);
 	}
-	for (var i = 6; i < bg.length; i += 1) {
-		ctx.drawImage(
-			bg[i].image,
-			0,
-			0,
-			bg[i].image.naturalWidth,
-			bg[i].image.naturalHeight,
-			bg[i].x,
-			bg[i].y,
-			canvas.height * bgRatio,
-			canvas.height
-		);
-	}
 	for (var i = 0; i < objects.length; i++) {
 		DrawObject(objects[i])
 	}
-
-	
-
-
+  for (var i = 0; i < fg.length; i += 1) {
+		ctx.drawImage(
+			fg[i].image,
+			0,
+			0,
+			fg[i].image.naturalWidth,
+			fg[i].image.naturalHeight,
+			fg[i].x,
+			fg[i].y,
+			canvas.height * bgRatio,
+			canvas.height
+		);
+  }
 	DrawObject(player)
 
 }
