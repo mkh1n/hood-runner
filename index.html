@@ -21,9 +21,10 @@
 		<img style='margin-top: 30px'id='rotateIcon'src="assets/gui/orientation.png" alt="">
 	</div>
 	<main>
+      
 		<div class="wrapper screenRatio">
-			<div class="overlay"></div>
-			<div class="controlBlock">
+      <div class="loader"><div></div><div></div><div></div><div></div></div>
+			<div class="controlBlock hide">
 				Controls
 				<img class='controlButton' src="assets/gui/W.png" alt="">
 				<div><img class='controlButton' src="assets/gui/A.png" alt="">
@@ -101,7 +102,7 @@
 					<button class='btn playButton menuButton' onclick="PlayButtonActivate(); clickSound.play();play(bgMusic)">
 						Play
 					</button>
-					<button class='btn menuButton'  onclick="showAchives(); play(clickSound)">
+					<button class='btn menuButton'  onclick="toggleHide(achivesBlock); play(clickSound)">
 						Achives
 					</button>
 				</div>
@@ -112,7 +113,7 @@
 				
 				<div class="rightTopBlock">
 					<img class='smallBtn soundBtn' onclick="mutePage(); play(clickSound)" alt="">
-					<img class='smallBtn' src="assets/gui/info.png"  onclick="ShowCredits(); play(clickSound)" alt="">
+					<img class='smallBtn' src="assets/gui/info.png"  onclick="toggleHide(creditsBlock); play(clickSound)" alt="">
 					<img class='smallBtn' src="assets/gui/fullscreen.png" onclick="openFullscreen(document.querySelector('body')); play(clickSound)" alt="">
 				</div>
 				
@@ -128,7 +129,7 @@
 			</div>
 			
 			<div class="return-btn-holder">
-				<button class='btn return-btn' onclick="ShowCredits(); clickSound.play()">
+				<button class='btn return-btn' onclick="toggleHide(creditsBlock); clickSound.play()">
 					Return
 				</button>
 			</div>
@@ -215,23 +216,13 @@
 				</div>
 			</div>
 			<div class="return-btn-holder">
-				<button class='btn return-btn' onclick="showAchives(); play(clickSound)">
+				<button class='btn return-btn' onclick="toggleHide(achivesBlock); play(clickSound)">
 					Return
 				</button>
 			</div>
 		</div>
 	</main>
-	<script>
-		function is_touch_enabled() {
-		return ( 'ontouchstart' in window ) ||
-		( navigator.maxTouchPoints > 0 ) ||
-		( navigator.msMaxTouchPoints > 0 );
-		}
-		if (is_touch_enabled){
-			document.getElementsByClassName('leftButtonsBlock')[0].classList.remove('hide')
-			document.getElementsByClassName('rightButtonsBlock')[0].classList.remove('hide')
-		}
-	</script>
+	
 	<script>
 		var elem = document.querySelector('body');
 		function openFullscreen() {
@@ -247,6 +238,8 @@
 		</script>
 	<script type="text/javascript" src="scripts/PxLoader.js"></script>
 	<script type="text/javascript" src="scripts/PxLoaderImage.js"></script>
+  <script type="text/javascript" src="scripts/vars.js"></script>
+  <script type="text/javascript" src="scripts/loader.js"></script>
 	<script type="text/javascript" src="scripts/game.js"></script>
 </body>
 

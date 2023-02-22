@@ -1,39 +1,7 @@
-var canvas = document.getElementById("canvas");
-var ctx = canvas.getContext("2d");
-var wrapperBlock = document.getElementsByClassName("wrapper")[0];
-var creditsBlock = document.getElementsByClassName("credits")[0];
-var achivesBlock = document.getElementsByClassName("achives")[0];
-var pauseBlock = document.getElementsByClassName("pause")[0];
-var pauseButton = document.getElementsByClassName("pauseButton")[0];
-var gameOverBlock = document.getElementsByClassName("gameOver")[0];
-var mainMenuBlock = document.getElementsByClassName("mainMenu")[0];
-var controlBlock = document.getElementsByClassName("controlBlock")[0];
-var scoreBlock = document.getElementsByClassName("score")[0];
-var overlay = document.getElementsByClassName("overlay")[0];
-var highScoreBlock = document.getElementsByClassName("HighScoreBlock")[0];
-var GameOverScoreBlock = document.getElementsByClassName("score")[1];
-var HIandRecord = document.getElementsByClassName("HIandRecord")[0];
-var soundBtn = document.getElementsByClassName("soundBtn")[0];
-
-var achivesBlocks = document.getElementsByClassName("achiveBlock")
 
 window.addEventListener("resize", Resize);
-
-var speed;
-var bgRatio;
-
-
-var highScore;
-localStorage.getItem('HI') > 0 ? highScore = localStorage.getItem('HI') : highScore = 0;
-
-var numberOfJumps;
-localStorage.getItem('jumps') > 0 ? numberOfJumps = localStorage.getItem('jumps') : numberOfJumps = 0;
-
-var numberOfDeaths;
-localStorage.getItem('deaths') > 0 ? numberOfDeaths = localStorage.getItem('deaths') : numberOfDeaths = 0;
-
-var numberOfslides;
-localStorage.getItem('slides') > 0 ? numberOfslides = localStorage.getItem('slides') : numberOfslides = 0;
+Resize();
+updateAchives();
 
 /*localStorage.clear('HI');
 localStorage.clear('slides');
@@ -41,86 +9,6 @@ localStorage.clear('slides');
 localStorage.clear('deaths');
 
 localStorage.clear('jumps');*/
-
-
-
-
-
-var leftPressed = false;
-var rightPressed = false;
-var upPressed = false;
-var downPressed = false;
-var slideing = 0;
-var jumping = false;
-var jumpCount = 0;
-var jumpLength = 50;
-var jumpHeight = 0;
-var overIndex = 1;
-var loader = new PxLoader();
-var fpsInterval, startTime, now, then, elapsed;
-var frameCount = 0;
-var frameNumber = 1;
-var pageMuted = false
-
-const runSprites = [];
-for (let i = 1; i < 9; i += 1) {
-	runSprites.push(loader.addImage('assets/sprites/run/' + i + '.png'));
-}
-const slideSprites = [];
-for (let i = 1; i < 7; i += 1) {
-	slideSprites.push(loader.addImage('assets/sprites/slide/' + i + '.png'));
-}
-const jumpSprites = [];
-for (let i = 1; i < 7; i += 1) {
-	jumpSprites.push(loader.addImage('assets/sprites/jump/' + i + '.png'));
-}
-const deathSprites = [];
-for (let i = 1; i < 5; i += 1) {
-	deathSprites.push(loader.addImage('assets/sprites/death/' + i + '.png'));
-}
-const barriersSprites = [];
-for (let i = 1; i < 8; i += 1) {
-	barriersSprites.push(loader.addImage('assets/sprites/barriers/' + i + '.png'));
-}
-const bgSprites = [];
-for (let i = 1; i < 8; i += 1) {
-	bgSprites.push(loader.addImage('assets/bg/' + i + '.png'));
-}
-const fgSprites = [];
-for (let i = 1; i < 2; i += 1) {
-	fgSprites.push(loader.addImage('assets/fg/' + i + '.png'));
-}
-
-
-var jumpSound = new Audio();
-jumpSound.src ='assets/audio/jump.wav';
-
-var slideSound = new Audio();
-slideSound.src = 'assets/audio/slide.mp3';
-
-var clickSound = new Audio();
-clickSound.src = 'assets/audio/click.mp3';
-
-var gameOverSound = new Audio();
-gameOverSound.src = 'assets/audio/gameOver.wav'
-
-var bgMusic = new Audio();
-bgMusic.src = 'assets/audio/bgMusic.mp3';
-	bgMusic.volume = 0.3
-	bgMusic.loop = true;
-
-const audioArr = [jumpSound, slideSound, clickSound, gameOverSound, bgMusic]
-
-function play(audio){
-	audio.play()
-}
-loader.start();
-
-loader.addCompletionListener(() => {
-	mainMenuBlock.classList.toggle('hide')
-	bgRatio = bgSprites[0].naturalWidth / bgSprites[0].naturalHeight;
-})
-
 function muteMe(audio) {
 	if (pageMuted){
 		audio.muted = false;
@@ -129,7 +17,6 @@ function muteMe(audio) {
 	}
     
 }
-
 function mutePage() {
 	soundBtn.classList.toggle('soundBtnOff');
 	if (pageMuted){
@@ -141,13 +28,7 @@ function mutePage() {
 	}
 }
 
-var stopGame = false;
-var score = 0;
-var pause = false
-var gameOver = false
 
-Resize();
-updateAchives();
 
 highScoreBlock.innerText =  highScore;
 class Bg {
@@ -332,14 +213,14 @@ function slideBegin(){
 		player.slideing = true;
 		slideing += 1
 		if (slideing == 1) {
-			slideSound.play()
 			clearInterval(playerAnimate)
 			player.image = slideSprites[0]
 			setTimeout(() => {
 				player.image = slideSprites[1]
 			}, 20)
 			playerAnimate = setInterval(() => {
-				animate(player, slideSprites.slice(2, 6))
+        player.image = slideSprites[2]
+				animate(player, slideSprites.slice(3, 6))
 			}, 100)
 		}
 	}
@@ -430,26 +311,20 @@ function PlayButtonActivate() {
 	ResetGlobalVariables()
 	document.addEventListener("keydown", keyRightHandler, false);
 	document.addEventListener("keyup", keyLeftHandler, false);
-	mainMenuBlock.classList.toggle('hide')
-	pauseButton.classList.toggle('hide')
-	scoreBlock.classList.toggle('hide')
+	toggleHide(mainMenuBlock)
+	toggleHide(pauseButton)
+	toggleHide(scoreBlock)
 	controlBlock.style.opacity = 1;
 	setTimeout(() => controlBlock.style.opacity = 0, 2000)
 	Start()
-}
-function ShowCredits() {
-	creditsBlock.classList.toggle('hide')
-}
-function showAchives() {
-	achivesBlock.classList.toggle('hide')
 }
 
 function PauseToggle() {
 	stopGame ? Start() : Stop()
 	pause = pauseBlock.classList.contains('hide') ? true : false
-	pauseBlock.classList.toggle('hide')
-	scoreBlock.classList.toggle('hide')
-	pauseButton.classList.toggle('hide')
+	toggleHide(pauseBlock)
+	toggleHide(scoreBlock)
+	toggleHide(pauseButton)
 }
 function ResetGlobalVariables() {
 	objects = [];
@@ -488,9 +363,9 @@ function GameOver() {
 					setTimeout(()=>{
 						GameOverScoreBlock.innerText = 'Score: ' + score.toFixed(0)
 					
-					scoreBlock.classList.toggle('hide')
-					pauseButton.classList.toggle('hide')
-					gameOverBlock.classList.toggle('hide')
+					toggleHide(scoreBlock)
+					toggleHide(pauseButton)
+					toggleHide(gameOverBlock)
 					player.dead = false;
 					if (score > highScore){
 						HIandRecord.innerHTML = 'new record!'
@@ -517,14 +392,14 @@ function GameOver() {
 function Replay() {
 	if (gameOver) {
 		bgMusic.play()
-		gameOverBlock.classList.toggle('hide')
-		pauseButton.classList.toggle('hide')
-		scoreBlock.classList.toggle('hide')
+		toggleHide(gameOverBlock)
+		toggleHide(pauseButton)
+		toggleHide(scoreBlock)
 	}
 	if (pause) {
-		pauseBlock.classList.toggle('hide')
-		pauseButton.classList.toggle('hide')
-		scoreBlock.classList.toggle('hide')
+		toggleHide(pauseBlock)
+		toggleHide(pauseButton)
+		toggleHide(scoreBlock)
 	}
 	ResetGlobalVariables();
 	document.addEventListener("keydown", keyRightHandler, false);
@@ -533,16 +408,16 @@ function Replay() {
 }
 function GoToHome() {
 	if (pause) {
-		pauseBlock.classList.toggle('hide')
+		toggleHide(pauseBlock)
 	}
 	if (gameOver) {
-		gameOverBlock.classList.toggle('hide')
+		toggleHide(gameOverBlock)
 	}
 	bgMusic.pause();
 	bgMusic.currentTime = 0;
 	ResetGlobalVariables();
 	updateAchives()
-	mainMenuBlock.classList.toggle('hide')
+	toggleHide(mainMenuBlock)
 }
 function UpdateBg(index, arr = bg) {
 	arr[index].Update(arr[index + 1])
