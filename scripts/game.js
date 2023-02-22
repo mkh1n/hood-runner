@@ -548,7 +548,8 @@ function Draw() {
 
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	for (var i = 0; i < bg.length; i += 1) {
-		ctx.drawImage(
+    bg[i].image.addEventListener("load", 
+    ctx.drawImage(
 			bg[i].image,
 			0,
 			0,
@@ -558,12 +559,13 @@ function Draw() {
 			bg[i].y,
 			canvas.height * bgRatio,
 			canvas.height
-		);
+		));
 	}
 	for (var i = 0; i < objects.length; i++) {
 		DrawObject(objects[i])
 	}
   for (var i = 0; i < fg.length; i += 1) {
+    fg[i].image.addEventListener("load", 
 		ctx.drawImage(
 			fg[i].image,
 			0,
@@ -574,7 +576,7 @@ function Draw() {
 			fg[i].y,
 			canvas.height * bgRatio,
 			canvas.height
-		);
+		));
   }
 	DrawObject(player)
 
@@ -585,7 +587,7 @@ function DrawObject(object) {
 
 	var playerWidth = (canvas.height / 4) * (player.image.naturalWidth / player.image.naturalHeight);
 	var playerHeight = (canvas.height / 4) * (player.image.naturalWidth / player.image.naturalHeight);
-
+  object.image.addEventListener("load", 
 	ctx.drawImage
 		(
 			object.image,
@@ -593,7 +595,7 @@ function DrawObject(object) {
 			object.isPlayer ? object.y - jumpHeight : object.y,
 			object.isPlayer ? playerWidth : barrierWidth * object.sizeCoef,
 			object.isPlayer ? playerHeight : barrierHight * object.sizeCoef,
-		);
+		))
 }
 
 

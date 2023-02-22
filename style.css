@@ -342,7 +342,8 @@ main{
 	font-size: 25px;
 }
 
-.mainMenu, .credits, .achives{
+
+.mainBg{
 	font-family: 'pressStart2Play';
 	line-height: 2;
 	display: flex;
