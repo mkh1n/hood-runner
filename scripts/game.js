@@ -106,7 +106,7 @@ class GameObject {
 			if (this.x + playerWidth / 2.5 > object.x && this.x < object.x + barrierWidth * object.sizeCoef / 1.5) {
 				if (this.y - jumpHeight + playerHeight / 1.2 > object.y) {
 					var actualPlayerHigh = this.slideing ?  this.y + playerHeight / 2.2: this.y
-					if (actualPlayerHigh * 1.1 - jumpHeight < object.y + barrierHight * object.sizeCoef) {
+					if (actualPlayerHigh * 1.1 - jumpHeight < object.y + barrierHight  * object.sizeCoef ) {
 						hit = true;
 					}
 				}
@@ -339,9 +339,8 @@ function ResetGlobalVariables() {
 	rightPressed = false;
 	document.removeEventListener("keydown", keyRightHandler, false);
 	document.removeEventListener("keyup", keyLeftHandler, false);
-	ctx.webkitImageSmoothingEnabled = false;
-	ctx.mozImageSmoothingEnabled = false;
-	ctx.imageSmoothingEnabled = false;
+
+	
 }
 function GameOver() {
 	bgMusic.pause();
@@ -490,7 +489,7 @@ function Update() {
 						objects.at(-1).image = barriersSprites[randomBarrier - 1]
 						objects.at(-1).isLevitate = true
 						objects.at(-1).topBarrier = true
-						objects.at(-1).sizeCoef = 1.65;
+						objects.at(-1).sizeCoef = 1.8;
 						objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 1.11)
 						break;
 				}
@@ -545,7 +544,8 @@ function Update() {
 
 
 function Draw() {
-
+  ctx.imageSmoothingQuality = 'high'
+  ctx.imageSmoothingEnabled = true
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	for (var i = 0; i < bg.length; i += 1) {
     bg[i].image.addEventListener("load", 
@@ -561,6 +561,7 @@ function Draw() {
 			canvas.height
 		));
 	}
+
 	for (var i = 0; i < objects.length; i++) {
 		DrawObject(objects[i])
 	}
@@ -578,6 +579,8 @@ function Draw() {
 			canvas.height
 		));
   }
+  ctx.imageSmoothingEnabled = false
+
 	DrawObject(player)
 
 }
