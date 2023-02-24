@@ -20,7 +20,7 @@ var leftButtonsBlock = document.getElementsByClassName('leftButtonsBlock')[0]
 var loaderBlock = document.getElementsByClassName('loader')[0]
 
 
-
+var normalSpeed
 var speed;
 var bgRatio;
 var leftPressed = false;

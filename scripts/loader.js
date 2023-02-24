@@ -40,6 +40,12 @@ const fgSprites = [];
 for (let i = 1; i < 2; i += 1) {
 	fgSprites.push(loader.addImage('assets/fg/' + i + '.png'));
 }
+const CollectSprites  = [];
+CollectSprites.push(loader.addImage('assets/sprites/collect/shield.png'))
+CollectSprites.push(loader.addImage('assets/sprites/collect/shieldIcon.png'))
+CollectSprites.push(loader.addImage('assets/sprites/collect/boosterIcon.png'))
+
+
 
 
 var jumpSound = new Audio();
