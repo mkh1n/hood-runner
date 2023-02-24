@@ -629,13 +629,13 @@ main{
 	.leftButtonsBlock{
 		display: block;
 		position: absolute;
-		left: 20px;
+		left: 40px;
 		bottom: 20px;
 	}
 	.rightButtonsBlock{
 		display: block;
 		position: absolute;
-		right: 20px;
+		right: 40px;
 		bottom: 20px;
 	}
 	.controlBlock{

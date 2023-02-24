@@ -214,7 +214,9 @@ const bg = [
 
 const fg = [
   new Bg(fgSprites[0], 0, 0.3),
-  new Bg(fgSprites[0], canvas.height * bgRatio, 0.3)
+  new Bg(fgSprites[0], canvas.height * bgRatio, 0.3),
+  new Bg(fgSprites[1], 0, 1),
+  new Bg(fgSprites[1], canvas.height * bgRatio, 1)
 
 ]
 
@@ -604,7 +606,21 @@ function Draw() {
   for (var i = 0; i < objects.length; i++) {
     DrawObject(objects[i])
   }
-  for (var i = 0; i < fg.length; i += 1) {
+  ctx.imageSmoothingEnabled = false
+  DrawObject(player)
+  if (player.boost){
+    player.boostTimer += 1
+    player.shield = true;
+    if (player.boostTimer == 1){
+      normalSpeed = speed
+      speed = speed * 5
+      clearInterval(playerAnimate)
+      playerAnimate = setInterval(() => {
+        animate(player, runSprites)
+      }, 40)
+    }
+  }
+  for (var i = 0; i < (player.boost ? fg.length : fg.length - 2); i += 1) {
     fg[i].image.addEventListener("load",
       ctx.drawImage(
         fg[i].image,
@@ -618,17 +634,9 @@ function Draw() {
         canvas.height
       ));
   }
-  ctx.imageSmoothingEnabled = false
+  
 
-  DrawObject(player)
-  if (player.boost){
-    player.boostTimer += 1
-    player.shield = true;
-    if (player.boostTimer == 1){
-      normalSpeed = speed
-      speed = speed * 5
-    }
-  }
+  
 
   if (player.shield) {
     CollectObjects[0].x = player.x;
@@ -642,9 +650,14 @@ function Draw() {
         CollectObjects[0].image = new Image()
         DrawObject(CollectObjects[0])
         if (player.boost){
+          clearInterval(playerAnimate)
+          playerAnimate = setInterval(() => {
+            animate(player, runSprites)
+          }, 75)
           player.boost = false;
           speed = normalSpeed
           player.boostTimer = 0;
+         
         }
         setTimeout(() => {
           CollectObjects[0].image = CollectSprites[0]

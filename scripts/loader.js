@@ -37,7 +37,7 @@ for (let i = 1; i < 8; i += 1) {
 	bgSprites.push(loader.addImage('assets/bg/' + i + '.png'));
 }
 const fgSprites = [];
-for (let i = 1; i < 2; i += 1) {
+for (let i = 1; i < 3; i += 1) {
 	fgSprites.push(loader.addImage('assets/fg/' + i + '.png'));
 }
 const CollectSprites  = [];
