@@ -1,3 +1,10 @@
+YaGames
+    .init()
+    .then(ysdk => {
+        console.log('Yandex SDK initialized');
+        window.ysdk = ysdk;
+    });
+    YaGames.init().then(ysdk => ysdk.adv.showFullscreenAdv())
 
 window.addEventListener("resize", Resize);
 Resize();
@@ -518,12 +525,12 @@ function Update() {
             break;
           case 8:
             if (!objects.at(-1).isBooster && !player.boost && !objects.at(-1).isShield && !player.shield) {
-              if (RandomInteger(0, 100) > 50) {
+              if (RandomInteger(0, 100) > 70) {
                 objects.at(-1).image = CollectSprites[1]
                 objects.at(-1).isShield = true
                 objects.at(-1).sizeCoef = 0.5;
               }
-              if (RandomInteger(0, 100) > 50) {
+              if (RandomInteger(0, 100) > 70) {
                 objects.at(-1).image = CollectSprites[2]
                 objects.at(-1).isBooster = true
                 objects.at(-1).sizeCoef = 0.7;
