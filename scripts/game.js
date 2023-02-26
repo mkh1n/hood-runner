@@ -409,6 +409,18 @@ function GameOver() {
             }
             highScoreBlock.innerText = highScore;
             updateAchives()
+
+            ysdk.adv.showFullscreenAdv({
+              callbacks: {
+                  onClose: function(wasShown) {
+                    // some action after close
+                  },
+                  onError: function(error) {
+                    // some action on error
+                  }
+              }
+            })
+
           }, 80)
         }, 50)
       }, 50)

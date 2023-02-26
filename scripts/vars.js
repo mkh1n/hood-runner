@@ -42,4 +42,6 @@ var score = 0;
 var pause = false
 var gameOver = false
 
+var player;
+
 const toggleHide = (block) => block.classList.toggle('hide')
