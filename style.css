@@ -991,6 +991,9 @@ margin-right: 10px;}
   .storeBack{
     height: 85%;
   }
+  .store-return-btn {
+    position: absolute;
+    bottom: 0px;}
   .hide {
     display: none;
   }

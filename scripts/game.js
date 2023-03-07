@@ -6,9 +6,9 @@ updateUpgrades()
 
 function muteMe(audio) {
   if (pageMuted) {
-    audio.muted = false;
+    audio.mute(false);
   } else {
-    audio.muted = true;
+    audio.mute(true);
   }
 
 }
@@ -32,10 +32,10 @@ function autoMute(){
 }
 
 function soundOn() {
-    [].forEach.call(audioArr, function (elem) { elem.muted = false; });
+    [].forEach.call(audioArr, function (elem) { elem.mute(false); });
 }
 function soundOff() {
-  [].forEach.call(audioArr, function (elem) { elem.muted = true; });
+  [].forEach.call(audioArr, function (elem) { elem.mute(true); });
 }
 
 
@@ -396,10 +396,10 @@ function payForLife(){
   if (+myCoins >= 100){
     myCoins = +myCoins - 100;
     localStorage.setItem('myCoins', myCoins);
-    play(coinSound)
+    coinSound.play()
     saveMe()
   }else{
-    play(notEnough)
+    notEnough.play()
   }
 }
 function Upgrade(boost){
@@ -411,10 +411,10 @@ function Upgrade(boost){
       localStorage.setItem('myCoins', myCoins);
       storeCoinsText.innerText = +myCoins;
       mainCoinBlock.innerText = localStorage.getItem('myCoins');
-      play(coinSound)
+      coinSound.play()
       updateUpgrades()
     }else{
-      play(notEnough)
+      notEnough.play()
     }
   }else{
     if (+boosterCost.innerText <= +myCoins && +boosterLevel < 4){
@@ -424,19 +424,15 @@ function Upgrade(boost){
       localStorage.setItem('myCoins', myCoins);
       storeCoinsText.innerText = +myCoins;
       mainCoinBlock.innerText = localStorage.getItem('myCoins');
-      play(coinSound)
+      coinSound.play()
       updateUpgrades()
     }else{
-      play(notEnough)
+      notEnough.play()
     }
   }
 }
 
 function PlayButtonActivate() {
-  navigator.mediaSession.metadata = new MediaMetadata({});
-  var aud = new Audio("assets/audio/silence.mp3");
-  aud.loop = true;
-  aud.play()
   ResetGlobalVariables()
   
   document.addEventListener("keydown", keyRightHandler, false);

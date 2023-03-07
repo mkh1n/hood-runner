@@ -62,36 +62,57 @@ CollectSprites.push(loader.addImage('assets/sprites/collect/shieldIcon.png'));
 CollectSprites.push(loader.addImage('assets/sprites/collect/boosterIcon.png'));
 CollectSprites.push(loader.addImage('assets/sprites/collect/coin.png'))
 
-var clickSound = new Audio();
-clickSound.src = 'assets/audio/click.mp3';
-clickSound.volume = 0.4
+var audioArr = []
 
-var gameOverSound = new Audio();
-gameOverSound.src = 'assets/audio/gameOver.wav'
+var bgMusic = new Howl({
+  src: ['assets/audio/bgMusic.mp3'],
+  html5: true,
+  loop: true,
+  volume: 0.05
+});
+audioArr.push(bgMusic)
 
-var storeSound = new Audio();
-storeSound.src = 'assets/audio/store.mp3'
-storeSound.volume = 0.1
+var clickSound = new Howl({
+  src: ['assets/audio/click.mp3'],
+  autoplay: true,
+  html5: true,
+  volume: 0.4
+});
+audioArr.push(clickSound)
 
-var coinSound = new Audio();
-coinSound.src = 'assets/audio/coin.mp3'
-coinSound.volume = 0.6
+var notEnough = new Howl({
+  src: ['assets/audio/notEnough.mp3'],
+  autoplay: true,
+  html5: true,
+  volume: 0.4
+});
+audioArr.push(notEnough)
 
-var notEnough = new Audio();
-notEnough.src = 'assets/audio/notEnough.mp3'
-notEnough.volume = 0.6
 
+var coinSound  = new Howl({
+  src: ['assets/audio/coin.mp3'],
+  autoplay: true,
+  html5: true,
+  volume: 0.6
+});
+audioArr.push(coinSound)
 
-var bgMusic = new Audio();
-bgMusic.src = 'assets/audio/bgMusic.mp3';
-bgMusic.volume = 0.05
-bgMusic.loop = true;
+var gameOverSound  = new Howl({
+  src: ['assets/audio/gameOver.wav'],
+  autoplay: true,
+  html5: true,
+  volume: 0.8
+});
+audioArr.push(gameOverSound)
 
-const audioArr = [clickSound, gameOverSound, bgMusic, coinSound, storeSound, notEnough]
+var storeSound  = new Howl({
+  src: ['assets/audio/store.mp3'],
+  autoplay: true,
+  html5: true,
+  volume: 0.1
+});
+audioArr.push(storeSound)
 
-function play(audio){
-	audio.play()
-}
 loader.start();
 
 if ('mediaSession' in navigator) {

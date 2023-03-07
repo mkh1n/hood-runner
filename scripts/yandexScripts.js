@@ -39,7 +39,7 @@ const addCoins = () => {
   storeCoinsText.innerText = Number(myCoins);
   mainCoinBlock.innerText = Number(myCoins);
 
-  play(coinSound)
+  coinSound.play()
 }
 
 const saveMe = () => {
