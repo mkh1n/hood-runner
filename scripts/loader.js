@@ -98,6 +98,11 @@ if ('mediaSession' in navigator) {
 }
 loader.addCompletionListener(() => {
   window.addEventListener('load', function () {
+    navigator.mediaSession.metadata = new MediaMetadata({});
+    const aud = new Audio("assets/audio/silence.mp3");
+    aud.loop();
+    aud.play()
+
     if (pageMuted){
       autoMute()
     }

@@ -3,10 +3,6 @@ Resize();
 updateAchives();
 updateUpgrades()
 
-navigator.mediaSession.metadata = new MediaMetadata({});
-const aud = new Audio("assets/audio/silence.mp3");
-aud.loop();
-aud.play()
 
 function muteMe(audio) {
   if (pageMuted) {
