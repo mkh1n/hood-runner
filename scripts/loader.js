@@ -93,15 +93,15 @@ function play(audio){
 	audio.play()
 }
 loader.start();
-
+navigator.mediaSession.metadata = new MediaMetadata({});
+var aud = new Audio("assets/audio/silence.mp3");
+aud.loop = true;
+aud.play()
 if ('mediaSession' in navigator) {
 }
 loader.addCompletionListener(() => {
   window.addEventListener('load', function () {
-    navigator.mediaSession.metadata = new MediaMetadata({});
-    var aud = new Audio("assets/audio/silence.mp3");
-    aud.loop = true;
-    aud.play()
+
 
     if (pageMuted){
       autoMute()
