@@ -1,14 +1,9 @@
-
 window.addEventListener("resize", Resize);
 Resize();
 updateAchives();
+updateUpgrades()
 
-/*localStorage.clear('HI');
-localStorage.clear('slides');
 
-localStorage.clear('deaths');
-
-localStorage.clear('jumps');*/
 function muteMe(audio) {
   if (pageMuted) {
     audio.muted = false;
@@ -17,20 +12,37 @@ function muteMe(audio) {
   }
 
 }
+
 function mutePage() {
   soundBtn.classList.toggle('soundBtnOff');
   if (pageMuted) {
     [].forEach.call(audioArr, function (elem) { muteMe(elem); });
     pageMuted = false
+    localStorage.setItem('pageMuted', '')
   } else {
     [].forEach.call(audioArr, function (elem) { muteMe(elem); });
     pageMuted = true
+    localStorage.setItem('pageMuted', 'true')
   }
+}
+function autoMute(){
+  soundBtn.classList.toggle('soundBtnOff');
+  soundOff()
+
+}
+
+function soundOn() {
+    [].forEach.call(audioArr, function (elem) { elem.muted = false; });
+}
+function soundOff() {
+  [].forEach.call(audioArr, function (elem) { elem.muted = true; });
 }
 
 
-
 highScoreBlock.innerText = highScore;
+mainCoinBlock.innerText = myCoins;
+
+
 class Bg {
   constructor(image, x, layer) {
     this.x = x;
@@ -57,7 +69,7 @@ class GameObject {
     this.isPlayer = isPlayer
     this.image = image
     this.speed = speed
-    
+
     this.isShield = false;
     this.isBooster = false;
     this.randDist = RandomInteger(-speed * 2, speed * 2);
@@ -74,7 +86,7 @@ class GameObject {
 
   }
   Update() {
-    var barrierWidth = (canvas.height / 4.5) * (this.image.width / this.image.height)
+    var barrierWidth = (canvas.height / 5) * (this.image.width / this.image.height)
 
     if (!this.isPlayer) {
       if (this.isLevitate) {
@@ -83,7 +95,8 @@ class GameObject {
         this.y += this.levitateHeight
       }
 
-      if ((!this.topBarrier && this.x < - 1.5 * barrierWidth) || (this.topBarrier && this.x < - 5 * barrierWidth) || this.y < -500) {
+      if (((!this.topBarrier && this.x < - 1.5 * barrierWidth) || (this.topBarrier && this.x < - 5 * barrierWidth) || this.y < -500) && !this.kicked || 
+      (this.kicked && this.x <= -5*canvas.width) || (this.kicked && this.y <= -5*canvas.height)) {
         this.dead = true;
       }
       if (this.kicked) {
@@ -97,12 +110,10 @@ class GameObject {
     }
   }
   Collide(object) {
-    var barrierWidth = (canvas.height / 3)
-    var barrierHight = (canvas.height / 3) / (object.image.naturalWidth / object.image.naturalHeight)
-
-    var playerWidth = (canvas.height / 4) * (player.image.naturalWidth / player.image.naturalHeight);
-    var playerHeight = (canvas.height / 4) * (player.image.naturalWidth / player.image.naturalHeight);
-
+    var playerWidth = (canvas.height / 5) * (player.image.naturalWidth / player.image.naturalHeight);
+var playerHeight = (canvas.height / 5) * (player.image.naturalWidth / player.image.naturalHeight);
+    var barrierWidth = (canvas.height / 3.5)
+    var barrierHight = (canvas.height / 3.5) / (object.image.naturalWidth / object.image.naturalHeight)
     var hit = false;
 
     if (object.topBarrier) {
@@ -113,7 +124,7 @@ class GameObject {
             if (player.shield) {
               object.kicked = true;
             } else {
-            hit = true;
+              hit = true;
             }
           }
         }
@@ -123,19 +134,39 @@ class GameObject {
       if (this.x + playerWidth / 1.5 > object.x && this.x < object.x + barrierWidth / 1.5) {
         if (this.y - jumpHeight + playerHeight > object.y * 1.1 && this.y - jumpHeight < object.y + barrierHight * object.sizeCoef) {
           if (player.shield) {
-            object.kicked = true;
+            if (object.isCoin) {
+              
+              if(!object.kicked){
+                coins += 1;
+              }
+              object.kicked = true;              
+            }else{
+              object.kicked = true;
+
+            }
           } else {
             if (object.isShield) {
               player.shield = true;
-              object.dead = true
-            } 
+              activeTime = shieldLevel * 82;
+
+              object.image = new Image
+            }
             if (object.isBooster) {
               player.boost = true;
-              object.dead = true
+              activeTime = boosterLevel * 82;
+              object.image = new Image
             }
-            if(!object.isBooster && !object.isShield)
+            if (object.isCoin) {
+              if(!object.kicked){
+                coins += 1;
+              }
+              object.kicked = true;
+              console.log(coins)
+              
+            }
+            if (!object.isBooster && !object.isShield && !object.isCoin)
               hit = true;
-            }
+          }
         }
       }
     }
@@ -145,8 +176,8 @@ class GameObject {
 
 
 
-var player = new GameObject(runSprites[0], 50,
-  canvas.height - (wrapperBlock.offsetHeight / 2.2), true)
+var player = new GameObject(runSprites[0], 0.2 * canvas.width, canvas.height - (wrapperBlock.offsetHeight / 2.5), true)
+
 
 var objects = [];
 function animate(object, spritesArr) {
@@ -172,8 +203,8 @@ function Move() {
     player.x -= speed;
   }
   if (jumping) { //прыжок
-    jumpCount += 1.2 + (speed / 1800);
-    jumpHeight = (canvas.height / 110) * jumpLength * Math.sin(Math.PI * jumpCount / jumpLength);
+    jumpCount += speed / (canvas.height / 75);
+    jumpHeight = (canvas.height / 125) * jumpLength * Math.sin(Math.PI * jumpCount / jumpLength);
 
   }
   if (jumpCount > jumpLength) { //приземление после прыжка
@@ -193,23 +224,26 @@ const bg = [
   new Bg(bgSprites[0], 0, 0.1),
   new Bg(bgSprites[0], canvas.height * bgRatio, 0.1),
 
-  new Bg(bgSprites[1], 0, 0.2),
-  new Bg(bgSprites[1], canvas.height * bgRatio, 0.2),
+  new Bg(bgSprites[1], 0, 0.15),
+  new Bg(bgSprites[1], canvas.height * bgRatio, 0.15),
 
-  new Bg(bgSprites[2], 0, 0.3),
-  new Bg(bgSprites[2], canvas.height * bgRatio, 0.3),
+  new Bg(bgSprites[2], 0, 0.25),
+  new Bg(bgSprites[2], canvas.height * bgRatio, 0.25),
 
-  new Bg(bgSprites[6], 0, 0.4),
-  new Bg(bgSprites[6], canvas.height * bgRatio, 0.4),
+  new Bg(bgSprites[3], 0, 0.3),
+  new Bg(bgSprites[3], canvas.height * bgRatio, 0.3),
 
-  new Bg(bgSprites[3], 0, 0.6),
-  new Bg(bgSprites[3], canvas.height * bgRatio, 0.6),
+  new Bg(bgSprites[7], 0, 0.4),
+  new Bg(bgSprites[7], canvas.height * bgRatio, 0.4),
 
-  new Bg(bgSprites[4], 0, 1),
-  new Bg(bgSprites[4], canvas.height * bgRatio, 1),
+  new Bg(bgSprites[4], 0, 0.6),
+  new Bg(bgSprites[4], canvas.height * bgRatio, 0.6),
 
-  new Bg(bgSprites[5], 0, 1.2),
-  new Bg(bgSprites[5], canvas.height * bgRatio, 1.2)
+  new Bg(bgSprites[5], 0, 1),
+  new Bg(bgSprites[5], canvas.height * bgRatio, 1),
+
+  new Bg(bgSprites[6], 0, 1.2),
+  new Bg(bgSprites[6], canvas.height * bgRatio, 1.2)
 ]
 
 const fg = [
@@ -285,10 +319,6 @@ function keyRightHandler(e) {
   if (e.keyCode == 27 && !gameOver) { //pause
     PauseToggle()
   }
-  if (e.keyCode == 81) { //pause
-    player.boost = true
-  }
-
 }
 
 function keyLeftHandler(e) {
@@ -308,17 +338,20 @@ function keyLeftHandler(e) {
 }
 function updateAchives() {
   const achives = {
-    0: highScore > 99,
-    1: highScore > 281,
-    2: highScore > 349,
-    3: highScore > 499,
-    4: highScore > 999,
-    5: numberOfDeaths > 7,
-    6: numberOfDeaths > 26,
-    7: numberOfDeaths > 41,
-    8: numberOfDeaths > 99,
-    9: numberOfJumps > 500,
-    10: numberOfslides > 300,
+    0: highScore >= 100,
+    1: highScore >= 300,
+    2: highScore >= 500,
+    3: highScore >= 700,
+    4: highScore >= 1000,
+    5: numberOfDeaths >= 8,
+    6: numberOfDeaths >= 27,
+    7: numberOfDeaths >= 42,
+    8: numberOfDeaths >= 100,
+    9: numberOfJumps >= 500,
+    10: numberOfslides >= 300,
+    11: shieldLevel >= 4,
+    12: boosterLevel >= 4,
+    13: myCoins >= 1000
   }
   var unlockCount = 0
   for (var i = 0; i < achivesBlocks.length - 1; i += 1) {
@@ -335,13 +368,81 @@ function updateAchives() {
   document.getElementById('numberOfslidesBlock').innerHTML = 'Slides: ' + numberOfslides
 
 }
+
+function updateUpgrades(){
+  for (let i = 0; i < shieldLevel; i+=1){
+    shieldLevels[i].classList.add('activeLevel')
+  }
+  for (let i = 0; i < boosterLevel; i+=1){
+    boosterLevels[i].classList.add('activeLevel')
+  }
+  if (shieldLevel < 4){
+    shieldCost.innerHTML = shieldLevel * 150;
+  }else{
+    shieldCost.innerHTML = 'MAX'
+    document.getElementsByClassName('upgradeCoinImg')[0].classList.add('hide')
+
+  }
+  if (boosterLevel < 4){
+    boosterCost.innerHTML = boosterLevel * 150;
+  }else{
+    boosterCost.innerHTML = 'MAX'
+    document.getElementsByClassName('upgradeCoinImg')[1].classList.add('hide')
+  }
+}
+//localStorage.clear()
+//localStorage.setItem('myCoins', 10000);
+function payForLife(){
+  if (+myCoins >= 100){
+    myCoins = +myCoins - 100;
+    localStorage.setItem('myCoins', myCoins);
+    play(coinSound)
+    saveMe()
+  }else{
+    play(notEnough)
+  }
+}
+function Upgrade(boost){
+  if (boost == 'shield'){
+    if (+shieldCost.innerText <= +myCoins && +shieldLevel < 4){
+      myCoins = +myCoins - +shieldCost.innerText;
+      shieldLevel = +shieldLevel + 1
+      localStorage.setItem('shieldLevel', shieldLevel);
+      localStorage.setItem('myCoins', myCoins);
+      storeCoinsText.innerText = +myCoins;
+      mainCoinBlock.innerText = localStorage.getItem('myCoins');
+      play(coinSound)
+      updateUpgrades()
+    }else{
+      play(notEnough)
+    }
+  }else{
+    if (+boosterCost.innerText <= +myCoins && +boosterLevel < 4){
+      myCoins = +myCoins - +boosterCost.innerText;
+      boosterLevel = +boosterLevel + 1
+      localStorage.setItem('boosterLevel', boosterLevel);
+      localStorage.setItem('myCoins', myCoins);
+      storeCoinsText.innerText = +myCoins;
+      mainCoinBlock.innerText = localStorage.getItem('myCoins');
+      play(coinSound)
+      updateUpgrades()
+    }else{
+      play(notEnough)
+    }
+  }
+}
+
 function PlayButtonActivate() {
   ResetGlobalVariables()
+  
   document.addEventListener("keydown", keyRightHandler, false);
   document.addEventListener("keyup", keyLeftHandler, false);
   toggleHide(mainMenuBlock)
   toggleHide(pauseButton)
   toggleHide(scoreBlock)
+  toggleHide(coinsBlock)
+  saveMeBlock.classList.remove('hide')
+
   controlBlock.style.opacity = 1;
   setTimeout(() => controlBlock.style.opacity = 0, 2000)
   Start()
@@ -352,16 +453,22 @@ function PauseToggle() {
   pause = pauseBlock.classList.contains('hide') ? true : false
   toggleHide(pauseBlock)
   toggleHide(scoreBlock)
+  toggleHide(coinsBlock)
   toggleHide(pauseButton)
 }
 function ResetGlobalVariables() {
   objects = [];
-  player.x = 0.1 * canvas.width;
+  coins = 0;
+  player.x = 0.2 * canvas.width;
   gameOver = false;
   pause = false;
+  player.rise = false
+  player.shield = false;
+  player.boostTimer = 0;
+  player.boost = false;
   player.dead = false;
   speed = canvas.clientWidth / 115;
-  player.y = canvas.height - (wrapperBlock.offsetHeight / 2.2)
+  player.y = canvas.height - (wrapperBlock.offsetHeight / 2.5)
   score = 0;
   leftPressed = false;
   rightPressed = false;
@@ -371,6 +478,8 @@ function ResetGlobalVariables() {
 
 }
 function GameOver() {
+  player.shieldTimer = 0;
+  player.boostTimer = 0;
   bgMusic.pause();
   bgMusic.currentTime = 0;
   Stop()
@@ -390,18 +499,23 @@ function GameOver() {
           setTimeout(() => {
             GameOverScoreBlock.innerText = 'Score: ' + score.toFixed(0)
             toggleHide(scoreBlock)
+            toggleHide(coinsBlock)
             toggleHide(pauseButton)
             toggleHide(gameOverBlock)
+            gameOverCoinsBlock.innerText = Number(localStorage.getItem('myCoins')) + Number(coins);
             player.dead = false;
+            showFullAdd()
             if (score > highScore) {
               HIandRecord.innerHTML = 'new record!'
               highScore = Number(score.toFixed(0));
               localStorage.setItem('HI', score.toFixed(0))
             } else {
-              HIandRecord.innerText = 'HI: ' + highScore;
+              HIandRecord.innerText = 'HighScore: ' + highScore;
             }
-            highScoreBlock.innerText = highScore;
-            updateAchives()
+            if (player.rise){
+              saveMeBlock.classList.add('hide')
+            }
+            updateAchives();
           }, 80)
         }, 50)
       }, 50)
@@ -415,15 +529,23 @@ function GameOver() {
 
 function Replay() {
   if (gameOver) {
+    localStorage.setItem('myCoins', Number(localStorage.getItem('myCoins')) + Number(coins))
+    mainCoinBlock.innerText = localStorage.getItem('myCoins');
     bgMusic.play()
     toggleHide(gameOverBlock)
     toggleHide(pauseButton)
     toggleHide(scoreBlock)
+    toggleHide(coinsBlock)
+    saveMeBlock.classList.remove('hide')
+
+
   }
   if (pause) {
     toggleHide(pauseBlock)
     toggleHide(pauseButton)
     toggleHide(scoreBlock)
+    toggleHide(coinsBlock)
+
   }
   ResetGlobalVariables();
   document.addEventListener("keydown", keyRightHandler, false);
@@ -431,16 +553,23 @@ function Replay() {
   Start()
 }
 function GoToHome() {
+  
   if (pause) {
     toggleHide(pauseBlock)
   }
   if (gameOver) {
+    localStorage.setItem('myCoins', Number(localStorage.getItem('myCoins')) + Number(coins))
+    mainCoinBlock.innerText = localStorage.getItem('myCoins');
     toggleHide(gameOverBlock)
+    
   }
+  
   bgMusic.pause();
   bgMusic.currentTime = 0;
+  highScoreBlock.innerText = highScore;
   ResetGlobalVariables();
   updateAchives()
+  updateUpgrades()
   toggleHide(mainMenuBlock)
 }
 function UpdateBg(index, arr = bg) {
@@ -448,9 +577,10 @@ function UpdateBg(index, arr = bg) {
   arr[index + 1].Update(arr[index])
 }
 
-function showScore() {
+function showScoreAndCoins() {
   score += 0.12
-  scoreBlock.innerText = "Score: " + score.toFixed(0)
+  scoreBlock.innerText = '0'.repeat(4 - String(score.toFixed(0).length)) + String(score.toFixed(0));
+  coinsText.innerText = '0'.repeat(3 - String(coins).length) + coins
 }
 
 function Start() {
@@ -464,12 +594,30 @@ function Start() {
 function Stop() {
   stopGame = true;
 }
-function Update() {
+function pushRandomCoin(pos, newCoin = true) {
+  let x;
+  let y;
+  if (RandomInteger(1, 4) >= 2) {
+    if (RandomInteger(0, 1) == 1){
+      x = 4 * canvas.width / 3;
+      y = pos == 'top' ? canvas.height - (wrapperBlock.offsetHeight / 1.4) : canvas.height - (wrapperBlock.offsetHeight / 3.1)
 
+    }else{
+      x = 4 * canvas.width / 2;
+      y = canvas.height - (wrapperBlock.offsetHeight / 3.1);
+    }
+    if (newCoin){
+      objects.push(new GameObject(barriersSprites[0], x , y, false));
+    }
+    objects.at(-1).image = CollectSprites[3]
+    objects.at(-1).isCoin = true;
+    objects.at(-1).sizeCoef = 0.3;
+  }
+}
+function Update() {
   if (stopGame) {
     return;
   }
-
   frame = requestAnimationFrame(Update);
 
   now = Date.now();
@@ -482,32 +630,37 @@ function Update() {
       UpdateBg(i)
     }
 
-
-    if (RandomInteger(0, 100) > 95) {
+    if (RandomInteger(0, speed * 1.1) > speed) {
       if (objects.length == 0 || objects.at(-1).x < canvas.width - 100) {
-        objects.push(new GameObject(barriersSprites[0], 4 * canvas.width / 3, canvas.height - (wrapperBlock.offsetHeight / 2.5), false));
+        objects.push(new GameObject(barriersSprites[0], 4 * canvas.width / 3.1, canvas.height - (wrapperBlock.offsetHeight / 2.7), false));
         var randomBarrier = RandomInteger(1, 8)
         switch (randomBarrier) {
           case 1:
             objects.at(-1).image = barriersSprites[randomBarrier - 1]
+            pushRandomCoin('top')
             break;
           case 2:
             objects.at(-1).image = barriersSprites[randomBarrier - 1]
+            pushRandomCoin('top')
             break;
           case 3:
             objects.at(-1).image = barriersSprites[randomBarrier - 1]
+            pushRandomCoin('top')
             break;
           case 4:
             objects.at(-1).image = barriersSprites[randomBarrier - 1]
-            objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 2.2)
+            objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 2.35)
+            pushRandomCoin('top')
             break;
           case 5:
             objects.at(-1).image = barriersSprites[randomBarrier - 1]
             objects.at(-1).topBarrier = true
-            objects.at(-1).y = canvas.height - (canvas.height / 2.25) / (objects.at(-1).image.naturalWidth / objects.at(-1).image.naturalHeight)
+            objects.at(-1).y = canvas.height - (canvas.height / 2.58) / (objects.at(-1).image.naturalWidth / objects.at(-1).image.naturalHeight);
+            pushRandomCoin('bottom')
             break;
           case 6:
             objects.at(-1).image = barriersSprites[randomBarrier - 1]
+            pushRandomCoin('top')
             break;
           case 7:
             objects.at(-1).image = barriersSprites[randomBarrier - 1]
@@ -515,18 +668,21 @@ function Update() {
             objects.at(-1).topBarrier = true
             objects.at(-1).sizeCoef = 1.7;
             objects.at(-1).y = canvas.height - (wrapperBlock.offsetHeight / 1.11)
+            pushRandomCoin('bottom')
             break;
           case 8:
             if (!objects.at(-1).isBooster && !player.boost && !objects.at(-1).isShield && !player.shield) {
-              if (RandomInteger(0, 100) > 50) {
+              if (RandomInteger(0, 100) > 70) {
                 objects.at(-1).image = CollectSprites[1]
                 objects.at(-1).isShield = true
                 objects.at(-1).sizeCoef = 0.5;
+                objects.at(-1).y = (RandomInteger(0, 1) == 1) ? canvas.height - (wrapperBlock.offsetHeight / 2.5) : canvas.height - (wrapperBlock.offsetHeight / 1.3)
               }
-              if (RandomInteger(0, 100) > 50) {
+              if (RandomInteger(0, 100) > 70) {
                 objects.at(-1).image = CollectSprites[2]
                 objects.at(-1).isBooster = true
-                objects.at(-1).sizeCoef = 0.7;
+                objects.at(-1).sizeCoef = 0.5;
+                objects.at(-1).y = (RandomInteger(0, 1) == 1) ? canvas.height - (wrapperBlock.offsetHeight / 2.5) : canvas.height - (wrapperBlock.offsetHeight / 1.3)
               }
               break;
             }
@@ -579,7 +735,7 @@ function Update() {
 
     Draw();
     Move();
-    showScore()
+    showScoreAndCoins()
   }
 }
 
@@ -608,16 +764,16 @@ function Draw() {
   }
   ctx.imageSmoothingEnabled = false
   DrawObject(player)
-  if (player.boost){
-    player.boostTimer += 1
-    player.shield = true;
-    if (player.boostTimer == 1){
-      normalSpeed = speed
-      speed = speed * 5
+  if (player.boost) {
+    if (player.boostTimer == 0) {
       clearInterval(playerAnimate)
       playerAnimate = setInterval(() => {
         animate(player, runSprites)
-      }, 40)
+      }, 30)
+      player.boostTimer += 1
+      player.shield = true;
+      normalSpeed = speed
+      speed = speed * 5
     }
   }
   for (var i = 0; i < (player.boost ? fg.length : fg.length - 2); i += 1) {
@@ -634,22 +790,21 @@ function Draw() {
         canvas.height
       ));
   }
-  
 
-  
+
 
   if (player.shield) {
     CollectObjects[0].x = player.x;
     CollectObjects[0].y = player.y - jumpHeight
     player.shieldTimer += 1
-    if (player.boost){
+    if (player.boost) {
       score += 0.12
     }
-    if (player.shieldTimer == 300) {
+    if (player.shieldTimer == activeTime) {
       setTimeout(() => {
         CollectObjects[0].image = new Image()
         DrawObject(CollectObjects[0])
-        if (player.boost){
+        if (player.boost) {
           clearInterval(playerAnimate)
           playerAnimate = setInterval(() => {
             animate(player, runSprites)
@@ -657,7 +812,7 @@ function Draw() {
           player.boost = false;
           speed = normalSpeed
           player.boostTimer = 0;
-         
+
         }
         setTimeout(() => {
           CollectObjects[0].image = CollectSprites[0]
@@ -694,6 +849,64 @@ function Draw() {
                               DrawObject(CollectObjects[0])
                               player.shield = false;
                               player.shieldTimer = 0;
+                              setTimeout(() => {
+                                CollectObjects[0].image = new Image()
+                                DrawObject(CollectObjects[0])
+                                setTimeout(() => {
+                                  CollectObjects[0].image = CollectSprites[0]
+                                  DrawObject(CollectObjects[0])
+                                  setTimeout(() => {
+                                    CollectObjects[0].image = new Image()
+                                    DrawObject(CollectObjects[0])
+                                    setTimeout(() => {
+                                      CollectObjects[0].image = CollectSprites[0]
+                                      DrawObject(CollectObjects[0])
+                                      setTimeout(() => {
+                                        CollectObjects[0].image = new Image()
+                                        DrawObject(CollectObjects[0])
+                                        setTimeout(() => {
+                                          CollectObjects[0].image = CollectSprites[0]
+                                          DrawObject(CollectObjects[0])
+                                          setTimeout(() => {
+                                            CollectObjects[0].image = new Image()
+                                            DrawObject(CollectObjects[0])
+                                            setTimeout(() => {
+                                              CollectObjects[0].image = CollectSprites[0]
+                                              DrawObject(CollectObjects[0])
+                                              setTimeout(() => {
+                                                CollectObjects[0].image = new Image()
+                                                DrawObject(CollectObjects[0])
+                                                setTimeout(() => {
+                                                  CollectObjects[0].image = CollectSprites[0]
+                                                  DrawObject(CollectObjects[0])
+                                                  setTimeout(() => {
+                                                    CollectObjects[0].image = new Image()
+                                                    DrawObject(CollectObjects[0])
+                                                    setTimeout(() => {
+                                                      CollectObjects[0].image = CollectSprites[0]
+                                                      DrawObject(CollectObjects[0])
+                                                      setTimeout(() => {
+                                                        CollectObjects[0].image = new Image()
+                                                        DrawObject(CollectObjects[0])
+                                                        setTimeout(() => {
+                                                          CollectObjects[0].image = CollectSprites[0]
+                                                          DrawObject(CollectObjects[0])
+                                                          player.shield = false;
+                                                          player.shieldTimer = 0;
+                                                        }, 50)
+                                                      }, 50)
+                                                    }, 50)
+                                                  }, 50)
+                                                }, 50)
+                                              }, 50)
+                                            }, 50)
+                                          }, 50)
+                                        }, 50)
+                                      }, 50)
+                                    }, 50)
+                                  }, 50)
+                                }, 50)
+                              }, 50)
                             }, 50)
                           }, 50)
                         }, 50)
@@ -713,11 +926,10 @@ function Draw() {
 
 }
 function DrawObject(object) {
-  var barrierWidth = (canvas.height / 3)
-  var barrierHight = (canvas.height / 3) / (object.image.naturalWidth / object.image.naturalHeight)
-
-  var playerWidth = (canvas.height / 4) * (player.image.naturalWidth / player.image.naturalHeight);
-  var playerHeight = (canvas.height / 4) * (player.image.naturalWidth / player.image.naturalHeight);
+  var playerWidth = (canvas.height / 5) * (player.image.naturalWidth / player.image.naturalHeight);
+  var playerHeight = (canvas.height / 5) * (player.image.naturalWidth / player.image.naturalHeight);
+  var barrierWidth = (canvas.height / 3.5)
+  var barrierHight = (canvas.height / 3.5) / (object.image.naturalWidth / object.image.naturalHeight)
   object.image.addEventListener("load",
     ctx.drawImage
       (
@@ -740,3 +952,17 @@ function RandomInteger(min, max) {
   let rand = min - 0.5 + Math.random() * (max - min + 1);
   return Math.round(rand);
 }
+
+window.onfocus = function()
+{
+  if (!pageMuted){
+    soundOn()
+  }
+}
+window.onblur = function()
+{
+  soundOff()
+} 
+
+
+

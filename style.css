@@ -1,6 +1,6 @@
 @font-face {
-	font-family: 'pressStart2Play'; 
-	src: url('assets/fonts/PressStart2P-Regular.ttf') 
+	font-family: 'pixelFlag'; 
+	src: url('assets/fonts/000webfont1.ttf') 
 }
 
 @font-face {
@@ -24,7 +24,7 @@ html {
 	width: 100%;
 	height: 100%;
 	background-color: black;
-	font-family: 'pressStart2Play';
+	font-family: 'pixelFlag';
 	color: #fff;
 	overflow: hidden;
 	margin: 0;
@@ -162,8 +162,8 @@ main{
 .screenRatio{
 	padding: 0;
 	margin: 0;
-	width: 80%;
-	height: 70%;
+	width: 100%;
+	height: 100%;
 }
 .insideScreenRatio{
 	padding: 20px;
@@ -192,12 +192,13 @@ main{
 	align-items: center;
 	justify-content: center;
 	position: absolute;
+  font-size: 30px;
 	background-color: rgba(47, 31, 46, 0.55);
 	border-radius: 10px 10px;
 	opacity: 0;
 	top: 30%;
 	left: 50%; 
-	padding: 30px;
+	padding: 20px;
 	box-sizing: border-box;
   	transform: translate(-50%, -50%);
 	transition: 1s;
@@ -206,7 +207,7 @@ main{
 	
 	height: 45px;
 	width: 45px;
-	margin: 10px;
+	margin: 4px;
 	image-rendering: pixelated;
 }
 .mobileControlButt{
@@ -227,7 +228,7 @@ main{
 .pause,
 .gameOver,
 .mainMenu, 
-.credits, .tutorial, .achives{
+.credits, .tutorial, .achives, .store{
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -250,9 +251,9 @@ main{
 	z-index: 100;
 }
 .subtitle{
-	font-family: 'pressStart2Play';
+	font-family: 'pixelFlag';
 	font-weight: bold;
-	font-size: 20px;
+	font-size: 40px;
 	letter-spacing: 3px;
 
 }
@@ -262,25 +263,66 @@ main{
 	background-size: contain;
 	background-position: center;
 	image-rendering: pixelated;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  background-repeat: no-repeat;
 	border-radius: 20px 20px;
 	line-height: 1.3;
+  animation: soft 0.2s ease-out;
+  font-size: 50px;
+  font-weight: bold;
+}
+@keyframes soft {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    display: block;
+    opacity: 1;
+  }
 }
 .mainMenuButtons{
-	height: 45%;
+  margin-top:80px;
+  width: 100%;
+  font-size: 20px;
 	display: flex;
-	flex-direction: column;
 	justify-content: space-evenly;
 	z-index: 100;
+  font-family: 'BotsmaticDemo';
+
+}
+
+.menuButton {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  width:150px;
+  height: 80px;
+  padding: 10px 20px;
+  background-image: url('assets/gui/midBtn.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  image-rendering: pixelated;
+  transition: 0.3s;
+
+}
+.playButton{
+  position: relative;
+  bottom: 100px
+}
+.menuButton img{
+  height: 40px;
+  margin-right: 10px;
 }
 .pauseButton {
 	position: absolute;
 	height: 40px;
 	width: 40px;
-	left: 20px;
+	right: 20px;
 	top: 20px;
 }
 .replayButton, .homeButton, .playOnPauseButton {
@@ -305,8 +347,7 @@ main{
 	background-repeat: no-repeat;
 	image-rendering: pixelated;
 	padding: 10px;
-	margin: 10px;
-}
+margin-right: 10px;}
 .smallBtn:hover{
 	filter: brightness(0.7);
 }
@@ -315,15 +356,14 @@ main{
 }
 .soundBtnOff{
 	content: url('assets/gui/soundOff.png');
-	filter: brightness(0.6);
+	filter: brightness(0.6) !important;
 }
 .playOnPauseButton{
 	width: 50px;
 }
-.button, .smallBtn{
+.smallBtn{
 	filter:drop-shadow(5px 5px 5px #0000004e);
 	cursor: pointer;
-
 }
 .button:hover{
 	filter: brightness(0.7);
@@ -331,60 +371,119 @@ main{
 }
 .score{
 	position: absolute;
-	right: 20px;
-	top: 20px;
+	left: 20px;
+	top: 5px;
 	color: #fff;
-	font-size: 15px;
+	font-size: 60px;
+}
+.coins{
+	position: absolute;
+  display: flex;
+  justify-content: baseline;
+  align-items: baseline;
+	left: 20px;
+	top: 45px;
+	color: #ffd502;
+	font-size: 45px;
+}
+.coins img{
+  width: 20px;
+}
+.storeCoins{
+  position: absolute;
+  display: flex;
+  align-items: center;
+  font-size: 45px;
+  top: 20%;
+  left: 5%;
+}
+.storeCoins img{
+  width: 40px;
+  height: 35px;
 }
 
 .gameOverScore{
 	position: unset;
-	font-size: 25px;
+	font-size: 50px;
+}
+.HIandRecord{
+  font-size: 50px;
+  font-weight: bold;
 }
 
 
 .mainBg{
-	font-family: 'pressStart2Play';
-	line-height: 2;
+	font-family: 'pixelFlag';
 	display: flex;
 	flex-direction: row;
 	filter: brightness(0.9);
 	background-size: cover;
 	background-position:top;
-	background-image: url('readmeStuff/bg.png');
+	background-image: url('stuff/bg.png');
 }
-.HightScoreBlockWrapper{
-	position: absolute;
-	display: flex;
-	align-items: center;
+.mainLeftInfo{
+  position: absolute;
 	left: 25px;
 	top: 30px;
-	font-size: 30px;
-	text-shadow: none;
 	z-index: 100;
 }
+.mainLeftWrapper{
+	display: flex;
+	align-items: center;
+  margin-bottom: 10px;
+}
+.mainStatText{
+  font-weight: 600;
+  font-size: 55px;
+}
 #prizeImg{
-	width: 60px;
+	width: 50px;
 	height: auto;
-	margin-right: 20px;
+	margin-right: 15px;
 }
 
-.credits, .achives{
+#coinImg{
+	width: 50px;
+	height: auto;
+	margin-right: 15px;
+}
+
+.credits, .achives, .store{
 	flex-direction: column;
-	font-size: 30px;
+	font-size: 50px;
 	text-shadow: unset;
 	overflow-y: auto;
-	padding: 30px;
+	padding: 20px;
 	box-sizing: border-box;
 	justify-content: space-between;
 }
-.credits-holder{
+
+.achivesHolder{
+  animation: fromTop 0.6s ;
+}
+
+@keyframes fromTop {
+  0% {
+    transform: translateY(-50%);
+    display: none;
+  }
+  100% {
+    display: block;
+  }
+}
+.creditsHolder{
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 	height: 100%;
+  animation: fromTop 0.6s;
 }
+
+.store{
+  padding: 0;
+}
+
 .achivesHolder{
 	width: 100%;
 	display: flex;
@@ -392,16 +491,171 @@ main{
 	justify-content: space-evenly;
 	flex-wrap: wrap;
 }
+
+.storeHolder{
+  height: 100%;
+  position: relative;
+  animation: fellOnTop 0.6s ease-in;
+}
+.storeBack{
+  content: url('assets/gui/store.png');
+  height: 80%;
+  position: relative;
+}
+.store-return-btn{
+  position: absolute;
+  bottom: 20px;
+}
+.addBtn{
+  position: absolute;
+  align-items: center;
+  top: 30%;
+  right: 10%;
+  content: url(assets/gui/addBook.png);
+  height: 40%;
+  cursor: pointer;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.addBtn:hover{
+  filter: brightness(0.8);
+}
+.saveMeHolder{
+  font-weight: normal;
+  font-size: 30px;
+}
+.saveMeAdd{
+  align-items: center;
+  background-image: url(assets/gui/smallBtn.png);
+  height: 40%;
+  cursor: pointer;
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: static;
+}
+.saveMeButtonsHolder{
+  display: flex;
+  align-items: flex-start;
+}
+.gameOverCoinsHolder{
+  display: flex;
+  align-items: baseline;
+  font-size: 50px;
+  justify-content: center;
+  border-bottom: 5px solid white;
+  padding: 0 15px;
+}
+.payForLife{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+}
+.payForLifeImg{
+  position: relative;
+  top: 2px;
+  width: 25px;
+  height: 20px;
+  image-rendering: auto;
+}
+.upgrade{
+  display: flex;
+  align-items: end;
+  justify-content: center;
+}
+.upgradeCoinImg{
+  width: 20px;
+  height: 18px;
+  image-rendering:auto;
+  position: relative;
+  top: 2px;
+}
+.upgradeBtnContent{
+  position: absolute;
+  top: 45%;  
+  left: 52%;
+  transform: translate(-50%, -50%); 
+  display: flex;
+  align-items: center;
+}
+
+.upgradeHolder img{
+  width: 50px;
+  image-rendering:auto;
+
+}
+.upgradeHolder{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.upgradesWrapper{
+  position: absolute;
+  top: 35%;
+  left: 10%;
+}
+.shieldUpgradeHolder, .boosterUpgradeHolder{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 30px;
+  image-rendering: pixelated;
+  text-align: left;
+}
+.upgradeHolder{
+  background-image: url('assets/gui/btn.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 10px;
+}
+.upgradeLevel{
+  width: 20px;
+  height: 20px;
+  margin-right:10px ;
+  border-radius: 50%;
+  background-color: #27110938;
+}
+.activeLevel{
+  background-color: #4b0808ad;
+}
+.upgradeProgress{
+  margin-left: 15px;
+  display: flex;
+}
+.upgradeBtn{
+  margin: 0;
+  margin-left: 10px;
+  font-size:30px;
+  position: relative;
+  padding: 17px;
+}
+
+@keyframes fellOnTop {
+  0% {
+    transform: translateY(-50%);
+    display: none;
+  }
+  35% {
+    transform: translateY(-8%);
+  }
+  60% {
+    transform: translateY(-12%);
+  }
+  100% {
+    display: block;
+  }
+}
 .achiveBlock{
-	font-family: 'pressStart2Play';
+	font-family: 'pixelFlag';
 	align-items: center;
-	font-size: 12px;
+	font-size: 25px;
 	display: flex;
 	padding: 10px;
 	color: rgb(255, 255, 255);
 	width: 40%;
 	height:fit-content;
-	background-color: rgb(47, 31, 46);
+	background-color: rgb(36, 30, 68);
 	margin-bottom: 20px;
 	border-radius: 10px 10px;
 }
@@ -411,7 +665,7 @@ main{
 }
 .achiveText p{
 	margin: 0;
-	font-size: 15px;
+	font-size: 30px;
 	text-decoration: underline 3px;
 }
 .achiveImg{
@@ -423,7 +677,7 @@ main{
 }
 .statsHolder{
 	display: flex;
-	font-size: 12px;
+	font-size: 30px;
 	margin-bottom: 20px
 }
 .btn {
@@ -434,39 +688,53 @@ main{
 	border: 0;
 	outline: none;
 	cursor: pointer;
-	font-size: 20px;
-	font-family: 'pressStart2Play';
+	font-family: 'pixelFlag';
 	background: none;
 	background-image: url('assets/gui/btn.png');
 	background-repeat: no-repeat;
 	background-size: contain;
 	background-position:right;
 	image-rendering: pixelated;
+  font-size: 30px;
 	color:rgb(255, 255, 255);
+  transition: 0.3s;
 }
-.btn:hover{
+.btn:hover, .menuButton:hover{
 	filter: brightness(0.8);
+  transform: scale(1.03);
 }
 .return-btn-holder{
 	width: 100%;
 	height: fit-content;
-	position: sticky;
+	position:sticky;
 	right: 10px;
-    bottom: -10px;
+  bottom: 0px;
 }
 .return-btn{
-	font-size: 18px;
+	font-size: 35px;
+  animation: fromBottom 0.6s ease-in-out;
+}
+
+@keyframes fromBottom {
+  0% {
+    transform: translateY(50%);
+    display: none;
+  }
+  100% {
+    display: block;
+  }
 }
 .stat{
 	margin-right: 20px;
 }
 .credits{
+  font-size: 30px;
+
 	font-family: 'BotsmaticDemo';
 }
 .credits a{
-	font-family: 'pressStart2Play';
+	font-family: 'pixelFlag';
 	font-weight: bold;
-	font-size: 17px;
 	color: rgb(30, 0, 94)
 }
 .credits a:hover{
@@ -479,7 +747,7 @@ main{
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: space-around;
+	justify-content: center;
 }
 .credits{
 	text-shadow: unset;
@@ -528,6 +796,7 @@ main{
 
 .hide {
 	display: none;
+  opacity: 0;
 }
 @media screen and (orientation: portrait) {
 	#turnLandscape{
@@ -565,32 +834,75 @@ main{
 
 	}
   .rightTopBlock{
-    right: 100px;
+    right: 50px;
   }
   .mainTitle{
     font-size: 50px;
+    line-height: 1.4;
+  }
+  .subtitle{
+    font-size: 25px;
   }
   .smallBtn{
-    width: 30px;
-    height: 30px;
+    width: 24px;
+    height: 24px;
+  }
+  .score{
+    font-size: 50px;
+    
+  }
+  .coins{
+    font-size: 40px;
+    top: 35px;
+
   }
   .btn{
-    font-size: 13px;
+    padding: 18px;
+  }
+  .return-btn {
+    font-size: 25px;
+}
+  .playButton{
+    bottom: 65px;
+  }
+  .menuButton img{
+    height: 30px;
+  }
+  .menuButton {
+    width:120;
+    height: 50;
+  }
+  .mainMenuButtons{
+    font-size: 15px;
   }
 	.insideScreenRatio{
 		overflow: scroll;
 		width: 85%;
 		height: 85%;
-		box-sizing: border-box;
 	}
-
-	.HighScoreBlock{
-		font-size: 20px;
+  #coinImg {
+    width: 40px;
+  }
+  #coinImg {
+    width: 40px;
+  }
+	.mainStatText{
+		font-size: 40px;
 	}
 	.pause, .gameOver{
-		font-size: 23px;
+		font-size: 35px;
 	}
-
+  .HIandRecord {
+    font-size: 40px;
+    line-height: 0;
+  } 
+  .saveBtn{
+    height: 40px;
+    width: 40px;
+  }
+  .gameOverCoins{
+    font-size: 35px;
+  }
 	.pauseButton {
 		height: 30px;
 		width: 30px
@@ -599,15 +911,21 @@ main{
 		width: 30px;
 		height: 30px;
 	}
+  .buttonHolder{
+    height: 50px;
+  }
 	.achiveImg{
 		height: 43px;
 		margin-right: 10px;
 	}
 	.achiveText p{
-		font-size: 12px;
+		font-size: 25px;
 	}
+  .statsHolder{
+    font-size: 25px;
+  }
 	.achiveText{
-		font-size: 9px;
+		font-size: 19px;
 	}
 	.achivesHolder{
 		justify-content: space-evenly;
@@ -618,13 +936,12 @@ main{
 	}
 	.achives{
 		padding: 10px;
-		overflow: scroll;
 	}
 	.credits{
-		font-size: 15px;
+		font-size: 30px;
 	}
 	.credits a{
-		font-size: 13px;
+		font-size: 25px;
 	}
 	.leftButtonsBlock{
 		display: block;
@@ -641,6 +958,39 @@ main{
 	.controlBlock{
 		display: none;
 	}
+  .upgradesWrapper {
+    top: 30%;
+    left: 7%;
+  }
+  .upgradeHolder{
+    padding: 12px;
+  }
+  .upgradeHolder img {
+    width: 34px;
+  }
+  .shieldUpgradeHolder, .boosterUpgradeHolder{
+    font-size: 24px;
+  }
+  .upgradeLevel{
+    height: 15px;
+    width: 15px;
+    margin-right: 8px;
+  }
+  .storeCoins{
+    font-size: 35px;
+  }
+  .storeCoins img {
+    width: 30px;
+    height: 25px;
+  }
+  .replayButton, .homeButton, .playOnPauseButton {
+    height: 40px;
+    width: 40px;
+    margin: 10px;
+  }
+  .storeBack{
+    height: 85%;
+  }
   .hide {
     display: none;
   }
