@@ -426,6 +426,8 @@ margin-right: 10px;}
 	left: 25px;
 	top: 30px;
 	z-index: 100;
+  display: flex;
+
 }
 .mainLeftWrapper{
 	display: flex;
@@ -435,6 +437,7 @@ margin-right: 10px;}
 .mainStatText{
   font-weight: 600;
   font-size: 55px;
+  margin-right: 15px;
 }
 #prizeImg{
 	width: 50px;
@@ -978,6 +981,13 @@ margin-right: 10px;}
   }
   .storeCoins{
     font-size: 35px;
+  }
+  .mainLeftInfo{
+  flex-direction: column;
+  align-items: flex-end;    
+  }
+  .mainStatText{
+    margin: 0;
   }
   .storeCoins img {
     width: 30px;
