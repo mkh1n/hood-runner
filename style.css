@@ -249,6 +249,7 @@ main{
 	font-size: 70px;
 	height: 40%;
 	z-index: 100;
+  line-height: 1.3;
 }
 .subtitle{
 	font-family: 'pixelFlag';
@@ -352,6 +353,8 @@ margin-right: 10px;}
 	filter: brightness(0.7);
 }
 .soundBtn{
+  height: 50px ;
+  width: 50px ;
 	content: url('assets/gui/soundOn.png');
 }
 .soundBtnOff{
@@ -837,7 +840,8 @@ margin-right: 10px;}
 
 	}
   .rightTopBlock{
-    right: 50px;
+    right: 30px;
+    top: 30px;
   }
   .mainTitle{
     font-size: 50px;
@@ -849,6 +853,10 @@ margin-right: 10px;}
   .smallBtn{
     width: 24px;
     height: 24px;
+  }
+  .soundBtn{
+    height: 40px ;
+    width: 40px ;
   }
   .score{
     font-size: 50px;

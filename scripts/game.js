@@ -891,8 +891,64 @@ function Draw() {
                                                         setTimeout(() => {
                                                           CollectObjects[0].image = CollectSprites[0]
                                                           DrawObject(CollectObjects[0])
-                                                          player.shield = false;
-                                                          player.shieldTimer = 0;
+                                                          setTimeout(() => {
+                                                            CollectObjects[0].image = new Image()
+                                                            DrawObject(CollectObjects[0])
+                                                            setTimeout(() => {
+                                                              CollectObjects[0].image = CollectSprites[0]
+                                                              DrawObject(CollectObjects[0])
+                                                              setTimeout(() => {
+                                                                CollectObjects[0].image = new Image()
+                                                                DrawObject(CollectObjects[0])
+                                                                setTimeout(() => {
+                                                                  CollectObjects[0].image = CollectSprites[0]
+                                                                  DrawObject(CollectObjects[0])
+                                                                  setTimeout(() => {
+                                                                    CollectObjects[0].image = new Image()
+                                                                    DrawObject(CollectObjects[0])
+                                                                    setTimeout(() => {
+                                                                      CollectObjects[0].image = CollectSprites[0]
+                                                                      DrawObject(CollectObjects[0])
+                                                                      setTimeout(() => {
+                                                                        CollectObjects[0].image = new Image()
+                                                                        DrawObject(CollectObjects[0])
+                                                                        setTimeout(() => {
+                                                                          CollectObjects[0].image = CollectSprites[0]
+                                                                          DrawObject(CollectObjects[0])
+                                                                          setTimeout(() => {
+                                                                            CollectObjects[0].image = new Image()
+                                                                            DrawObject(CollectObjects[0])
+                                                                            setTimeout(() => {
+                                                                              CollectObjects[0].image = CollectSprites[0]
+                                                                              DrawObject(CollectObjects[0])
+                                                                              setTimeout(() => {
+                                                                                CollectObjects[0].image = new Image()
+                                                                                DrawObject(CollectObjects[0])
+                                                                                setTimeout(() => {
+                                                                                  CollectObjects[0].image = CollectSprites[0]
+                                                                                  DrawObject(CollectObjects[0])
+                                                                                  setTimeout(() => {
+                                                                                    CollectObjects[0].image = new Image()
+                                                                                    DrawObject(CollectObjects[0])
+                                                                                    setTimeout(() => {
+                                                                                      CollectObjects[0].image = CollectSprites[0]
+                                                                                      DrawObject(CollectObjects[0])
+                                                                                      player.shield = false;
+                                                                                      player.shieldTimer = 0;
+                                                                                    }, 50)
+                                                                                  }, 50)
+                                                                                }, 50)
+                                                                              }, 50)
+                                                                            }, 50)
+                                                                          }, 50)
+                                                                        }, 50)
+                                                                      }, 50)
+                                                                    }, 50)
+                                                                  }, 50)
+                                                                }, 50)
+                                                              }, 50)
+                                                            }, 50)
+                                                          }, 50)
                                                         }, 50)
                                                       }, 50)
                                                     }, 50)

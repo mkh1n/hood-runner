@@ -54,8 +54,8 @@ const saveMe = () => {
   player.shield = true
   activeTime = 1;
   Start();
+  canvas.focus()
   bgMusic.play()
-
 }
 
 function gameInit() {
