@@ -19,9 +19,3 @@ WASD keys or touch control
 You can support me by playing my game on the Yandex Games service <a href='https://yandex.com/games/app/214308?lang=en'>here</a>, which monetizes games through advertising.
 
 Or you can play the ad-free version <a href='https://mkh1n.github.io/hood-runner/'>here</a>.
-
-![Изображение](stuff/1_eng.png)
-
-![Изображение](stuff/2_eng.png)
-
-![Изображение](stuff/3_eng.png)
