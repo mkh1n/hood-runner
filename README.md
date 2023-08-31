@@ -16,6 +16,4 @@ Jump over obstacles, dodge platforms floating in the air and trees hanging from 
 Controls
 WASD keys or touch control
 ## Play
-You can support me by playing my game on the Yandex Games service <a href='https://yandex.com/games/app/214308?lang=en'>here</a>, which monetizes games through advertising.
-
-Or you can play the ad-free version <a href='https://mkh1n.github.io/hood-runner/'>here</a>.
+Or you can play <a href='https://mkh1n.github.io/hood-runner/'>here</a>.
